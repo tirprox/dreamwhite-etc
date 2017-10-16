@@ -73,11 +73,13 @@ class ProductVariant {
          "\"" . $this->parentProduct->productFolderName . "\"," .
          "\"" . $this->uom . "\"," .
          "\"" . $this->supplier . "\"," .
+         
          "\"" . $this->description . "\"," .
          "\"" . $this->color . "\"," .
          "\"" . $this->size . "\"," .
          "\"" . $this->name . "\"," .
          "\"" . $this->code . "\"," .
+         
          "\"" . $this->barcode . "\"," .
          "\"" . $this->stock . "\"," .
          "\"" . $this->salePrice . "\"," .

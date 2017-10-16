@@ -11,5 +11,6 @@ $generator = new ObjectGenerator();
 $generator->generateObjects();
 //$generator->importViaAPI();
 $generator->createCSVReport();
+$generator->createXMLReport();
 
 Timer::stop();

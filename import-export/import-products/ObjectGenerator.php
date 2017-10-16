@@ -1,6 +1,7 @@
 <?php
 include(dirname(__DIR__)."/Connector.php");
 include("CSVReportGenerator.php");
+include("XMLReportGenerator.php");
 include("Product.php");
 include("ProductVariant.php");
 include("Group.php");
@@ -80,14 +81,14 @@ class ObjectGenerator {
             
             // Нужно переписать для использования клиента guzzle вместо file_get_contents
             $promise->then(
-               function (ResponseInterface $res) use (&$newProduct, &$stocks, &$stockCodes) {
+               function (ResponseInterface $res) use ($newProduct, $stocks, $stockCodes) {
                   $variants = json_decode($res->getBody());
                   while (property_exists($variants->meta, "nextHref")) {
                      $tempObject = json_decode(file_get_contents($variants->meta->nextHref, false, Connector::$context));
                      $variants->meta = $tempObject->meta;
                      $variants->rows = array_merge($variants->rows, $tempObject->rows);
                   }
-                  $this->addVariantsToProduct($variants, $newProduct, $stocks, $stockCodes);
+                  $newProduct = $this->addVariantsToProduct($variants, $newProduct, $stocks, $stockCodes);
                },
                function (RequestException $e) {
                   echo $e->getMessage() . "\n";
@@ -111,6 +112,7 @@ class ObjectGenerator {
          $newVariant = new ProductVariant($variant, $variantStock, $product);
          $product->variants[] = $newVariant;
       }
+      return $product;
    }
    
    function createCSVReport() {
@@ -126,6 +128,17 @@ class ObjectGenerator {
       }
       CSVReportGenerator::writeCsvHeader();
       CSVReportGenerator::writeCSVToFile();
+   }
+   
+   function createXMLReport() {
+      
+      XMLReportGenerator::createDocument();
+      foreach ($this->groups->groupArray as $group) {
+         foreach ($group->products as $product) {
+            $xmlProductNode = XMLReportGenerator::addProduct($product);
+         }
+      }
+      XMLReportGenerator::writeXmlToFile();
    }
    
    function importViaAPI() {

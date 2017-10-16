@@ -20,7 +20,7 @@ class Product {
    var $size = "";
    var $variantName = "";
    var $barcode = "";
-   var $salePrice = "";
+   var $salePrice = "0";
    var $article = "";
    
    var $material = "";
