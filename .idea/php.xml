@@ -2,13 +2,8 @@
 <project version="4">
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/../wp" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/guzzlehttp/promises" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/guzzlehttp/psr7" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/guzzlehttp/guzzle" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/automattic/woocommerce" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/psr/http-message" />
-      <path value="$PROJECT_DIR$/import-orders/vendor/composer" />
+      <path value="C:\wamp\bin\php\php7.1.9" />
+      <path value="." />
     </include_path>
   </component>
 </project>
