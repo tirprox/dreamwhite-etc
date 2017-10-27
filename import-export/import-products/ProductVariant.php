@@ -25,6 +25,7 @@ class ProductVariant {
    var $barcode = "";
    var $salePrice = "";
    var $article = "";
+   var $variantPhotoUrl = "";
    
    public static $attributeString = "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"";
    
@@ -62,6 +63,15 @@ class ProductVariant {
       if (property_exists($variant->product, "article")) {
          $this->article = $variant->product->article;
       }
+	
+	   $urlToEncode = $this->parentProduct->baseUrl
+	                  . $this->parentProduct->productFolderName
+	                  . "/" . $this->article
+	                  . "/" . $this->article . " " . $this->color .".jpg";
+      
+	   //$this->variantPhotoUrl = urlencode($urlToEncode);
+	   $this->variantPhotoUrl = $urlToEncode;
+	   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
    
       Log::d("$this->name (В наличии $this->stock) \n");
       //print("$this->name (В наличии $this->stock) \n");

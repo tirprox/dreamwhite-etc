@@ -38,6 +38,12 @@ class Product {
    var $koketka = "";
    var $uhod = "";
    
+   var $baseUrl = "http://127.0.0.1/wp/photo/";
+   
+	var $productPhotoUrl = "";
+	var $galleryUrls = "";
+   
+   
    function __construct($product, $stock, $folderName) {
       $this->product = $product;
       $this->productFolderName = $folderName;
@@ -59,7 +65,18 @@ class Product {
          $this->article = $product->article;
       }
       
+      $urlToEncode = $this->baseUrl
+                     . $this->productFolderName
+                     . "/" . $this->article
+                     . "/" . $this->article . ".jpg";
+	
+	   //$this->productPhotoUrl = urlencode($urlToEncode);
+      $this->productPhotoUrl = $urlToEncode;
+	   $this->galleryUrls .= $urlToEncode . ",";
+      
       $this->setAttributes();
+      
+      
       
       Log::d("\n$this->name\n");
    }

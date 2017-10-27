@@ -56,7 +56,8 @@ class XMLReportGenerator {
       self::addNode('uhod', $product->uhod, $attrs);
       
    
-      self::addNode('photo', "http://dreamwhite.ru/logo.jpg", $xmlProduct);
+      self::addNode('photo', $product->productPhotoUrl, $xmlProduct);
+	  self::addNode('photoGallery', $product->galleryUrls, $xmlProduct);
       //$xmlProduct = self::addChild('variants', $xmlProduct);
       
       $variants = XMLReportGenerator::addChild('variations', $xmlProduct);
@@ -73,6 +74,7 @@ class XMLReportGenerator {
    
          self::addNode('color', $variant->color, $xmlVariant);
          self::addNode('size', $variant->size, $xmlVariant);
+         self::addNode('photo', $variant->variantPhotoUrl, $xmlVariant);
       }
       
       return $xmlProduct;
