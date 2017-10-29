@@ -38,7 +38,7 @@ class Product {
    var $koketka = "";
    var $uhod = "";
    
-   var $baseUrl = "http://127.0.0.1/wp/photo/";
+   var $baseUrl = "http://static.dreamwhite.ru/photo/";
    
 	var $productPhotoUrl = "";
 	var $galleryUrls = "";
