@@ -114,6 +114,7 @@ class Product {
                $this->rukav = $attrs[ 5 ]->value->name;
                $this->dlina_rukava = $attrs[ 6 ]->value->name;
                $this->zastezhka = $attrs[ 7 ]->value->name;
+               // need to convert boolean
                $this->kapushon = $attrs[ 8 ]->value ? "Есть" : "Нет";
                $this->vorotnik = $attrs[ 9 ]->value->name;
                $this->poyas = $attrs[ 10 ]->value ? "Есть" : "Нет";
@@ -124,6 +125,9 @@ class Product {
             
          }
       }
+   }
+   function textFromBool($bool){
+      return $bool ? "Есть" : "Нет";
    }
    
    function getAttributesString() {

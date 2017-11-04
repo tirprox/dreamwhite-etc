@@ -14,10 +14,24 @@
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
+          <root url="file://C:/wamp/bin/php/php7.1.9" />
           <root url="file://$MODULE_DIR$/../wp" />
+          <root url="file://F:/Users7/Gleb/Desktop" />
         </CLASSES>
         <SOURCES>
+          <root url="file://C:/wamp/bin/php/php7.1.9" />
           <root url="file://$MODULE_DIR$/../wp" />
+          <root url="file://F:/Users7/Gleb/Desktop" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://C:/wamp/bin/php/php7.1.9/pharcommand.phar/" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar://C:/wamp/bin/php/php7.1.9/pharcommand.phar/" />
         </SOURCES>
       </library>
     </orderEntry>
