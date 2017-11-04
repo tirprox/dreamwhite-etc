@@ -71,6 +71,7 @@ class Product {
                      . "/" . $this->article . ".jpg";
 	
 	   //$this->productPhotoUrl = urlencode($urlToEncode);
+	   $urlToEncode = str_replace(" ", "-", $urlToEncode);
       $this->productPhotoUrl = $urlToEncode;
 	   $this->galleryUrls .= $urlToEncode . ",";
       

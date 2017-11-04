@@ -70,7 +70,9 @@ class ProductVariant {
 	                  . "/" . $this->article . " " . $this->color .".jpg";
       
 	   //$this->variantPhotoUrl = urlencode($urlToEncode);
+	   $urlToEncode = str_replace(" ", "-", $urlToEncode);
 	   $this->variantPhotoUrl = $urlToEncode;
+	   
 	   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
    
       Log::d("$this->name (В наличии $this->stock) \n");
