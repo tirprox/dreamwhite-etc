@@ -9,6 +9,7 @@ include("Groups.php");
 include("WooCommerceImporter.php");
 
 include "CSVTagFactory.php";
+include "Tools.php";
 
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;

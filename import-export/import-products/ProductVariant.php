@@ -74,8 +74,16 @@ class ProductVariant {
 	   $this->variantPhotoUrl = $urlToEncode;
 	   
 	   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
-      $this->parentProduct->colors .= $this->color . ",";
-      $this->parentProduct->sizes .= $this->size . ",";
+	   if ($this->stock > 0) {
+	   	if (!Tools::match($this->parentProduct->colors, $this->color)) {
+			   $this->parentProduct->colors .= $this->color . ",";
+		   }
+		if (!Tools::match($this->parentProduct->sizes, $this->size)) {
+			   $this->parentProduct->sizes .= $this->size . ",";
+		   }
+		   
+	   }
+      
    
       Log::d("$this->name (В наличии $this->stock) \n");
       //print("$this->name (В наличии $this->stock) \n");

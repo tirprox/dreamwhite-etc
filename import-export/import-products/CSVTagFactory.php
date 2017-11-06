@@ -53,7 +53,7 @@ class CSVTagFactory {
       $tag->koketka = $this->splitAttr($csvRow[16]);
       $tag->uhod = $this->splitAttr($csvRow[17]);
       
-      var_dump($tag->dlina_rukava);
+      
       
       $this->tags[] = $tag;
    }
@@ -81,6 +81,8 @@ class CSVTagFactory {
          //check basic attrs
          if (!$this->compareAttrs($tag->group, $product->productFolderName)) continue;
          if (!$this->compareAttrs($tag->color, $product->colors)) continue;
+	
+	      
          if (!$this->compareAttrs($tag->size, $product->sizes)) continue;
    
          if (!$this->compareAttrs($tag->material, $product->material)) continue;
@@ -114,7 +116,9 @@ class CSVTagFactory {
       
       $match = false;
       foreach ($tagAttrArray as $attr){
-         if ($this->stringExists($productAttr, $attr->attribute)) {
+         if (Tools::match($productAttr, $attr->attribute)) {
+
+         	print("Товар: \"" . $productAttr . "\" Метка: \"" . $attr->attribute . "\"\n");
             $match = $attr->isInverted ? false : true;
          }
          else $match =  $attr->isInverted ? true : false;
