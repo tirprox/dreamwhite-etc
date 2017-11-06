@@ -53,18 +53,16 @@ class CSVTagFactory {
       $tag->koketka = $this->splitAttr($csvRow[16]);
       $tag->uhod = $this->splitAttr($csvRow[17]);
       
+      var_dump($tag->dlina_rukava);
       
-      var_dump($tag->kapushon);
+      $this->tags[] = $tag;
    }
    
    function splitAttr($atrrString){
       $data[] = str_getcsv($atrrString, ",");
       $attrs = [];
-      //var_dump($data);
       foreach ($data[0] as $item) {
-         //$val = $item[0];
          $item = trim($item);
-         //var_dump($item);
          
          if (substr($item, 0, 1) === "-") {
             $item=substr($item,1);
@@ -80,7 +78,55 @@ class CSVTagFactory {
    
    function setProductTag($product) {
       foreach ($this->tags as $tag) {
-      
+         //check basic attrs
+         if (!$this->compareAttrs($tag->group, $product->productFolderName)) continue;
+         if (!$this->compareAttrs($tag->color, $product->colors)) continue;
+         if (!$this->compareAttrs($tag->size, $product->sizes)) continue;
+   
+         if (!$this->compareAttrs($tag->material, $product->material)) continue;
+         if (!$this->compareAttrs($tag->uteplitel, $product->uteplitel)) continue;
+         if (!$this->compareAttrs($tag->podkladka, $product->podkladka)) continue;
+         if (!$this->compareAttrs($tag->siluet, $product->siluet)) continue;
+         if (!$this->compareAttrs($tag->dlina, $product->dlina)) continue;
+         if (!$this->compareAttrs($tag->rukav, $product->rukav)) continue;
+         
+         if (!$this->compareAttrs($tag->dlina_rukava, $product->dlina_rukava)) continue;
+         
+         if (!$this->compareAttrs($tag->zastezhka, $product->zastezhka)) continue;
+         
+         if (!$this->compareAttrs($tag->kapushon, $product->kapushon)) continue;
+         if (!$this->compareAttrs($tag->vorotnik, $product->vorotnik)) continue;
+         if (!$this->compareAttrs($tag->poyas, $product->poyas)) continue;
+         if (!$this->compareAttrs($tag->karmany, $product->karmany)) continue;
+         if (!$this->compareAttrs($tag->koketka, $product->koketka)) continue;
+         if (!$this->compareAttrs($tag->uhod, $product->uhod)) continue;
+         
+         
+         
+         $product->tags .= $tag->name . ",";
+         
       }
+   }
+   
+   function compareAttrs($tagAttrArray, $productAttr) {
+      
+      if ($tagAttrArray[0]->attribute == "") return true;
+      
+      foreach ($tagAttrArray as $attr){
+         if ($this->stringExists($productAttr, $attr->attribute)) {
+            return $attr->isInverted ? false : true;
+         }
+         else return $attr->isInverted ? true : false;
+      }
+      
+      return false;
+   }
+
+   
+   function stringExists($haystack, $needle) {
+      if( stripos( $haystack, $needle ) !== false ) {
+         return true;
+      }
+      else return false;
    }
 }

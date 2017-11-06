@@ -42,6 +42,9 @@ class Product {
    
 	var $productPhotoUrl = "";
 	var $galleryUrls = "";
+	
+	var $colors = "", $sizes = "";
+	var $tags = "";
    
    
    function __construct($product, $stock, $folderName) {

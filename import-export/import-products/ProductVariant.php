@@ -74,6 +74,8 @@ class ProductVariant {
 	   $this->variantPhotoUrl = $urlToEncode;
 	   
 	   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
+      $this->parentProduct->colors .= $this->color . ",";
+      $this->parentProduct->sizes .= $this->size . ",";
    
       Log::d("$this->name (В наличии $this->stock) \n");
       //print("$this->name (В наличии $this->stock) \n");

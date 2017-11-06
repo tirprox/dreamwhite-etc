@@ -8,6 +8,8 @@ include("Group.php");
 include("Groups.php");
 include("WooCommerceImporter.php");
 
+include "CSVTagFactory.php";
+
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
@@ -37,6 +39,9 @@ class ObjectGenerator {
       $this->groups->getGroupsFromConfig();
       $this->groups->getGroupsFromServer(Connector::$baseUrl, Connector::$context);
       $this->groups->getGroupArray();
+   
+      $client = new Client();
+      $promises = [];
       
       foreach ($this->groups->groupArray as $group) {
          //Getting stocks
@@ -60,8 +65,7 @@ class ObjectGenerator {
          $productRequestUrl = $this->productsUrl . urlencode($group->name);
          $products = Connector::getRemoteObject($productRequestUrl);
          
-         $client = new Client();
-         $promises = [];
+         
          foreach ($products->rows as $product) {
             $productInStocks = array_search($product->code, $stockCodes);
             $productStock = $stocks->rows[ $productInStocks ]->stock;
@@ -99,9 +103,21 @@ class ObjectGenerator {
 
             $group->products[] = $newProduct;
          }
-         Promise\settle($promises)->wait();
+         
       }
+      Promise\settle($promises)->wait();
+      $this->setTags();
       
+   }
+   
+   function setTags() {
+      $tagFactory = new CSVTagFactory();
+      $tagFactory->loadTagsFromFile();
+      foreach ($this->groups->groupArray as $group) {
+         foreach ($group->products as $product) {
+            $tagFactory->setProductTag($product);
+         }
+      }
    }
    
    function addVariantsToProduct($variants, $product, $stocks, $stockCodes) {

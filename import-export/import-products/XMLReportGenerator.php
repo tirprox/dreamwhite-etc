@@ -58,6 +58,7 @@ class XMLReportGenerator {
    
       self::addNode('photo', $product->productPhotoUrl, $xmlProduct);
 	  self::addNode('photoGallery', $product->galleryUrls, $xmlProduct);
+      self::addNode('tags', $product->tags, $xmlProduct);
       //$xmlProduct = self::addChild('variants', $xmlProduct);
       
       $variants = XMLReportGenerator::addChild('variations', $xmlProduct);
