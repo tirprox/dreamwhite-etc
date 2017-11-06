@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Gleb
- * Date: 05.11.2017
- * Time: 1:32
+ *
+ * Debug file for testing tags
+ *
  */
 include "CSVTagFactory.php";
 

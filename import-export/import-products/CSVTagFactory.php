@@ -112,14 +112,17 @@ class CSVTagFactory {
       
       if ($tagAttrArray[0]->attribute == "") return true;
       
+      $match = false;
       foreach ($tagAttrArray as $attr){
          if ($this->stringExists($productAttr, $attr->attribute)) {
-            return $attr->isInverted ? false : true;
+            $match = $attr->isInverted ? false : true;
          }
-         else return $attr->isInverted ? true : false;
+         else $match =  $attr->isInverted ? true : false;
+         
+         if ($match) return true;
       }
       
-      return false;
+      return $match;
    }
 
    
