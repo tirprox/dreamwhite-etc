@@ -63,17 +63,23 @@ class ProductVariant {
       if (property_exists($variant->product, "article")) {
          $this->article = $variant->product->article;
       }
-	
-	   $urlToEncode = $this->parentProduct->baseUrl
-	                  . $this->parentProduct->productFolderName
-	                  . "/" . $this->article
-	                  . "/" . $this->article . " " . $this->color .".jpg";
+	   $photoFileName = $this->article . " " . $this->color .".jpg";
+	   $photoFileName = str_replace(" ", "-", $photoFileName );
       
-	   //$this->variantPhotoUrl = urlencode($urlToEncode);
-	   $urlToEncode = str_replace(" ", "-", $urlToEncode);
-	   $this->variantPhotoUrl = $urlToEncode;
-	   
-	   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
+      if (in_array($photoFileName,Tools::$imageDirList)) {
+         $urlToEncode = $this->parentProduct->baseUrl
+            . $this->parentProduct->productFolderName
+            . "/" . $this->article
+            . "/" . $photoFileName;
+         $urlToEncode = str_replace(" ", "-", $urlToEncode);
+         $this->variantPhotoUrl = $urlToEncode;
+         
+         if (!Tools::match($this->parentProduct->galleryUrls, $urlToEncode)) {
+            $this->parentProduct->galleryUrls .= $urlToEncode . ",";
+         }
+         //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
+         }
+
 	   if ($this->stock > 0) {
 	   	if (!Tools::match($this->parentProduct->colors, $this->color)) {
 			   $this->parentProduct->colors .= $this->color . ",";

@@ -13,5 +13,7 @@ class Tools {
 		}
 		else return false;
 	}
+	
+	static $imageDirList = [];
 }
 

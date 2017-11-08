@@ -31,9 +31,12 @@ class ObjectGenerator {
    public $groups = null;
    
    public $productRequestUrl;
+   public $imageDirPath = "http://static.dreamwhite.ru/photo/dir.php";
+   
    
    function generateObjects() {
       Connector::init();
+      Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
       
       $this->groups = new Groups();
       
