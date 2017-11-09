@@ -45,8 +45,8 @@ class ProductVariant {
       if (property_exists($variant->product, "supplier")) {
          $this->supplier = $variant->product->supplier->name;
       }
-      if (property_exists($variant->product, "description")) {
-         $this->description = $variant->product->description;
+      if (property_exists($variant, "description")) {
+         $this->description = $variant->description;
       }
    
       $this->color = $this->getAttribute($variant, "Цвет");
