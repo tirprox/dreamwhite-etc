@@ -129,11 +129,4 @@ class CSVTagFactory {
       return $match;
    }
 
-   
-   function stringExists($haystack, $needle) {
-      if( stripos( $haystack, $needle ) !== false ) {
-         return true;
-      }
-      else return false;
-   }
 }
