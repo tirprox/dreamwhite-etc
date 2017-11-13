@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: moysklad sync
+Plugin Name: Мой склад
 Plugin URI:
 Description: Синхронизация WooCommerce - Мой Склад
 Version:     1.0
@@ -15,8 +15,8 @@ include("import-products/Importer.php");
 include("export-orders/OrderExporter.php");
 
 add_action("admin_menu", "addMenu");
-add_action('woocommerce_thankyou', 'onWooCommerceOrderCompleted');
-add_action('woocommerce_new_order', 'onWooCommerceOrderCompleted');
+//add_action('woocommerce_thankyou', 'onWooCommerceOrderCompleted');
+//add_action('woocommerce_new_order', 'onWooCommerceOrderCompleted');
 
 
 
@@ -42,12 +42,12 @@ function runImport() {
 }
 
 function onWooCommerceOrderCompleted($order_id){
-   $order = new WC_Order( $order_id );
+   /*$order = new WC_Order( $order_id );
    $myuser_id = (int)$order->user_id;
    $user_info = get_userdata($myuser_id);
    $items = $order->get_items();
    $exporter = new OrderExporter();
    
    echo $exporter->prepareCustomerJSON($order_id);
-   return $order_id;
+   return $order_id;*/
 }

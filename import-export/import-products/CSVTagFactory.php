@@ -36,6 +36,10 @@ class CSVTagFactory {
       $tag->group = $this->splitAttr($csvRow[1]);
       
       $tag->color = $this->splitAttr($csvRow[2]);
+      if ($tag->color !== "") {
+	      $tag->hasColors = true;
+      }
+      
       $tag->size = $this->splitAttr($csvRow[3]);
       
       $tag->material = $this->splitAttr($csvRow[4]);
@@ -118,7 +122,7 @@ class CSVTagFactory {
       foreach ($tagAttrArray as $attr){
          if (Tools::match($productAttr, $attr->attribute)) {
 
-         	print("Товар: \"" . $productAttr . "\" Метка: \"" . $attr->attribute . "\"\n");
+         	//print("Товар: \"" . $productAttr . "\" Метка: \"" . $attr->attribute . "\"\n");
             $match = $attr->isInverted ? false : true;
          }
          else $match =  $attr->isInverted ? true : false;

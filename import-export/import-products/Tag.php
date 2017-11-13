@@ -30,5 +30,6 @@ class Tag {
    var $poyas = "";
    var $karmany = "";
    
+   var $hasColors = false;
    var $realColors = [];
 }
