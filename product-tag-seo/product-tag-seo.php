@@ -2,7 +2,7 @@
 /*
 Plugin Name: Метки товаров
 Plugin URI:
-Description: Дополнителоьные описания к меткам и категориям товаров, rewrite на правильные фильтры
+Description: Дополнительные описания к меткам и категориям товаров, rewrite на правильные фильтры
 Version:     1.0
 Author:      Gleb Samsonov
 Author URI:  https://developer.wordpress.org/
@@ -151,6 +151,7 @@ function loadColorsForTagsFromCSV() {
 	return $colors;
 }
 
+include (dirname(__DIR__) . "/import-export/import-products/TagRewriteRules.php");
 function custom_rewrite_rules() {
 	$colors = [
 		'zhenskie-palto-tsveta-haki' => 'haki-146437,haki',
@@ -158,6 +159,8 @@ function custom_rewrite_rules() {
 		'krasnye-zhenskie-palto' => 'krasnyj-144493,krasnyj-144590',
 		'zhenskie-palto-chernogo-tsveta' => 'chernyj'
 	];
+	
+	$colors = TagRewriteRules::$rules;
 	//$colors = loadColorsForTagsFromCSV();
 	foreach($colors as $cat => $color) {
 		//print('index.php?product_tag=' . $cat . '&pa_tsvet=' . $color);

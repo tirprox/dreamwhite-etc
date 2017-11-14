@@ -43,7 +43,7 @@ class Product {
 	var $productPhotoUrl = "";
 	var $galleryUrls = "";
 	
-	var $colors = "", $sizes = "";
+	var $colors = [], $sizes = "";
 	var $tags = "";
    
    

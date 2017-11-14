@@ -1,13 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: DreamWhite
- * Date: 06.11.2017
- * Time: 14:14
- */
 
-class Tools {
-   static $iso9_table = [
+function ctl_sanitize_title($title) {
+   $iso9_table = array(
       'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Ѓ' => 'G',
       'Ґ' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'YO', 'Є' => 'YE',
       'Ж' => 'ZH', 'З' => 'Z', 'Ѕ' => 'Z', 'И' => 'I', 'Й' => 'J',
@@ -26,30 +20,29 @@ class Tools {
       'у' => 'u', 'ў' => 'u', 'ф' => 'f', 'х' => 'h', 'ц' => 'ts',
       'ч' => 'ch', 'џ' => 'dh', 'ш' => 'sh', 'щ' => 'shh', 'ъ' => '',
       'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya'
-   ];
+   );
+   $geo2lat = array(
+      'ა' => 'a', 'ბ' => 'b', 'გ' => 'g', 'დ' => 'd', 'ე' => 'e', 'ვ' => 'v',
+      'ზ' => 'z', 'თ' => 'th', 'ი' => 'i', 'კ' => 'k', 'ლ' => 'l', 'მ' => 'm',
+      'ნ' => 'n', 'ო' => 'o', 'პ' => 'p','ჟ' => 'zh','რ' => 'r','ს' => 's',
+      'ტ' => 't','უ' => 'u','ფ' => 'ph','ქ' => 'q','ღ' => 'gh','ყ' => 'qh',
+      'შ' => 'sh','ჩ' => 'ch','ც' => 'ts','ძ' => 'dz','წ' => 'ts','ჭ' => 'tch',
+      'ხ' => 'kh','ჯ' => 'j','ჰ' => 'h'
+   );
+   $iso9_table = array_merge($iso9_table, $geo2lat);
    
-   
-   static function match($haystack, $needle) {
-      if (mb_stripos($haystack, $needle, 0, 'UTF-8') !== false) {
-         return true;
+      $title = strtr($title, apply_filters('ctl_table', $iso9_table));
+      if (function_exists('iconv')){
+         $title = iconv('UTF-8', 'UTF-8//TRANSLIT//IGNORE', $title);
       }
-      else {
-         return false;
-      }
-   }
+      $title = preg_replace("/[^A-Za-z0-9'_\-\.]/", '-', $title);
+      $title = preg_replace('/\-+/', '-', $title);
+      $title = preg_replace('/^-+/', '', $title);
+      $title = preg_replace('/-+$/', '', $title);
+
    
-   static function transliterate($text) {
-      $text = strtr($text, self::$iso9_table);
-      if (function_exists('iconv')) {
-         $text = iconv('UTF-8', 'UTF-8//TRANSLIT//IGNORE', $text);
-      }
-      $text = preg_replace("/[^A-Za-z0-9'_\-\.]/", '-', $text);
-      $text = preg_replace('/\-+/', '-', $text);
-      $text = preg_replace('/^-+/', '', $text);
-      $text = preg_replace('/-+$/', '', $text);
-      return $text;
-   }
-   
-   static $imageDirList = [];
+   return $title;
 }
+
+
 

@@ -81,9 +81,21 @@ class ProductVariant {
          }
 
 	   if ($this->stock > 0) {
-	   	if (!Tools::match($this->parentProduct->colors, $this->color)) {
+         if (!in_array($this->color, $this->parentProduct->colors)) {
+            $this->parentProduct->colors[] = $this->color;
+         }
+         
+         /*foreach($this->parentProduct->colors as $color) {
+            if (!Tools::match($color, $this->color)) {
+               $this->parentProduct->colors[] = $this->color;
+            }
+         }*/
+         
+/*	   	if (!Tools::match($this->parentProduct->colors, $this->color)) {
 			   $this->parentProduct->colors .= $this->color . ",";
 		   }
+		   */
+		   
 		if (!Tools::match($this->parentProduct->sizes, $this->size)) {
 			   $this->parentProduct->sizes .= $this->size . ",";
 		   }

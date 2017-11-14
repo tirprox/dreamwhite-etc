@@ -36,7 +36,7 @@ class CSVTagFactory {
       $tag->group = $this->splitAttr($csvRow[1]);
       
       $tag->color = $this->splitAttr($csvRow[2]);
-      if ($tag->color !== "") {
+      if ($tag->color[0]->attribute != "") {
 	      $tag->hasColors = true;
       }
       
@@ -84,9 +84,16 @@ class CSVTagFactory {
       foreach ($this->tags as $tag) {
          //check basic attrs
          if (!$this->compareAttrs($tag->group, $product->productFolderName)) continue;
-         if (!$this->compareAttrs($tag->color, $product->colors)) continue;
-	
-	      
+         
+         // colors do not support attr inversion for now
+         //
+         if ($tag->hasColors) {
+            if (!$this->compareColors($tag, $product->colors)) continue;
+         }
+         else {
+            if (!$this->compareAttrs($tag->color, $product->colors)) continue;
+         }
+        
          if (!$this->compareAttrs($tag->size, $product->sizes)) continue;
    
          if (!$this->compareAttrs($tag->material, $product->material)) continue;
@@ -115,21 +122,44 @@ class CSVTagFactory {
    }
    
    function compareAttrs($tagAttrArray, $productAttr) {
-      
       if ($tagAttrArray[0]->attribute == "") return true;
-      
       $match = false;
       foreach ($tagAttrArray as $attr){
          if (Tools::match($productAttr, $attr->attribute)) {
-
-         	//print("Товар: \"" . $productAttr . "\" Метка: \"" . $attr->attribute . "\"\n");
             $match = $attr->isInverted ? false : true;
          }
          else $match =  $attr->isInverted ? true : false;
-         
          if ($match) return true;
       }
+      return $match;
+   }
+   
+   function compareColors($tag, $productColors){
+      $tagColors = $tag->color;
+      $match = false;
+      foreach ($tagColors as $tagColor){
+         foreach ($productColors as $productColor) {
+            if (Tools::match($productColor, $tagColor->attribute)) {
+               $match = true;
+               $productColorTranslit = strtolower(Tools::transliterate($productColor));
+               if (!in_array($productColorTranslit, $tag->realColors)) {
+                  $tag->realColors[] = $productColorTranslit;
+               }
       
+            }
+            else {
+               $match = false;
+            }
+            
+            /*if (Tools::match($productColor, $tagColor->attribute)) {
+               $match = $tagColor->isInverted ? false : true;
+               
+            }
+            else $match =  $tagColor->isInverted ? true : false;*/
+         }
+         
+         //if ($match) return true;
+      }
       return $match;
    }
 

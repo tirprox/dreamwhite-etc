@@ -122,6 +122,24 @@ class ObjectGenerator {
             $tagFactory->setProductTag($product);
          }
       }
+      
+      $header = "<?php class TagRewriteRules {\nstatic \$rules = [\n";
+      $footer = "\n];\n}";
+      $tagRewriteRules = "";
+      foreach ($tagFactory->tags as $tag) {
+         if ($tag->hasColors && !empty($tag->realColors)) {
+            $tagName = strtolower(Tools::transliterate($tag->name));
+            $colorList = implode(",", $tag->realColors);
+   
+            $tagRewriteRules .= "\"" . $tagName . "\"" . " => "
+               . "\"" . $colorList . "\"" . ",\n";
+            
+         }
+      }
+      $file = $header . $tagRewriteRules . $footer;
+      file_put_contents("TagRewriteRules.php", $file);
+      require_once("TagRewriteRules.php");
+      flush_rewrite_rules();
    }
    
    function addVariantsToProduct($variants, $product, $stocks, $stockCodes) {
