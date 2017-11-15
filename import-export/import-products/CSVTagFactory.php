@@ -145,20 +145,8 @@ class CSVTagFactory {
                if (!in_array($productColorTranslit, $tag->realColors)) {
                   $tag->realColors[] = $productColorTranslit;
                }
-      
             }
-            else {
-               $match = false;
-            }
-            
-            /*if (Tools::match($productColor, $tagColor->attribute)) {
-               $match = $tagColor->isInverted ? false : true;
-               
-            }
-            else $match =  $tagColor->isInverted ? true : false;*/
          }
-         
-         //if ($match) return true;
       }
       return $match;
    }
