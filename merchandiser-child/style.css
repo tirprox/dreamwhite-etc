@@ -1,0 +1,346 @@
+/*
+Theme Name: Merchandiser Child
+Theme URI: http://merchandiser.getbowtied.com/
+Description: This is a child theme for Merchandiser.
+Author: Get Bowtied
+Author URI: http: //www.getbowtied.com/
+Template: merchandiser
+Version: 1.0
+*/
+
+
+/****************************************************************/
+/*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
+/****************************************************************/
+
+/* Assistive text */
+/*.quantity { opacity: 1; }
+.woocommerce .cart .quantity input.qty{
+    display: inline-block;
+}*/
+.assistive-text,
+.screen-reader-text {
+    display: none;
+}
+/*.main-navigation .assistive-text:focus,
+.site .screen-reader-text:hover,
+.site .screen-reader-text:active,
+.site .screen-reader-text:focus {
+    background: #fff;
+    border: 2px solid #333;
+    border-radius: 3px;
+    clip: auto !important;
+    color: #000;
+    display: block;
+    font-size: 12px;
+    height: auto;
+    padding: 12px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: auto;
+    z-index: 100000; !* Above WP toolbar *!
+}*/
+
+.page-wrapper.visible {
+    /* animation: global_fadein 0.25s forwards; */
+    animation: none;
+    opacity:1;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.site-header .header-wrapper .nav {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    width: 100%;
+    opacity: 1;
+    animation: none;
+    /* -webkit-animation: global_fadein 0s forwards;
+    animation: global_fadein 0s forwards; */
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+
+.woocommerce ul.products li.product:hover .product_thumbnail.with_second_image img {
+    opacity: 1 !important;
+    transition: none !important;
+}
+
+
+.woo-social-buttons img {
+    margin-right: 5px;
+}
+
+.woocommerce.archive .shop-sidebar {
+    background: none !important;
+}
+
+@media only screen and (min-width: 64em) {
+	.woocommerce .woocommerce-tabs .shop_attributes th {
+        padding: 8px;
+    }
+    
+    .woocommerce .woocommerce-tabs .shop_attributes tr td {
+        padding: 8px;
+    }
+    .woocommerce .product_content_wrapper.layout_half .product_infos {
+        padding: 0% 7% !important;
+    }
+
+}
+@media only screen and (min-width: 1280px) {
+.contacts-page-info {
+    position: absolute;
+    width: 35%;
+    left: 60%;
+    background: white;
+    padding:40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+}
+@media only screen and (max-width: 1279px) {
+    .contacts-page-info {
+        padding: 40px;
+    }
+    }
+
+.popup-instagram-button {
+    width: 100% !important;
+    font-size: 1.2em;
+    background: #00AA5B !important;
+}
+
+
+
+
+@media only screen and (max-width: 30.063em) {
+	.hideonmobile {
+		display: none!important;
+	}
+
+}
+@media (max-width: 790px){
+.main_buttons{
+    height: 20px!important;
+   }
+.main_buttons .on{
+    padding: 5px!important;
+}
+.site-footer .footer-wrapper .footer-socials .shortcode_socials ul{
+    font-size: 26px;
+}
+}
+.ws-chat-mobile .ws-chat-btn-container{
+		display: none!important;
+	}
+
+/*.woocommerce .cart .quantity input.qty{*/
+		/*display: none!important;*/
+	/*}*/
+
+
+/* Код для стиля неактивной кнопки на странице товара */
+/* button.disabled, button[disabled], .button.disabled, .button[disabled]{
+		display: none!important;
+} */
+    
+.button.disabled, .button[disabled], button.disabled, button[disabled]{
+    background-color: #78BC9C;
+    cursor: auto;
+
+    /* background-color: #999999!important; */
+    border: none!important;
+
+}
+
+.woocommerce .product_infos .product_add_to_cart_button .single_add_to_cart_button{
+		width: 100%!important;
+		font-weight: 400!important;
+        font-size: 18px!important;
+        background: #00AA5B;
+}
+
+ 
+
+.ivpa_attribute.ivpa_image .ivpa_term {
+    padding: 0 !important;
+    border: none !important;
+}
+
+.ivpa_attribute.ivpa_text.ivpa_background .ivpa_term.ivpa_active.ivpa_outofstock::after {
+    background: none !important;
+}
+
+.ivpa_attribute.ivpa_image .ivpa_term.ivpa_active.ivpa_outofstock::after {
+    background: none !important;
+}
+
+.ivpa_term.ivpa_active.ivpa_clicked {
+    border: 3px solid #78BC9C !important;
+}
+
+.ivpa_attribute.ivpa_text[data-attribute="pa_razmer"] .ivpa_term.ivpa_active {
+    border: 3px solid white !important;
+}
+
+.ivpa_attribute.ivpa_text[data-attribute="pa_razmer"] .ivpa_term.ivpa_active.ivpa_outofstock {
+    border: 3px solid white !important;
+}
+
+.ivpa_attribute.ivpa_text[data-attribute="pa_razmer"] .ivpa_term.ivpa_active.ivpa_clicked {
+     border: 3px solid #78BC9C !important; 
+}
+ 
+
+
+.ivpa-content {
+    margin-top: 5px!important;
+}
+#ivpa-content .ivpa_attribute.ivpa_image .ivpa_term{
+  width: 60px!important;
+  height: 60px!important;
+  border: 1px solid #ccc!important;
+}
+
+
+#ivpa-content .ivpa_attribute.ivpa_image .ivpa_term.ivpa_clicked{
+  border: 4px solid #78BC9C!important;
+padding: 0px!important;;
+}
+#ivpa-content .ivpa_attribute.ivpa_text.ivpa_background .ivpa_term{
+  font-size: 18px!important;
+line-height: 26px!important;
+border-radius: 0px!important;
+}
+.ivpa-content .ivpa_attribute.ivpa_image .ivpa_term{
+width: 30px!important;
+  height: 30px!important;
+
+}
+.ivpa_attribute.ivpa_text.ivpa_background .ivpa_term{
+  font-size: 14px!important;
+line-height: 18px!important;
+border-radius: 0px!important;
+}
+
+.ivpa_outofstock[data-attribute="pa_tsvet"] {
+background-color: transparent !important;
+}
+
+#ivpa-content .ivpa_attribute.ivpa_image .ivpa_term.ivpa_active.ivpa_outofstock img {
+    opacity: 0.4 !important;
+}
+.woocommerce ul.products li.product:hover .product_thumbnail:not(.with_second_image) img{
+      transform: translate3d(0, 0, 0)!important;
+}
+
+.woocommerce ul.products li.product .product_thumbnail .shop_product_buttons_wrapper .shop_product_buttons .button{
+		display: none!important;
+	}
+
+.prdctfltr_filter label{
+   font-size: 130%!important;
+}
+
+.page-title{
+   margin-bottom: 0px!important;
+}
+.widget-area {
+    background: #ffffff;
+}
+
+.shop-page-category-description {
+		display: none!important;
+    }
+    
+
+    .woocommerce .shop-page-header.with-padding{
+        padding: 70px 0 0px !important;
+    }
+    
+@media only screen and (max-width: 40.063em) {
+.woocommerce .shop-page-header.with-padding{
+    padding: 70px 0 0px !important;
+}
+.page-title {
+    margin-bottom: -14px!important;
+}
+}
+
+.shop-tools-button{
+		display: none!important;
+	}
+
+.prdctfltr_filter>span{
+    font-weight: 600!important;
+    line-height: 26px;
+    margin-top: 30px!important;
+    font-size: 0.77778rem!important;
+    color: rgba(0,0,0, 0.35)!important;
+}
+
+.prdctfltr_filter prdctfltr_attributes prdctfltr_pa_tsvet prdctfltr_single prdctfltr_text prdctfltr_adoptive prdctfltr_has_selection{
+		display: none!important;
+	}
+prdctfltr_regular_title{
+		display: none!important;
+	}
+.prdctfltr_wc {
+    margin-bottom: -35px!important;
+   
+}
+
+.wrap_mW._show_1e{
+		display: none!important;
+	}
+
+#chart-button {
+    font-weight: 400!important;
+	width: 100%!important;	
+    border-radius: 0px!important;
+    text-align: center!important;
+	font-size: 18px!important;
+    }
+
+.woocommerce .product_infos .after_single_product_summary .single_product_share_wrapper{
+		display: none!important;
+	}
+
+.woocommerce .variation dd {
+    text-transform: uppercase;
+    border-width: 2px;
+    border-style: none!important;
+    border-color: #333;
+    /* border-radius: 5px; */
+    display: inline-block;
+    padding: 0 0!important;
+}
+
+.woocommerce .checkout .checkout-col-aside .payment_methods, .woocommerce #order_review .checkout-col-aside .payment_methods{
+		display: none!important;
+	}
+
+.categories_layout_default .woocommerce .shortcode_products li.category_item .category_name
+span.count{
+		display: none!important;
+	}
+.woocommerce .shortcode_products li.category_item .category_name
+span.count{
+		display: none!important;
+	}
+
+.categories_layout_default .woocommerce .shortcode_products li.category_item
+.category_name{
+    font-weight: 300!important;
+    text-transform: none!important;
+}
+
+
+
+/****************************************************************/
+/****************************************************************/
+/****************************************************************/

@@ -8,6 +8,7 @@
             <mapping deploy="/wp-content/plugins/import-export" local="$PROJECT_DIR$/import-export" web="/" />
             <mapping deploy="/wp-content/plugins/product-tag-seo" local="$PROJECT_DIR$/product-tag-seo" web="/" />
             <mapping deploy="/wp-content/themes/merchandiser-child" local="$PROJECT_DIR$/merchandiser-child" web="/" />
+            <mapping deploy="/wp-content/plugins/woocommerce-checkout-reorder" local="$PROJECT_DIR$/woocommerce-checkout-reorder" web="/" />
           </mappings>
         </serverdata>
       </paths>
