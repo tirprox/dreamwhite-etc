@@ -13,6 +13,16 @@ Domain Path: /languages
 */
 
 add_filter('woocommerce_checkout_fields','reorder_woo_fields');
+add_filter( 'woocommerce_default_address_fields' , 'reorder_default_address_fields' );
+
+function reorder_default_address_fields($fields) {
+   $fields['address_1']['priority'] = 90;
+   $fields['address_1']['placeholder'] = "Адрес: улица, номер дома, квартира и пр.";
+   $fields['postcode']['priority'] = 60;
+   $fields['postcode']['clear'] = true;
+   
+   return $fields;
+}
 
 function reorder_woo_fields($fields) {
 	$fields2['billing']['billing_first_name'] = $fields['billing']['billing_first_name'];
@@ -21,13 +31,7 @@ function reorder_woo_fields($fields) {
 	$fields2['billing']['billing_phone'] = $fields['billing']['billing_phone'];
 	
 	$fields2['billing']['billing_country'] = $fields['billing']['billing_country'];
-	$fields2['billing']['billing_postcode'] = array(
-		'label'     => __('Postcode', 'woocommerce'),
-		'required'  => true,
-		'class'     => array('form-row-last'),
-		'clear'     => false,
-		'priority' => 10
-	);
+	$fields2['billing']['billing_postcode'] = $fields['billing']['billing_postcode'];
 	//$fields2['billing']['billing_postcode'] = $fields['billing']['billing_postcode'];
 	$fields2['billing']['billing_city'] = $fields['billing']['billing_city'];
 	$fields2['billing']['billing_state'] = $fields['billing']['billing_state'];
@@ -49,24 +53,42 @@ function reorder_woo_fields($fields) {
 		'label'     => __('Email', 'woocommerce'),
 		'required'  => true,
 		'class'     => array('form-row-first'),
-		'clear'     => false
+		'clear'     => true
 	);
 	$fields2['billing']['billing_phone'] = array(
 		'label'     => __('Phone', 'woocommerce'),
 		'required'  => false,
 		'class'     => array('form-row-last'),
-		'clear'     => false
+		'clear'     => true
 	);
-	//$fields2['billing']['billing_country']['class'] = ['form-row-first'];
+	$fields2['billing']['billing_country']['class'] = ['form-row-first'];
+   $fields2['billing']['billing_country']['clear'] = true;
 	
 
-	$fields2['billing']['billing_postcode'] = array(
-		'label'     => __('Postcode', 'woocommerce'),
-		'required'  => true,
-		'class'     => array('form-row-last'),
-		'clear'     => false,
-		'priority' => 10
-	);
-	
+	$fields2['billing']['billing_postcode']['priority'] = 60;
+   $fields2['billing']['billing_postcode']['class'] = ['form-row-last'];
+   $fields2['billing']['billing_postcode']['clear'] = true;
+   
+   $fields2['billing']['billing_city']['class'] = ['form-row-first'];
+   $fields2['billing']['billing_state']['class'] = ['form-row-last'];
+   
+   $fields2['billing']['billing_city']['clear'] = true;
+   $fields2['billing']['billing_state']['clear'] = true;
+   
+   
+   $fields2['billing']['billing_address_1']['priority'] = 90;
+   $fields2['billing']['billing_address_1']['clear'] = true;
+   
+   $fields2['billing']['billing_first_name']['placeholder'] = "Имя";
+   $fields2['billing']['billing_last_name']['placeholder'] = "Фамилия";
+   $fields2['billing']['billing_email']['placeholder'] = "Email";
+   $fields2['billing']['billing_phone']['placeholder'] = "Телефон";
+   $fields2['billing']['billing_country']['placeholder'] = "Страна";
+   $fields2['billing']['billing_postcode']['placeholder'] = "Почтовый индекс";
+   $fields2['billing']['billing_city']['placeholder'] = "Город";
+   $fields2['billing']['billing_state']['placeholder'] = "Область или регион";
+   $fields2['billing']['billing_address_1']['placeholder'] = "Адрес";
+   
+   
 	return $fields2;
 }

@@ -13,6 +13,10 @@ Version: 1.0
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
 
+
+.single_variation_wrap .quantity {
+    display: none !important;
+}
 /* Assistive text */
 /*.quantity { opacity: 1; }
 .woocommerce .cart .quantity input.qty{
@@ -20,6 +24,13 @@ Version: 1.0
 }*/
 .assistive-text,
 .screen-reader-text {
+    display: none;
+}
+
+.woocommerce-billing-fields input[type="text"] {
+    margin: 0;
+}
+.woocommerce-billing-fields label {
     display: none;
 }
 /*.main-navigation .assistive-text:focus,
