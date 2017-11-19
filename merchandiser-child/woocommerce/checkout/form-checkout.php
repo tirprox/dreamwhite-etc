@@ -37,22 +37,33 @@ $get_checkout_url = apply_filters( 'woocommerce_get_checkout_url', wc_get_checko
 			<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
       <div id="customer_details">
 			<?php do_action( 'woocommerce_checkout_billing' ); ?>
-      <?php //do_action( 'woocommerce_checkout_shipping' ); ?>
       </div>
 
-<!--			<div class="col2-set" id="customer_details">-->
-<!--				<div class="col-1">-->
-<!--					--><?php //do_action( 'woocommerce_checkout_billing' ); ?>
-<!--				</div>-->
-<!---->
-<!--				<div class="col-2">-->
-<!--					--><?php //do_action( 'woocommerce_checkout_shipping' ); ?>
-<!--				</div>-->
-<!--			</div>-->
+			<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
+      
+      <div class="woocommerce-additional-fields">
+         <?php do_action( 'woocommerce_before_order_notes', $checkout ); ?>
+         
+         <?php if ( apply_filters( 'woocommerce_enable_order_notes_field', 'yes' === get_option( 'woocommerce_enable_order_comments', 'yes' ) ) ) : ?>
+            
+            <?php /*if ( ! WC()->cart->needs_shipping() || wc_ship_to_billing_address_only() ) : */?><!--
 
-			<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>			
+             <h3><?php /*_e( 'Additional information', 'woocommerce' ); */?></h3>
+            
+            --><?php /*endif; */?>
 
-		<?php endif; ?>
+           <div class="woocommerce-additional-fields__field-wrapper">
+              <?php foreach ( $checkout->get_checkout_fields( 'order' ) as $key => $field ) : ?>
+                 <?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
+              <?php endforeach; ?>
+           </div>
+         
+         <?php endif; ?>
+         
+         <?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
+      </div>
+    
+    <?php endif; ?>
 
 		</div>
 

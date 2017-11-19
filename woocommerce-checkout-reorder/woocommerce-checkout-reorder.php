@@ -25,6 +25,7 @@ function reorder_default_address_fields($fields) {
 }
 
 function reorder_woo_fields($fields) {
+ 
 	$fields2['billing']['billing_first_name'] = $fields['billing']['billing_first_name'];
 	$fields2['billing']['billing_last_name'] = $fields['billing']['billing_last_name'];
 	$fields2['billing']['billing_email'] = $fields['billing']['billing_email'];
@@ -88,6 +89,8 @@ function reorder_woo_fields($fields) {
    $fields2['billing']['billing_city']['placeholder'] = "Город";
    $fields2['billing']['billing_state']['placeholder'] = "Область или регион";
    $fields2['billing']['billing_address_1']['placeholder'] = "Адрес";
+   
+   $fields2['order']['order_comments'] = $fields['order']['order_comments'];
    
    
 	return $fields2;

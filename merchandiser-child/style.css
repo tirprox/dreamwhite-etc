@@ -33,6 +33,9 @@ Version: 1.0
 .woocommerce-billing-fields label {
     display: none;
 }
+.woocommerce-additional-fields label {
+    display: none;
+}
 /*.main-navigation .assistive-text:focus,
 .site .screen-reader-text:hover,
 .site .screen-reader-text:active,
