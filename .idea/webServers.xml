@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="8b6ebcc2-0b4b-464e-911e-210b2cca186a" name="new.dreamwhite.ru" url="http://new.dreamwhite.ru">
-        <fileTransfer host="new.dreamwhite.ru" port="21" rootFolder="/new.dreamwhite.ru">
+      <webServer id="8b6ebcc2-0b4b-464e-911e-210b2cca186a" name="dreamwhite.ru" url="http://dreamwhite.ru">
+        <fileTransfer host="dreamwhite.ru" port="21" rootFolder="/httpdocs">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

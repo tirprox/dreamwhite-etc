@@ -67,16 +67,32 @@ class Product {
       if (property_exists($product, "article")) {
          $this->article = $product->article;
       }
+	
+	   $photoFileName = $this->article . ".jpg";
+	   $photoFileName = str_replace(" ", "-", $photoFileName );
+	
+	   if (in_array($photoFileName,Tools::$imageDirList)) {
+		   $urlToEncode = $this->baseUrl
+		                  . $this->productFolderName
+		                  . "/" . $this->article
+		                  . "/" . $this->article . ".jpg";
+		
+		   //$this->productPhotoUrl = urlencode($urlToEncode);
+		   $urlToEncode = str_replace(" ", "-", $urlToEncode);
+		   $this->productPhotoUrl = $urlToEncode;
+		   $this->galleryUrls .= $urlToEncode . ",";
+		   //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
+	   }
       
-      $urlToEncode = $this->baseUrl
+      
+      /*$urlToEncode = $this->baseUrl
                      . $this->productFolderName
                      . "/" . $this->article
                      . "/" . $this->article . ".jpg";
 	
 	   //$this->productPhotoUrl = urlencode($urlToEncode);
 	   $urlToEncode = str_replace(" ", "-", $urlToEncode);
-      $this->productPhotoUrl = $urlToEncode;
-	   $this->galleryUrls .= $urlToEncode . ",";
+      $this->productPhotoUrl = $urlToEncode;$this->galleryUrls .= $urlToEncode . ",";*/
       
       $this->setAttributes();
       

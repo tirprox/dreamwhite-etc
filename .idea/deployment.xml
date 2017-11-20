@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
-      <paths name="new.dreamwhite.ru">
+      <paths name="dreamwhite.ru">
         <serverdata>
           <mappings>
             <mapping deploy="/wp-content/plugins/import-export" local="$PROJECT_DIR$/import-export" web="/" />

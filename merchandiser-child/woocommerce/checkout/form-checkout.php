@@ -56,6 +56,8 @@ $get_checkout_url = apply_filters( 'woocommerce_get_checkout_url', wc_get_checko
               <?php foreach ( $checkout->get_checkout_fields( 'order' ) as $key => $field ) : ?>
                  <?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
               <?php endforeach; ?>
+              
+             
            </div>
          
          <?php endif; ?>

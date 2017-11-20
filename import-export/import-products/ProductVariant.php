@@ -61,13 +61,33 @@ class ProductVariant {
       }
       $this->salePrice = $this->getSalePrice($variant);
       $this->parentName = $parentProduct->name;
+      
       if (property_exists($variant->product, "article")) {
          $this->article = $variant->product->article;
       }
 	   $photoFileName = $this->article . " " . $this->color .".jpg";
 	   $photoFileName = str_replace(" ", "-", $photoFileName );
-      
-      if (in_array($photoFileName,Tools::$imageDirList)) {
+	   //print($photoFileName . "<br>");
+	   foreach (Tools::$imageDirList as $image) {
+		   //print($photoFileName . " " . $image . "<br>");
+		   if ($photoFileName === $image)
+		   {
+			   $urlToEncode = $this->parentProduct->baseUrl
+			                  . $this->parentProduct->productFolderName
+			                  . "/" . $this->article
+			                  . "/" . $photoFileName;
+			   $urlToEncode = str_replace(" ", "-", $urlToEncode);
+			   $this->variantPhotoUrl = $urlToEncode;
+			
+			   if (!Tools::match($this->parentProduct->galleryUrls, $urlToEncode)) {
+				   $this->parentProduct->galleryUrls .= $urlToEncode . ",";
+			   }
+			   break;
+			   //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
+		   }
+	   }
+	   
+      /*if (in_array($photoFileName,Tools::$imageDirList)) {
          $urlToEncode = $this->parentProduct->baseUrl
             . $this->parentProduct->productFolderName
             . "/" . $this->article
@@ -75,11 +95,12 @@ class ProductVariant {
          $urlToEncode = str_replace(" ", "-", $urlToEncode);
          $this->variantPhotoUrl = $urlToEncode;
          
+         
          if (!Tools::match($this->parentProduct->galleryUrls, $urlToEncode)) {
             $this->parentProduct->galleryUrls .= $urlToEncode . ",";
          }
          //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
-         }
+         }*/
 
 	   if ($this->stock > 0) {
          if (!in_array($this->color, $this->parentProduct->colors)) {

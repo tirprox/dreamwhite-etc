@@ -13,6 +13,9 @@ Version: 1.0
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
 
+.product_meta .tagged_as {
+   display: none !important;
+}
 
 .single_variation_wrap .quantity {
     display: none !important;
