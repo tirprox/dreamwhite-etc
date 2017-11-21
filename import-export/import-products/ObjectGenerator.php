@@ -37,10 +37,12 @@ class ObjectGenerator {
    function generateObjects() {
       Connector::init();
       Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
-      /*foreach(Tools::$imageDirList as $image) {
-      	mb_convert_encoding($image, "UTF-8");
-      	//print($image . "\n" . "<br>");
-      }*/
+      foreach(Tools::$imageDirList as $image) {
+         $image = mb_convert_encoding($image, "UTF-8");
+         $image = str_replace("\0", "", $image);
+         $image = trim($image);
+
+      }
       
       $this->groups = new Groups();
       
@@ -143,7 +145,7 @@ class ObjectGenerator {
       $file = $header . $tagRewriteRules . $footer;
       file_put_contents("TagRewriteRules.php", $file);
       require_once("TagRewriteRules.php");
-      flush_rewrite_rules();
+      //flush_rewrite_rules();
    }
    
    function addVariantsToProduct($variants, $product, $stocks, $stockCodes) {
