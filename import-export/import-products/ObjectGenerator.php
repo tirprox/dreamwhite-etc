@@ -36,13 +36,26 @@ class ObjectGenerator {
    
    function generateObjects() {
       Connector::init();
+      $str1= "й";
+      $str2 = "й";
+      
       Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
-      foreach(Tools::$imageDirList as $image) {
-         $image = mb_convert_encoding($image, "UTF-8");
-         $image = str_replace("\0", "", $image);
-         $image = trim($image);
-
+      $count = count(Tools::$imageDirList);
+      for($i=0;$i<$count;$i++) {
+	      Tools::$imageDirList[$i] = str_replace("\0", "", Tools::$imageDirList[$i]);
+	      //Tools::$imageDirList[$i] = str_replace($str1, $str2, Tools::$imageDirList[$i]);
       }
+      
+   /*   foreach(Tools::$imageDirList as $image) {
+         //$image = mb_convert_encoding($image, "UTF-8");
+         $image = str_replace("\0", "", $image);
+         //$image = trim($image);
+         $image = str_replace($str1, $str2, $image); // буква й
+	      //$image = normalizer_normalize($image);
+	      //$image=utf8_decode($image);
+	      
+	      //var_dump($image);
+      }*/
       
       $this->groups = new Groups();
       
