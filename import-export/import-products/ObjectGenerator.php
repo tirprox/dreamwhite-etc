@@ -80,6 +80,7 @@ class ObjectGenerator {
             $newProduct = new Product($product, $productStock, $group->name);
             
             $variantRequestUrl = $this->variantsUrl . $newProduct->id;
+            
             $promise = $client->requestAsync('GET', $variantRequestUrl,
                [
                   'auth'           => [Connector::$username, Connector::$password],
@@ -143,7 +144,7 @@ class ObjectGenerator {
       $file = $header . $tagRewriteRules . $footer;
       file_put_contents("TagRewriteRules.php", $file);
       require_once("TagRewriteRules.php");
-      flush_rewrite_rules();
+      //flush_rewrite_rules();
    }
    
    function addVariantsToProduct($variants, $product, $stocks, $stockCodes) {

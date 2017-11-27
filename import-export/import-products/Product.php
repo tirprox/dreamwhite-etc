@@ -45,6 +45,7 @@ class Product {
 	
 	var $colors = [], $sizes = "";
 	var $tags = "";
+	var $gender;
    
    
    function __construct($product, $stock, $folderName) {
@@ -76,27 +77,17 @@ class Product {
 		                  . $this->productFolderName
 		                  . "/" . $this->article
 		                  . "/" . $this->article . ".jpg";
-		
-		   //$this->productPhotoUrl = urlencode($urlToEncode);
 		   $urlToEncode = str_replace(" ", "-", $urlToEncode);
 		   $this->productPhotoUrl = $urlToEncode;
 		   $this->galleryUrls .= $urlToEncode . ",";
-		   //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
 	   }
       
-      
-      /*$urlToEncode = $this->baseUrl
-                     . $this->productFolderName
-                     . "/" . $this->article
-                     . "/" . $this->article . ".jpg";
-	
-	   //$this->productPhotoUrl = urlencode($urlToEncode);
-	   $urlToEncode = str_replace(" ", "-", $urlToEncode);
-      $this->productPhotoUrl = $urlToEncode;$this->galleryUrls .= $urlToEncode . ",";*/
-      
       $this->setAttributes();
+	   $this->gender = Tools::match($this->productFolderName, "женские") ? "Женские" : "Мужские";
       
-      
+      if (Tools::match($this->uteplitel, "пух")) {
+      	$this->productFolderName .= "," . $this->gender . " пуховики";
+      }
       
       Log::d("\n$this->name\n");
    }
