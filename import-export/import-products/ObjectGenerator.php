@@ -37,10 +37,12 @@ class ObjectGenerator {
    function generateObjects() {
       Connector::init();
       Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
-      /*foreach(Tools::$imageDirList as $image) {
-      	mb_convert_encoding($image, "UTF-8");
-      	//print($image . "\n" . "<br>");
-      }*/
+      foreach(Tools::$imageDirList as $image) {
+         $image = mb_convert_encoding($image, "UTF-8");
+         $image = str_replace("\0", "", $image);
+         $image = trim($image);
+
+      }
       
       $this->groups = new Groups();
       

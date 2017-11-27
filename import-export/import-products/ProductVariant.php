@@ -65,8 +65,13 @@ class ProductVariant {
       if (property_exists($variant->product, "article")) {
          $this->article = $variant->product->article;
       }
+      
 	   $photoFileName = $this->article . " " . $this->color .".jpg";
+      $photoFileName = mb_convert_encoding($photoFileName, "UTF-8");
 	   $photoFileName = str_replace(" ", "-", $photoFileName );
+      $photoFileName = str_replace("\0", "", $photoFileName);
+      $photoFileName = trim($photoFileName);
+      //var_dump($photoFileName);
 	   //print($photoFileName . "<br>");
 	   foreach (Tools::$imageDirList as $image) {
 		   //print($photoFileName . " " . $image . "<br>");
