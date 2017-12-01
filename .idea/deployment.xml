@@ -9,6 +9,7 @@
             <mapping deploy="/wp-content/plugins/product-tag-seo" local="$PROJECT_DIR$/product-tag-seo" web="/" />
             <mapping deploy="/wp-content/themes/merchandiser-child" local="$PROJECT_DIR$/merchandiser-child" web="/" />
             <mapping deploy="/wp-content/plugins/woocommerce-checkout-reorder" local="$PROJECT_DIR$/woocommerce-checkout-reorder" web="/" />
+            <mapping deploy="/js" local="$PROJECT_DIR$/js" web="/" />
           </mappings>
         </serverdata>
       </paths>
