@@ -6,6 +6,7 @@ include("Product.php");
 include("ProductVariant.php");
 include("Group.php");
 include("Groups.php");
+include("StockManager.php");
 include("WooCommerceImporter.php");
 
 include "CSVTagFactory.php";
@@ -36,26 +37,12 @@ class ObjectGenerator {
    
    function generateObjects() {
       Connector::init();
-      $str1= "й";
-      $str2 = "й";
       
       Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
       $count = count(Tools::$imageDirList);
       for($i=0;$i<$count;$i++) {
 	      Tools::$imageDirList[$i] = str_replace("\0", "", Tools::$imageDirList[$i]);
-	      //Tools::$imageDirList[$i] = str_replace($str1, $str2, Tools::$imageDirList[$i]);
       }
-      
-   /*   foreach(Tools::$imageDirList as $image) {
-         //$image = mb_convert_encoding($image, "UTF-8");
-         $image = str_replace("\0", "", $image);
-         //$image = trim($image);
-         $image = str_replace($str1, $str2, $image); // буква й
-	      //$image = normalizer_normalize($image);
-	      //$image=utf8_decode($image);
-	      
-	      //var_dump($image);
-      }*/
       
       $this->groups = new Groups();
       
@@ -131,7 +118,7 @@ class ObjectGenerator {
       }
       Promise\settle($promises)->wait();
       $this->setTags();
-      
+      $this->updateStock();
    }
    
    function setTags() {
@@ -160,6 +147,19 @@ class ObjectGenerator {
       file_put_contents("TagRewriteRules.php", $file);
       require_once("TagRewriteRules.php");
       //flush_rewrite_rules();
+   }
+   
+   function updateStock() {
+      $stockManager = new StockManager();
+      foreach ($this->groups->groupArray as $group) {
+         foreach ($group->products as $product) {
+            foreach ($product->variants as $variant) {
+               $stockManager->update_stock($variant->code, $variant->stock);
+            }
+            $stockManager->update_stock($product->code, $product->stock);
+         }
+      }
+      $stockManager->update_stock_status();
    }
    
    function addVariantsToProduct($variants, $product, $stocks, $stockCodes) {
