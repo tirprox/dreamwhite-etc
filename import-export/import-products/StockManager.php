@@ -10,6 +10,7 @@ class StockManager {
    var $wpdb;
    var $postIdSkuMap = [];
    var $postmeta;
+   var $queriesNotExecuted = 0;
    
    function __construct() {
       define( 'SHORTINIT', true );
@@ -45,10 +46,16 @@ class StockManager {
    }
    
    function update_stock($sku, $stock){
-      $sql = "UPDATE " . $this->postmeta .
-         " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
-      //Log::d(var_dump($this->postIdSkuMap[$sku]));
-      //Log::d(var_dump($sql));
-      $this->wpdb->query( $sql );
+      if (!empty($this->postIdSkuMap[$sku])){
+         $sql = "UPDATE " . $this->postmeta .
+            " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
+         //Log::d(var_dump($this->postIdSkuMap[$sku]));
+         //Log::d(var_dump($sql));
+         $this->wpdb->query( $sql );
+      }
+      else {
+         $this->queriesNotExecuted++;
+         Log::d("SKU miss. Total miss count: $this->queriesNotExecuted");
+      }
    }
 }
