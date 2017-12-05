@@ -31,7 +31,7 @@ class XMLReportGenerator {
       $xmlProduct = self::addChild('product', self::$root);
    
       self::addNode('name', $product->name, $xmlProduct);
-      self::addNode('group', $product->productFolderName, $xmlProduct);
+      self::addNode('group', $product->categories, $xmlProduct);
       self::addNode('sku', $product->code, $xmlProduct);
       self::addNode('article', $product->article, $xmlProduct);
       self::addNode('uom', $product->uom, $xmlProduct);

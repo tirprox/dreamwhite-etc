@@ -3,6 +3,7 @@
 class Product {
    var $product;
    var $productFolderName;
+   var $categories;
    var $name;
    var $id;
    var $wc_id;
@@ -51,6 +52,7 @@ class Product {
    function __construct($product, $stock, $folderName) {
       $this->product = $product;
       $this->productFolderName = $folderName;
+      $this->categories = $folderName;
       $this->id = $product->id;
       $this->name = $product->name;
       $this->stock = $stock;
@@ -86,7 +88,8 @@ class Product {
 	   $this->gender = Tools::match($this->productFolderName, "женские") ? "Женские" : "Мужские";
       
       if (Tools::match($this->uteplitel, "пух")) {
-      	$this->productFolderName .= "," . $this->gender . " пуховики";
+         $this->categories .= "," . $this->gender . " пуховики";
+      	//$this->productFolderName .= "," . $this->gender . " пуховики";
       }
       
       Log::d("\n$this->name\n");
@@ -110,13 +113,48 @@ class Product {
          $this->getAttributesString() .
          "\n";
    }
+   function getAttributeValue($attr) {
+      $value = "";
+      if (is_object($attr)) {
+         if (is_bool($attr->value)) {
+            $value = $attr->value ? "Есть" : "Нет";
+         }
+         else if (is_object($attr->value)) {
+            $value = $attr->value->name;
+         }
+      }
+      return $value;
+   }
    
    function setAttributes() {
       if ($this->product != null) {
          if (property_exists($this->product, "attributes")) {
             $attrs = $this->product->attributes;
             
-            if (is_object($attrs[ 0 ]->value)) {
+            $finalAttrs = [];
+            $attrSize = count($attrs);
+            for ($i = 0; $i < 14; $i++) {
+               $finalAttrs[$i] = isset($attrs[$i]) ? $this->getAttributeValue($attrs[ $i ]) : "";
+            }
+            
+            
+            $this->material = $finalAttrs[0];
+            $this->uteplitel = $finalAttrs[1];
+            $this->podkladka = $finalAttrs[2];
+            $this->siluet = $finalAttrs[3];
+            $this->dlina = $finalAttrs[4];
+            $this->rukav = $finalAttrs[5];
+            $this->dlina_rukava = $finalAttrs[6];
+            $this->zastezhka = $finalAttrs[7];
+            // need to convert boolean
+            $this->kapushon = $finalAttrs[8];
+            $this->vorotnik = $finalAttrs[9];
+            $this->poyas = $finalAttrs[10];
+            $this->karmany = $finalAttrs[11];
+            $this->koketka = $finalAttrs[12];
+            $this->uhod = $finalAttrs[13];
+            
+            /*if (is_object($attrs[ 0 ]->value)) {
                $this->material = $attrs[ 0 ]->value->name;
                $this->uteplitel = $attrs[ 1 ]->value->name;
                $this->podkladka = $attrs[ 2 ]->value->name;
@@ -132,7 +170,7 @@ class Product {
                $this->karmany = $attrs[ 11 ]->value ? "Есть" : "Нет";
                $this->koketka = $attrs[ 12 ]->value->name;
                $this->uhod = $attrs[ 13 ]->value->name;
-            }
+            }*/
             
          }
       }

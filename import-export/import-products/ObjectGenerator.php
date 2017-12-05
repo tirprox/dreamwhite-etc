@@ -36,6 +36,7 @@ class ObjectGenerator {
    
    
    function generateObjects() {
+      Timers::start("groups");
       Connector::init();
       
       Tools::$imageDirList = json_decode(file_get_contents($this->imageDirPath));
@@ -49,32 +50,57 @@ class ObjectGenerator {
       $this->groups->getGroupsFromConfig();
       $this->groups->getGroupsFromServer(Connector::$baseUrl, Connector::$context);
       $this->groups->getGroupArray();
-   
+      Timers::stop("groups");
       $client = new Client();
       $promises = [];
+   
+      Timers::start("group stocks");
+      foreach ($this->groups->groupArray as $group) {
+         $requestUrl = $this->stocksUrl . $this->storeId . "&productFolder.id=" . $group->id;
+         
+         $promise = Connector::requestAsync($requestUrl);
+         $promise->then(
+            function (ResponseInterface $res) use ($group) {
+               $stocksForGroup = json_decode($res->getBody());
+               while (property_exists($stocksForGroup->meta, "nextHref")) {
+                  $tempObject = Connector::getRemoteObject2($stocksForGroup->meta->nextHref);
+                  //var_dump($tempObject);
+                  //$tempObject = json_decode(file_get_contents($stocksForGroup->meta->nextHref, false, Connector::$context));
+                  $stocksForGroup->meta = $tempObject->meta;
+                  $stocksForGroup->rows = array_merge($stocksForGroup->rows, $tempObject->rows);
+               }
+               
+               $group->stocks = $stocksForGroup;
+               $stockCodes = [];
+               foreach ($stocksForGroup->rows as $row) {
+                  $stockCodes[] = $row->code;
+               }
+               if (Log::isLogging()) {
+                  Log::d("\nStocks: \n\n");
+                  foreach ($stocksForGroup->rows as $thing) {
+                     Log::d("$thing->name: " . $thing->meta->type . ", Stock: $thing->stock\n");
+                  }
+               }
+               $group->stockCodes = $stockCodes;
+            },
+            function (RequestException $e) {
+               echo $e->getMessage() . "\n";
+               echo $e->getRequest()->getMethod();
+            }
+         );
+         Connector::addPromise($promise);
+      }
+      
+      Connector::completeRequests();
+      Timers::stop("group stocks");
       
       foreach ($this->groups->groupArray as $group) {
-         //Getting stocks
-         $requestUrl = $this->stocksUrl . $this->storeId . "&productFolder.id=" . $group->id;
-         $stocks = Connector::getRemoteObject($requestUrl);
-         
-         //Getting stock indexes for later stock lookup by code
-         $stockCodes = [];
-         foreach ($stocks->rows as $row) {
-            $stockCodes[] = $row->code;
-         }
-         
-         if (Log::isLogging()) {
-            Log::d("\nStocks: \n\n");
-            foreach ($stocks->rows as $thing) {
-               Log::d("$thing->name: " . $thing->meta->type . ", Stock: $thing->stock\n");
-            }
-         }
+         $stockCodes = $group->stockCodes;
+         $stocks = $group->stocks;
          
          //Getting products
          $productRequestUrl = $this->productsUrl . urlencode($group->name);
          $products = Connector::getRemoteObject($productRequestUrl);
-         
          
          foreach ($products->rows as $product) {
             $productInStocks = array_search($product->code, $stockCodes);
@@ -99,6 +125,7 @@ class ObjectGenerator {
                function (ResponseInterface $res) use ($newProduct, $stocks, $stockCodes) {
                   $variants = json_decode($res->getBody());
                   while (property_exists($variants->meta, "nextHref")) {
+                     Log::d("Retrieving variants synchronously");
                      $tempObject = json_decode(file_get_contents($variants->meta->nextHref, false, Connector::$context));
                      $variants->meta = $tempObject->meta;
                      $variants->rows = array_merge($variants->rows, $tempObject->rows);
@@ -117,8 +144,12 @@ class ObjectGenerator {
          
       }
       Promise\settle($promises)->wait();
+      Timers::start("tags");
       $this->setTags();
-      $this->updateStock();
+      Timers::stop("tags");
+      Timers::start("sql query stock updates");
+      //$this->updateStock();
+      Timers::stop("sql query stock updates");
    }
    
    function setTags() {

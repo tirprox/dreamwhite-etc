@@ -1,14 +1,16 @@
 <?php
 include("ObjectGenerator.php");
-include("Timer.php");
 include("Log.php");
 
-Log::enable();
+include(dirname(__DIR__)."/Timers.php");
+
+//Log::enable();
 ini_set("memory_limit", "2048M");
-Timer::start();
+Timers::start("overall");
 $generator = new ObjectGenerator();
 $generator->generateObjects();
 $generator->createCSVReport();
 $generator->createXMLReport();
+Timers::stop("overall");
 
-Timer::stop();
+

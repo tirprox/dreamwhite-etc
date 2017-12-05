@@ -45,11 +45,6 @@ class StockManager {
    }
    
    function update_stock($sku, $stock){
-      /*$sql = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT post_id FROM " . $this->wpdb->postmeta .
-      " WHERE meta_key = '_sku' AND meta_value = " . $sku .
-      ") id SET stock.meta_value = " . $stock . " WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock';";*/
-      $table =
-      
       $sql = "UPDATE " . $this->postmeta .
          " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
       //Log::d(var_dump($this->postIdSkuMap[$sku]));
