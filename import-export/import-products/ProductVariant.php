@@ -1,8 +1,7 @@
 <?php
 
 class ProductVariant {
-	var $variant;
-	var $parentProduct;
+	var $variant, $parentProduct;
 	
 	var $parentProductCode;
 	var $parentName = "";
@@ -67,23 +66,17 @@ class ProductVariant {
 		}
 		
 		$photoFileName = $this->article . "-" . $this->color . ".jpg";
-		//$photoFileName = mb_convert_encoding( $photoFileName, "UTF-8" );
 		$photoFileName = str_replace( " ", "-", $photoFileName );
 		$photoFileName = str_replace( "\0", "", $photoFileName );
 		$photoFileName = trim( $photoFileName );
 		$str1          = "й";
 		$str2          = "й";
 		$photoFileName = str_replace( $str1, $str2, $photoFileName ); // буква й
-		//$photoFileName = normalizer_normalize( $photoFileName );
 		
-		//var_dump($photoFileName);
 		foreach ( Tools::$imageDirList as $image ) {
-			//var_dump( $image );
 			$imgFixed = str_replace($str1, $str2, $image); // перед сравнением конвертим букву й
 			if ( $imgFixed === $photoFileName ) {
 				
-				
-				//print ( "фото найдено " . $photoFileName . "\n" );
 				$urlToEncode           = $this->parentProduct->baseUrl
 				                         . $this->parentProduct->productFolderName
 				                         . "/" . $this->article
@@ -95,41 +88,15 @@ class ProductVariant {
 					$this->parentProduct->galleryUrls .= $urlToEncode . ",";
 				}
 				break;
-				//$this->parentProduct->galleryUrls .= $urlToEncode . ",";
 			}
 		}
-		
-		/*if (in_array($photoFileName,Tools::$imageDirList)) {
-		   $urlToEncode = $this->parentProduct->baseUrl
-			  . $this->parentProduct->productFolderName
-			  . "/" . $this->article
-			  . "/" . $photoFileName;
-		   $urlToEncode = str_replace(" ", "-", $urlToEncode);
-		   $this->variantPhotoUrl = $urlToEncode;
-		   
-		   
-		   if (!Tools::match($this->parentProduct->galleryUrls, $urlToEncode)) {
-			  $this->parentProduct->galleryUrls .= $urlToEncode . ",";
-		   }
-		   //$this->parentProduct->galleryUrls .= $urlToEncode . ",";
-		   }*/
+
 		
 		if ( $this->stock > 0 ) {
 			if ( ! in_array( $this->color, $this->parentProduct->colors ) ) {
 				$this->parentProduct->colors[] = $this->color;
 			}
-			
-			/*foreach($this->parentProduct->colors as $color) {
-			   if (!Tools::match($color, $this->color)) {
-				  $this->parentProduct->colors[] = $this->color;
-			   }
-			}*/
-			
-			/*	   	if (!Tools::match($this->parentProduct->colors, $this->color)) {
-						   $this->parentProduct->colors .= $this->color . ",";
-					   }
-					   */
-			
+
 			if ( ! Tools::match( $this->parentProduct->sizes, $this->size ) ) {
 				$this->parentProduct->sizes .= $this->size . ",";
 			}
@@ -137,7 +104,6 @@ class ProductVariant {
 		}
 		
 		Log::d( "$this->name (В наличии $this->stock) \n" );
-		//print("$this->name (В наличии $this->stock) \n");
 	}
 	
 	function getCsvRow() {

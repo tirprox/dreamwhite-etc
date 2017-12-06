@@ -31,11 +31,14 @@ class XMLReportGenerator {
       $xmlProduct = self::addChild('product', self::$root);
    
       self::addNode('name', $product->name, $xmlProduct);
-      self::addNode('group', $product->productFolderName, $xmlProduct);
+      self::addNode('group', $product->categories, $xmlProduct);
       self::addNode('sku', $product->code, $xmlProduct);
       self::addNode('article', $product->article, $xmlProduct);
       self::addNode('uom', $product->uom, $xmlProduct);
       self::addNode('stock', $product->stock, $xmlProduct);
+      self::addNode('availability',
+         $product->stock > 0 ? "instock" : "outofstock",
+         $xmlProduct);
       self::addNode('price', $product->salePrice, $xmlProduct);
       self::addNode('description', $product->description, $xmlProduct);
       
@@ -69,6 +72,9 @@ class XMLReportGenerator {
          //self::addNode('article', $variant->article, $productNode);
          //self::addNode('uom', $variant->uom, $productNode);
          self::addNode('stock', $variant->stock, $xmlVariant);
+         self::addNode('availability',
+            $variant->stock > 0 ? "instock" : "outofstock",
+            $xmlVariant);
          self::addNode('price', $variant->salePrice, $xmlVariant);
    
          self::addNode('description', $variant->description, $xmlVariant);
@@ -81,7 +87,7 @@ class XMLReportGenerator {
       return $xmlProduct;
    }
    
-   static function addVariantToProductNode($variant, $productNode) {
+   /*static function addVariantToProductNode($variant, $productNode) {
       $xmlVariant = self::addChild('variant', $productNode);
       self::addNode('name', $variant->name, $xmlVariant);
       self::addNode('sku', $variant->code, $xmlVariant);
@@ -89,6 +95,10 @@ class XMLReportGenerator {
       //self::addNode('uom', $variant->uom, $productNode);
       
       self::addNode('stock', $variant->stock, $xmlVariant);
+      
+      self::addNode('available',
+         $variant->stock > 0 ? "instock" : "outofstock",
+         $xmlVariant);
       self::addNode('price', $variant->salePrice, $xmlVariant);
       
       self::addNode('description', $variant->description, $xmlVariant);
@@ -97,7 +107,7 @@ class XMLReportGenerator {
       self::addNode('size', $variant->size, $xmlVariant);
       return $productNode;
    
-   }
+   }*/
    
    static function addNode($name, $value, $parent) {
       $node = self::addChild($name, $parent);

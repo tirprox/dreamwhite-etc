@@ -6,6 +6,8 @@ class Group {
     var $id;
     
     var $products = [];
+    var $stockCodes = [];
+    var $stocks = [];
     
     function __construct($url, $name, $id) {
        $this->url = $url;
