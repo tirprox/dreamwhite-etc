@@ -123,12 +123,21 @@ class CSVTagFactory {
    
    function compareAttrs($tagAttrArray, $productAttr) {
       if ($tagAttrArray[0]->attribute == "") return true;
+      $matchCount=0;
       $match = false;
       foreach ($tagAttrArray as $attr){
+      	//comparing tag strings to attributes, if string match is found and not inverted set match true and return match;
+	      //string match found
          if (Tools::match($productAttr, $attr->attribute)) {
             $match = $attr->isInverted ? false : true;
          }
-         else $match =  $attr->isInverted ? true : false;
+         //string match not found
+         else {
+         	if ($attr->isInverted)
+	         $matchCount++;
+         }
+         if ($matchCount === count($tagAttrArray)) $match = true;
+         //else $match =  $attr->isInverted ? true : false;
          if ($match) return true;
       }
       return $match;

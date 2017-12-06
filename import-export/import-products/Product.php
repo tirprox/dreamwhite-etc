@@ -137,7 +137,6 @@ class Product {
                $finalAttrs[$i] = isset($attrs[$i]) ? $this->getAttributeValue($attrs[ $i ]) : "";
             }
             
-            
             $this->material = $finalAttrs[0];
             $this->uteplitel = $finalAttrs[1];
             $this->podkladka = $finalAttrs[2];
@@ -153,24 +152,6 @@ class Product {
             $this->karmany = $finalAttrs[11];
             $this->koketka = $finalAttrs[12];
             $this->uhod = $finalAttrs[13];
-            
-            /*if (is_object($attrs[ 0 ]->value)) {
-               $this->material = $attrs[ 0 ]->value->name;
-               $this->uteplitel = $attrs[ 1 ]->value->name;
-               $this->podkladka = $attrs[ 2 ]->value->name;
-               $this->siluet = $attrs[ 3 ]->value->name;
-               $this->dlina = $attrs[ 4 ]->value->name;
-               $this->rukav = $attrs[ 5 ]->value->name;
-               $this->dlina_rukava = $attrs[ 6 ]->value->name;
-               $this->zastezhka = $attrs[ 7 ]->value->name;
-               // need to convert boolean
-               $this->kapushon = $attrs[ 8 ]->value ? "Есть" : "Нет";
-               $this->vorotnik = $attrs[ 9 ]->value->name;
-               $this->poyas = $attrs[ 10 ]->value ? "Есть" : "Нет";
-               $this->karmany = $attrs[ 11 ]->value ? "Есть" : "Нет";
-               $this->koketka = $attrs[ 12 ]->value->name;
-               $this->uhod = $attrs[ 13 ]->value->name;
-            }*/
             
          }
       }

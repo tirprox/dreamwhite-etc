@@ -4,7 +4,7 @@ include("Log.php");
 
 include(dirname(__DIR__)."/Timers.php");
 
-//Log::enable();
+Log::enable();
 ini_set("memory_limit", "2048M");
 Timers::start("overall");
 $generator = new ObjectGenerator();

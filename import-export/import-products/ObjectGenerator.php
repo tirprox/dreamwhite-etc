@@ -26,6 +26,7 @@ class ObjectGenerator {
    public $testUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?store.id=baedb9ed-de2a-11e6-7a34-5acf00087a3f&productFolder.id=cc91a970-07e7-11e6-7a69-93a700454ab8&stockMode=all";
    public $assortmentUrl = "https://online.moysklad.ru/api/remap/1.1/entity/assortment?limit=100&filter=productFolder=https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8";
    public $productsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/product/?limit=100&expand=uom,supplier&filter=pathName=";
+	//public $productsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/product/?limit=100&expand=uom,supplier&productFolder=";
    public $variantsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/variant?limit=100&expand=product.uom,product.supplier&filter=productid=";
    public $stocksUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?stockMode=all&limit=1000&store.id=";
    
@@ -56,8 +57,8 @@ class ObjectGenerator {
    
       Timers::start("group stocks");
       foreach ($this->groups->groupArray as $group) {
-         $requestUrl = $this->stocksUrl . $this->storeId . "&productFolder.id=" . $group->id;
-         
+         $requestUrl = $this->stocksUrl . $group->storeId . "&productFolder.id=" . $group->id;
+         Log::d($requestUrl);
          $promise = Connector::requestAsync($requestUrl);
          $promise->then(
             function (ResponseInterface $res) use ($group) {
@@ -99,7 +100,10 @@ class ObjectGenerator {
          $stocks = $group->stocks;
          
          //Getting products
-         $productRequestUrl = $this->productsUrl . urlencode($group->name);
+         $productRequestUrl = $this->productsUrl . urlencode($group->pathName);
+	      //$productRequestUrl = $this->productsUrl . "\"" . $group->url . "\"";
+	      //$productRequestUrl = $this->productsUrl . $group->id;
+         Log::d($productRequestUrl);
          $products = Connector::getRemoteObject($productRequestUrl);
          
          foreach ($products->rows as $product) {
