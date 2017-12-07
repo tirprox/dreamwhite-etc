@@ -152,7 +152,7 @@ class ObjectGenerator {
       $this->setTags();
       Timers::stop("tags");
       Timers::start("sql query stock updates");
-      //$this->updateStock();
+      $this->updateStock();
       Timers::stop("sql query stock updates");
    }
    
