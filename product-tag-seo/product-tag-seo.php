@@ -14,7 +14,6 @@ Domain Path: /languages
 
 //доп описание категорий
 add_action( 'product_cat_edit_form_fields', 'wpm_taxonomy_edit_cat_meta_field', 10, 2 );
-
 function wpm_taxonomy_edit_cat_meta_field( $term ) {
 	$t_id      = $term->term_id;
 	$term_meta = get_option( "taxonomy_$t_id" );
@@ -83,13 +82,14 @@ function wpm_taxonomy_edit_tag_meta_field( $term ) {
 	<?php
 }
 
-add_action( 'product_cat_edit_form_fields', 'wpm_taxonomy_edit_cat_title', 10, 2 );
-function wpm_taxonomy_edit_cat_title( $term ) {
+add_action( 'product_cat_edit_form_fields', 'wpm_taxonomy_edit_custom_title', 1, 2 );
+add_action( 'product_tag_edit_form_fields', 'wpm_taxonomy_edit_custom_title', 1, 2 );
+function wpm_taxonomy_edit_custom_title( $term ) {
 	$t_id      = $term->term_id;
 	$term_meta = get_option( "taxonomy_$t_id" );
-	$content   = $term_meta[ 'custom_cat_title' ] ? wp_kses_post( $term_meta[ 'custom_cat_title' ] ) : '';
+	$content   = $term_meta[ 'custom_title' ] ? wp_kses_post( $term_meta[ 'custom_title' ] ) : $term->name;
 	$settings  = [
-		'textarea_name' => 'term_meta[custom_cat_title]',
+		'textarea_name' => 'term_meta[custom_title]',
 		'textarea_rows' => 1,
 		'teeny'         => 0,
 		'dfw'           => 0,
@@ -99,36 +99,48 @@ function wpm_taxonomy_edit_cat_title( $term ) {
 	];
 	?>
   <tr class="form-field">
-    <th scope="row" valign="top"><label for="term_meta[custom_cat_title]">Свое название категории</label></th>
+    <th scope="row" valign="top"><label for="term_meta[custom_title]">Свое название категории</label></th>
     <td>
-		<?php wp_editor( $content, 'product_custom_cat_title', $settings ); ?>
+		<?php wp_editor( $content, 'product_custom_title', $settings ); ?>
     </td>
   </tr>
 	<?php
 }
 
-add_action( 'woocommerce_before_shop_loop', 'wpm_product_tag_archive_add_custom_shortcode' );
 
-function wpm_product_tag_archive_add_custom_shortcode() {
+
+add_filter( 'single_term_title', 'custom_term_title' );
+function custom_term_title( $term_name ){
+	$term = get_queried_object(); // данные элемента текущей таксономии
+  $t_id = $term->term_id;
+	$term_meta = get_option( "taxonomy_$t_id" );
+	return isset($term_meta[ 'custom_title' ]) ? $term_meta[ 'custom_title' ] : $term_name;
+}
+
+
+/*add_action( 'woocommerce_before_shop_loop', 'wpm_product_cat_set_custom_title' );
+
+function wpm_product_cat_set_custom_title() {
 	$t_id              = get_queried_object()->term_id;
 	$term_meta         = get_option( "taxonomy_$t_id" );
 	$term_meta_content = $term_meta[ 'custom_cat_title' ];
 	if ( $term_meta_content != '' ) {
 		echo do_shortcode( $term_meta_content );
 	}
-}
+}*/
 
 add_action( 'edited_product_tag', 'save_taxonomy_custom_meta', 10, 2 );
 add_action( 'create_product_tag', 'save_taxonomy_custom_meta', 10, 2 );
 
+
+
+// The most important part. Here we get all the colors from our products and creating the rewrite rules for the tags that use colors for filtering
 include( dirname( __DIR__ ) . "/import-export/import-products/TagRewriteRules.php" );
 function custom_rewrite_rules() {
 	$colors = TagRewriteRules::$rules;
 	foreach ( $colors as $cat => $color ) {
 		add_rewrite_rule( '^product-tag/' . $cat . "$", 'index.php?product_tag=' . $cat . '&pa_tsvet=' . $color, 'top' );
 	}
-	add_rewrite_rule( "^(.*)(.*zhenskie-palto)(.*bolotnyj-146106)$", "/product-tag/zhenskie-palto-bolotnogo-tsveta/", "top" );
-	
+	//add_rewrite_rule( "^(.*)(.*zhenskie-palto)(.*bolotnyj-146106)$", "/product-tag/zhenskie-palto-bolotnogo-tsveta/", "top" );
 }
-
 add_action( 'init', 'custom_rewrite_rules', 10, 0 );
