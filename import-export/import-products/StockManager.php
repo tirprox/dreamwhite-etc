@@ -51,9 +51,11 @@ class StockManager {
          " WHERE meta_key = '_stock' AND meta_value < 1 ) id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
       $sql2 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
          " WHERE meta_key = '_stock' AND meta_value > 0 ) id SET stock.meta_value = 'instock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
-      //Log::d(var_dump($sql));
+      $sql3 = "UPDATE " . $this->wpdb->postmeta . " SET " . $this->wpdb->postmeta . ".meta_value = 'yes' WHERE " . $this->wpdb->postmeta . ".meta_key = '_manage_stock';";
+
       $this->wpdb->query( $sql1 );
       $this->wpdb->query( $sql2 );
+      $this->wpdb->query( $sql3 );
    }
    
    function update_stock($sku, $stock){
