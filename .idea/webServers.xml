@@ -3,11 +3,11 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="8b6ebcc2-0b4b-464e-911e-210b2cca186a" name="dreamwhite.ru" url="http://dreamwhite.ru">
-        <fileTransfer host="dreamwhite.ru" port="21" rootFolder="/httpdocs">
+        <fileTransfer host="dreamwhite.ru" port="22" rootFolder="/var/www/vhosts/dreamwhite.ru/dreamwhite.ru" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
-          <option name="port" value="21" />
+          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>

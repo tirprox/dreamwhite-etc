@@ -67,7 +67,7 @@ class StockManager {
         }
         else {
 	        $this->queriesNotExecuted++;
-	        //Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted");
+	        Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted");
         }
       }
       else {

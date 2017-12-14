@@ -12,12 +12,13 @@ class Connector {
    
    var $limit = 1000;
    var $offset = 0;
-   public static $client, $promises;
+   public static $client, $promises, $pool;
    
    public static $baseUrl = "https://online.moysklad.ru/api/remap/1.1";
    public static $username = Auth::login;
    public static $password = Auth::password;
    public static $context;
+   
    
    const HEADERS = [
       'auth'           => [ Auth::login, Auth::password ],
@@ -63,6 +64,53 @@ class Connector {
       $response = self::$client->request('GET', $url);
       return json_decode($response->getBody());
    }
+   
+   public static function getRemoteObjectAsync($url) {
+      $promise = Connector::requestAsync($url);
+      $promise->then(
+         function (ResponseInterface $res) {
+            $stocksForGroup = json_decode($res->getBody());
+            
+         },
+         function (RequestException $e) {
+            echo $e->getMessage() . "\n";
+            echo $e->getRequest()->getMethod();
+         }
+      );
+      Connector::addPromise($promise);
+   }
+   
+   public static function getInitialRemoteObjectAsync($url) {
+      $promise = Connector::requestAsync($url);
+   
+      $url_components = parse_url($url);
+      
+      parse_str($url_components['query'], $query);
+      $promise->then(
+         function (ResponseInterface $res) use ($query, $url_components){
+            $response = json_decode($res->getBody());
+            $size = $response->meta->size;
+            $limit = $response->meta->limit;
+            if ($size > $limit) {
+               $iterations = intdiv($size,$limit) + 1;
+               for ($i = 1; $i < $iterations; $i++) {
+                  $query['offset'] = $i * $limit;
+                  $url_components['query'] = http_build_query($query);
+                  $offsetUrl = http_build_url($url_components);
+                  
+                  self::getRemoteObjectAsync($offsetUrl);
+               }
+            }
+         
+         },
+         function (RequestException $e) {
+            echo $e->getMessage() . "\n";
+            echo $e->getRequest()->getMethod();
+         }
+      );
+      Connector::addPromise($promise);
+   }
+   
    
    public static function getRemoteObject2($url) {
       $object = self::getObjectSync($url);

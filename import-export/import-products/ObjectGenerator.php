@@ -101,6 +101,8 @@ class ObjectGenerator {
       
       Connector::completeRequests();
       Timers::stop("group stocks");
+   
+      $requests = [];
       
       foreach ($this->groups->groupArray as $group) {
          $stockCodes = $group->stockCodes;
@@ -109,7 +111,7 @@ class ObjectGenerator {
          //Getting products
          $productRequestUrl = $this->productsUrl . urlencode($group->pathName);
          Log::d($productRequestUrl);
-         $products = Connector::getRemoteObject($productRequestUrl);
+         $products = Connector::getRemoteObject2($productRequestUrl);
          
          foreach ($products->rows as $product) {
             $productInStocks = array_search($product->code, $stockCodes);
@@ -117,16 +119,9 @@ class ObjectGenerator {
             $newProduct = new Product($product, $productStock, $group->name);
             $variantRequestUrl = $this->variantsUrl . $newProduct->id;
             
-            $promise = $client->requestAsync('GET', $variantRequestUrl,
-               [
-                  'auth'           => [Connector::$username, Connector::$password],
-                  'stream_context' => [
-                     'ssl' => [
-                        'allow_self_signed' => true
-                     ],
-                  ],
-                  'verify'         => false,
-               ]);
+            //$requests[] = new Request('GET', $variantRequestUrl);
+            
+            $promise = Connector::requestAsync($variantRequestUrl);
             
             // Нужно переписать для использования клиента guzzle вместо file_get_contents
             $promise->then(
@@ -145,13 +140,18 @@ class ObjectGenerator {
                   echo $e->getRequest()->getMethod();
                }
             );
-            $promises[] = $promise;
+   
+            Connector::addPromise($promise);
+            //$promises[] = $promise;
 
             $group->products[] = $newProduct;
+            // temp fix to make request sycnhronous. should use pool
+            Connector::completeRequests();
          }
          
       }
-      Promise\settle($promises)->wait();
+      
+      //Promise\settle($promises)->wait();
       
       $this->setTags();
       $this->updateStock();
