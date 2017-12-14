@@ -36,7 +36,7 @@ class CSVTagFactory {
       $tag->group = $this->splitAttr($csvRow[1]);
       
       $tag->color = $this->splitAttr($csvRow[2]);
-      if ($tag->color[0]->attribute != "") {
+      if ($tag->color[0]->attribute !== "") {
 	      $tag->hasColors = true;
       }
       

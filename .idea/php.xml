@@ -5,6 +5,12 @@
       <path value="C:\wamp\bin\php\php7.1.9" />
       <path value="." />
       <path value="C:\wamp\www\dreamwhite" />
+      <path value="$PROJECT_DIR$/import-export/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/import-export/vendor/automattic/woocommerce" />
+      <path value="$PROJECT_DIR$/import-export/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/import-export/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/import-export/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/import-export/vendor/composer" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

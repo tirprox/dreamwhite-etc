@@ -38,13 +38,14 @@ class ProductVariant {
 		$this->parentProduct->stock += $this->stock;
 		
 		$this->parentProductCode = $parentProduct->code;
-		
-		if ( property_exists( $variant->product, "uom" ) ) {
+		$this->uom = $parentProduct->uom;
+		/*if ( property_exists( $variant->product, "uom" ) ) {
 			$this->uom = $variant->product->uom->name;
-		}
-		if ( property_exists( $variant->product, "supplier" ) ) {
+		}*/
+		$this->supplier = $parentProduct->supplier;
+		/*if ( property_exists( $variant->product, "supplier" ) ) {
 			$this->supplier = $variant->product->supplier->name;
-		}
+		}*/
 		if ( property_exists( $variant, "description" ) ) {
 			$this->description = $variant->description;
 		}
@@ -61,9 +62,10 @@ class ProductVariant {
 		$this->salePrice  = $this->getSalePrice( $variant );
 		$this->parentName = $parentProduct->name;
 		
-		if ( property_exists( $variant->product, "article" ) ) {
+		/*if ( property_exists( $variant->product, "article" ) ) {
 			$this->article = $variant->product->article;
-		}
+		}*/
+		$this->article = $parentProduct->article;
 		
 		$photoFileName = $this->article . "-" . $this->color . ".jpg";
 		$photoFileName = str_replace( " ", "-", $photoFileName );
@@ -140,7 +142,7 @@ class ProductVariant {
 	
 	function getSalePrice( $variant ) {
 		$salePrice = - 1;
-		foreach ( $variant->product->salePrices as $price ) {
+		foreach ( $variant->salePrices as $price ) {
 			if ( $price->priceType == "Цена продажи" ) {
 				$salePrice = $price->value / 100;
 			}

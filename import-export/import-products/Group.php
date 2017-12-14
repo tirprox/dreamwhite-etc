@@ -10,6 +10,11 @@ class Group {
     var $products = [];
     var $stockCodes = [];
     var $stocks = [];
+    var $productHashMap = [];
+    var $unpreparedResponses = [];
+    var $firstResponse, $firstRequestUrl;
+    var $assortment;
+    
     
     function __construct($url, $name, $id, $storeId, $pathName) {
        $this->url = $url;
@@ -17,6 +22,10 @@ class Group {
        $this->id = $id;
        $this->storeId = $storeId;
        $this->pathName = $pathName;
+    }
+    
+    function addProductToHashMap($href, $product) {
+	    $this->productHashMap[$href] = $product;
     }
     
     function addProduct($product) {
