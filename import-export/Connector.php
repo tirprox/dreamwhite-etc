@@ -144,7 +144,8 @@ class Connector {
    }
 
    public static function completeRequests() {
-      Promise\settle(self::$promises)->wait();
+	   Promise\settle(self::$promises)->wait();
+	   Log::d("promises: ". count(self::$promises), "http-client");
    }
    
 }

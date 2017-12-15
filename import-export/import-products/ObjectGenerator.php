@@ -8,6 +8,7 @@ include( "Group.php" );
 include( "Groups.php" );
 include( "StockManager.php" );
 include( "WooCommerceImporter.php" );
+include "Settings.php";
 
 include "CSVTagFactory.php";
 include "Tools.php";
@@ -29,15 +30,21 @@ class ObjectGenerator {
 	public $variantsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/variant?limit=100&expand=product.uom,product.supplier&filter=productid=";
 	public $stocksUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?stockMode=all&limit=1000&store.id=";
 	
+	const storePrefix = "https://online.moysklad.ru/api/remap/1.1/entity/store/";
+	const expand = "&expand=uom,supplier";
 	public $groups = null;
 	
 	public $productRequestUrl;
 	public $imageDirPath = "http://static.dreamwhite.ru/photo/dir.php";
 	
+	var $fromServer = true;
+	
 	function generateObjects() {
 		
 		Connector::init();
+		Settings::load();
 		
+		Log::d(Settings::get("fromServer") ? "Using Server Config" : "Using Local Config", "config", "h3");
 		$imgPromise = Connector::requestAsync( $this->imageDirPath );
 		$imgPromise->then(
 			function ( ResponseInterface $res ) {
@@ -60,26 +67,21 @@ class ObjectGenerator {
 		$this->groups->getGroupsFromConfig();
 		$this->groups->createGroups();
 		Timers::stop( "groups" );
-		//$client = new Connector::$client;
 		
 		$this->getAssortment();
-		
-		/*$this->getStocks();
-		$this->getProductsAndVariants();*/
-		
+
 		$this->setTags();
-		$this->updateStock();
+		
+		if (Settings::get("fromServer")) {
+			$this->updateStock();
+			$this->serverMaintenanceFunctions();
+		}
 		
 	}
-	
-	var $storePrefix = "https://online.moysklad.ru/api/remap/1.1/entity/store/";
-	var $expand = "&expand=uom,supplier";
-	
 	function getAssortment() {
 		Timers::start( "assortment" );
 		foreach ( $this->groups->groupArray as $group ) {
-			$requestUrl = $this->assortmentUrl . $group->url . "&stockstore=" . $this->storePrefix . $group->storeId . $this->expand;
-			Log::d( $requestUrl );
+			$requestUrl = $this->assortmentUrl . $group->url . "&stockstore=" . self::storePrefix . $group->storeId . self::expand;
 			
 			$promise = Connector::requestAsync( $requestUrl );
 			$promise->then(
@@ -100,9 +102,9 @@ class ObjectGenerator {
 		foreach ( $this->groups->groupArray as $group ) {
 			$group->assortment  = $group->firstResponse;
 			$this->getNextAssortments($group->firstResponse, $group->firstRequestUrl, $group);
+			if(!Settings::get("async")) Connector::completeRequests();
 		}
-		
-		Connector::completeRequests();
+		if(Settings::get("async")) Connector::completeRequests();
 		
 		foreach ( $this->groups->groupArray as $group ) {
 			foreach ($group->unpreparedResponses as $temp) {
@@ -119,9 +121,8 @@ class ObjectGenerator {
 		$limit = $res->meta->limit;
 		
 		if ($size > $limit) {
-			Log::d("size more than limit");
+			Log::d("size more than limit", "http-client");
 			$iterations = intdiv($size,$limit) + 1;
-			Log::d($iterations);
 			for ($i = 1; $i < $iterations; $i++) {
 				$offset = "&offset=" . $i * $limit;
 				$offsetUrl = $requestUrl . $offset;
@@ -130,7 +131,7 @@ class ObjectGenerator {
 				$promise->then(
 					function ( ResponseInterface $res ) use ($group) {
 						$resp = json_decode( $res->getBody() );
-						Log::d("next url json received");
+						Log::d("next url json received", "http-client");
 						$group->unpreparedResponses[] = $resp;
 					},
 					function ( RequestException $e ) {
@@ -138,8 +139,9 @@ class ObjectGenerator {
 						echo $e->getRequest()->getMethod();
 					} );
 				Connector::addPromise($promise);
+				if(!Settings::get("async")) Connector::completeRequests();
 			}
-	
+			if(Settings::get("async")) Connector::completeRequests();
 		}
 	}
 	
@@ -253,6 +255,10 @@ class ObjectGenerator {
 		}
 	}
 	
+	function serverMaintenanceFunctions() {
+		flush_rewrite_rules();
+	}
+	
 	function setTags() {
 		Timers::start( "tags" );
 		$tagFactory = new CSVTagFactory();
@@ -279,7 +285,7 @@ class ObjectGenerator {
 		$file = $header . $tagRewriteRules . $footer;
 		file_put_contents( "TagRewriteRules.php", $file );
 		require_once( "TagRewriteRules.php" );
-		//flush_rewrite_rules();
+		//
 		Timers::stop( "tags" );
 	}
 	

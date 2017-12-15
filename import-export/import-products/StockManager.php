@@ -64,10 +64,11 @@ class StockManager {
 	        $sql = "UPDATE " . $this->postmeta .
 	               " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
 	        $this->wpdb->query( $sql );
+	        Log::d("Stock is updated for sku: $sku, stock: $stock. Total saved count: $this->queriesNotExecuted");
         }
         else {
 	        $this->queriesNotExecuted++;
-	        Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted");
+	        //Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted");
         }
       }
       else {

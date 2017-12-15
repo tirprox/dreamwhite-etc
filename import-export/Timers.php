@@ -12,7 +12,7 @@ class Timers {
    
    static function stop($name) {
       $measuredTime = self::$timers[$name]->stop();
-      print("\nTime spent on $name: " . $measuredTime . "<br>");
+      Log::d("Time spent on $name: $measuredTime" , "timer");
       
       unset(self::$timers[$name]) ;
    }

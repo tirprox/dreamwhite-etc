@@ -48,23 +48,21 @@ class Groups {
 
 		$this->groupsInConfig = $config;
 		
-		$i = 1;
-		Log::d( "Список групп в config.conf:" . "\n" );
+		/*$i = 1;
+		Log::d( "Группы:" , "groups");
 		foreach ( $this->groupsInConfig as $groupName => $options ) {
-			Log::d( $i . ". Name: " . $groupName . " ID: " . $options['store'] . "\n" );
+			Log::d( $i . ". Name: " . $groupName . " ID: " . $options['store'] , "groups");
 			$i ++;
-		}
-		Log::d( "\n" );
+		}*/
 	}
 	
 	
 	function createGroups() {
       foreach ( $this->groupsInConfig as $groupName => $options ) {
-            Log::d( "Добавляем группу: " . $groupName . "\n" );
-            Log::d( "URL: " . $options['href'] . "\n" );
-            Log::d( "ID: " . $options['id'] . "\n" );
-            Log::d( "StoreID: " . $options['store'] . "\n" );
-            Log::d( "\n" );
+            Log::d( $groupName, "groups");
+            Log::d( "URL: " . $options['href'] , "groups");
+            Log::d( "ID: " . $options['id'] , "groups");
+            Log::d( "StoreID: " . $options['store'] , "groups");
             
             $this->groupArray[] = new Group( $options['href'], $groupName, $options['id'], $options['store'], $options['pathName']);
       }
@@ -79,11 +77,11 @@ class Groups {
 		foreach ( $this->remoteGroups->rows as $group ) {
 			foreach ( $this->groupsInConfig as $configGroup => $options ) {
 				if ( $group->name === $configGroup ) {
-					Log::d( "Добавляем группу: " . $group->name . "\n" );
-					Log::d( "URL: " . $group->meta->href . "\n" );
-					Log::d( "ID: " . $group->id . "\n" );
-					Log::d( "StoreID: " . $options['store'] . "\n" );
-					Log::d( "\n" );
+					Log::d( $group->name , "groups");
+					Log::d( "URL: " . $group->meta->href , "groups");
+					Log::d( "ID: " . $group->id , "groups");
+					Log::d( "StoreID: " . $options['store'] , "groups");
+					Log::d();
 					
 					$this->groupArray[] = new Group( $group->meta->href, $group->name, $group->id, $options['store'], $options['pathName']);
 					continue;
