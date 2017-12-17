@@ -44,7 +44,7 @@ class ObjectGenerator {
 		Connector::init();
 		Settings::load();
 		
-		Log::d(Settings::get("fromServer") ? "Using Server Config" : "Using Local Config", "config", "h3");
+		Log::d(Settings::get("fromServer") ? "Using Server Config" : "Using Local Config", "config", "p");
 		$imgPromise = Connector::requestAsync( $this->imageDirPath );
 		$imgPromise->then(
 			function ( ResponseInterface $res ) {
@@ -74,7 +74,7 @@ class ObjectGenerator {
 		
 		if (Settings::get("fromServer")) {
 			$this->updateStock();
-			$this->serverMaintenanceFunctions();
+			//$this->serverMaintenanceFunctions();
 		}
 		
 	}
@@ -92,8 +92,8 @@ class ObjectGenerator {
 					
 				},
 				function ( RequestException $e ) {
-					echo $e->getMessage() . "\n";
-					echo $e->getRequest()->getMethod();
+               Log::d("Getting initial assortment error" . $e->getMessage(), "errors", "p", "errors");
+               Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
 				} );
 			Connector::addPromise( $promise );
 		}
@@ -135,8 +135,8 @@ class ObjectGenerator {
 						$group->unpreparedResponses[] = $resp;
 					},
 					function ( RequestException $e ) {
-						echo $e->getMessage() . "\n";
-						echo $e->getRequest()->getMethod();
+					   Log::d("Getting next assortments error" . $e->getMessage(), "errors", "p", "errors");
+                  Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
 					} );
 				Connector::addPromise($promise);
 				if(!Settings::get("async")) Connector::completeRequests();
@@ -199,8 +199,8 @@ class ObjectGenerator {
 					$group->stockCodes = $stockCodes;
 				},
 				function ( RequestException $e ) {
-					echo $e->getMessage() . "\n";
-					echo $e->getRequest()->getMethod();
+               Log::d($e->getMessage(), "errors", "p", "errors");
+               Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
 				}
 			);
 			Connector::addPromise( $promise );
@@ -241,8 +241,8 @@ class ObjectGenerator {
 						$newProduct = $this->addVariantsToProduct( $variants, $newProduct, $stocks, $stockCodes );
 					},
 					function ( RequestException $e ) {
-						echo $e->getMessage() . "\n";
-						echo $e->getRequest()->getMethod();
+                  Log::d($e->getMessage(), "errors", "p", "errors");
+                  Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
 					}
 				);
 				
@@ -301,6 +301,9 @@ class ObjectGenerator {
 			}
 		}
 		$stockManager->update_stock_status();
+		Log::d("Queries executed: $stockManager->queriesExecuted", "sql", "p", "sql");
+      Log::d("Queries not executed because stock is the same: $stockManager->queriesNotExecuted", "sql", "p", "sql");
+      Log::d("Queries not executed sku not found: $stockManager->skuMiss", "sql", "p", "sql");
 		Timers::stop( "sql query stock updates" );
 	}
 	

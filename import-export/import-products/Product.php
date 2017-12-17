@@ -92,7 +92,7 @@ class Product {
       	//$this->productFolderName .= "," . $this->gender . " пуховики";
       }
       
-      Log::d($this->name, "product");
+      Log::d($this->name, "product", "p", "products");
    }
    
    function getProductCsvRow() {

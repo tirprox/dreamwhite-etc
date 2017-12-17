@@ -105,7 +105,7 @@ class ProductVariant {
 			
 		}
 		
-		Log::d( "$this->name (В наличии $this->stock)", "variant" );
+		Log::d( "$this->name (В наличии $this->stock)", "variant", "p", "products");
 	}
 	
 	function getCsvRow() {

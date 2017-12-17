@@ -11,7 +11,7 @@ class StockManager {
    var $postIdSkuMap = [];
 	var $postIdStockMap = [];
    var $postmeta;
-   var $queriesNotExecuted = 0;
+   var $queriesNotExecuted = 0, $skuMiss = 0, $queriesExecuted=0;
    
    function __construct() {
       define( 'SHORTINIT', true );
@@ -64,16 +64,17 @@ class StockManager {
 	        $sql = "UPDATE " . $this->postmeta .
 	               " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
 	        $this->wpdb->query( $sql );
-	        Log::d("Stock is updated for sku: $sku, stock: $stock. Total saved count: $this->queriesNotExecuted");
+            $this->queriesExecuted++;
+	        Log::d("Stock is updated for sku: $sku, stock: $stock.", "stock", "p", "sql");
         }
         else {
 	        $this->queriesNotExecuted++;
-	        //Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted");
+	        //Log::d("Stock is the same, no update needed. Total saved count: $this->queriesNotExecuted", "stock", "p", "sql");
         }
       }
       else {
-         $this->queriesNotExecuted++;
-         Log::d("SKU miss. Total miss count: $this->queriesNotExecuted");
+         $this->skuMiss++;
+         //Log::d("SKU miss. Total miss count: $this->skuMiss", "stock", "p", "sql");
       }
    }
 }
