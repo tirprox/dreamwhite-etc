@@ -96,8 +96,9 @@ class ObjectGenerator {
                Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
 				} );
 			Connector::addPromise( $promise );
+			if(!Settings::get("async")) Connector::completeRequests();
 		}
-		Connector::completeRequests();
+		if(Settings::get("async")) Connector::completeRequests();
 		
 		foreach ( $this->groups->groupArray as $group ) {
 			$group->assortment  = $group->firstResponse;

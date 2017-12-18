@@ -53,7 +53,15 @@ class Connector {
    }
    
    public static function addPromise($promise) {
-      self::$promises[] = $promise;
+   	if (count(self::$promises)<4) {
+	    self::$promises[] = $promise;
+    }
+    else {
+   		self::completeRequests();
+	    self::$promises = [];
+	    self::$promises[] = $promise;
+    }
+    
    }
    
    public static function requestAsync($url) {
@@ -144,6 +152,7 @@ class Connector {
    }
 
    public static function completeRequests() {
+   	
 	   Promise\settle(self::$promises)->wait();
 	   Log::d("promises: ". count(self::$promises), "http-client");
    }

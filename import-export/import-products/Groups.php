@@ -44,6 +44,12 @@ class Groups {
             "id" => "c3e048e5-d358-11e7-7a6c-d2a900192646",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c3e048e5-d358-11e7-7a6c-d2a900192646"
 			],
+			"Женские парки"   => [
+				"store"    => $this->stores[ 'Флигель' ],
+				"pathName" => "Женские куртки/Женские парки",
+				"id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
+				"href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccba5668-d359-11e7-7a31-d0fd00191b3a"
+			],
 		];
 
 		$this->groupsInConfig = $config;

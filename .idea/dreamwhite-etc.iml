@@ -14,16 +14,14 @@
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
-          <root url="file://C:/wamp/bin/php/php7.1.9" />
-          <root url="file://C:/wamp/www/dreamwhite" />
-          <root url="file://$MODULE_DIR$/../wp" />
-          <root url="file://F:/Users7/Gleb/Desktop" />
+          <root url="file://$USER_HOME$/Desktop" />
+          <root url="file://$MODULE_DIR$/../../bin/php/php7.1.9" />
+          <root url="file://$MODULE_DIR$/../dreamwhite" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/wamp/bin/php/php7.1.9" />
-          <root url="file://C:/wamp/www/dreamwhite" />
-          <root url="file://$MODULE_DIR$/../wp" />
-          <root url="file://F:/Users7/Gleb/Desktop" />
+          <root url="file://$USER_HOME$/Desktop" />
+          <root url="file://$MODULE_DIR$/../../bin/php/php7.1.9" />
+          <root url="file://$MODULE_DIR$/../dreamwhite" />
         </SOURCES>
       </library>
     </orderEntry>
