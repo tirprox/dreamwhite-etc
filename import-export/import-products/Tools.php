@@ -37,7 +37,17 @@ class Tools {
          return false;
       }
    }
-   
+   static function removeYoutubeBase(string $url) {
+   	if ($url === "") {
+   		return $url;
+    }
+    else {
+	    $url = str_replace("https://www.youtube.com/watch?v=", "", $url);
+	    return "[youtube]" . $url . "[/youtube]";
+    }
+   	
+	}
+	
    static function transliterate($text) {
       $text = strtr($text, self::$iso9_table);
       if (function_exists('iconv')) {

@@ -29,11 +29,10 @@ if ( $attachment_ids ) {
 	?>
 	
 	<?php if ( has_post_thumbnail() ) { ?>
-
+		
+		
     <div class="swiper-container product-thumbnails-carousel">
-		<?php
-		echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', '<div class="scroll-to-video-wrapper"><a id="scroll-to-video" class="video-thumbnail-button text-center"><i class="fa fa-play-circle fa-3x"></i></a></div>', - 1 );
-		?>
+		
     <div class="swiper-wrapper">
 		
 		<?php
@@ -76,7 +75,10 @@ if ( $attachment_ids ) {
           </div><!-- /.swiper-wrapper -->
 
           </div><!-- /.swiper-container -->
-			
+		<?php
+		echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', '<div class="scroll-to-video-wrapper"><a class="video-thumbnail-button text-center"><i class="fa fa-youtube-play fa-3x"></i></a></div>', - 1 );
+		?>
+   
 			<?php
 		} //has_post_thumbnail
 		

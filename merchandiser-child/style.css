@@ -12,6 +12,168 @@ Version: 1.0
 /****************************************************************/
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
+.entry-content p a {
+    color: #11c552 !important;
+}
+
+.scroll-to-video-wrapper {
+    /* height: 91px; */
+    
+    background: #0000001a;
+}
+
+@media only screen and (max-width: 64em) {
+    .video-thumbnail-button {
+        color: #ff4144;
+    }
+}
+@media  (min-width: 64em) {
+    .video-thumbnail-button {
+        color: white;
+    }
+}
+
+.video-thumbnail-button {
+    display: block;
+    position: relative;
+    padding: 16px;
+}
+
+.woocommerce .shop-page-header .shop-page-title-wrapper .mobile-sidebar-toggle {
+    font-size: 13px;
+    padding-left: 40px;
+    padding-top: 14px;
+}
+
+.offcanvas_main_content {
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    -o-transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1), -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+        transition-delay: 0s, 0s;
+    -webkit-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+}
+
+.site-header-mobiles {
+    -webkit-transition: all 0.3s cubic-bezier(1, 0, 0.5, 1);
+    -o-transition: all 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: all 0.3s cubic-bezier(1, 0, 0.5, 1);
+        transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+}
+
+.offcanvas_overlay {
+    -webkit-animation: offcanvas_overlay_closing_animation 1s forwards;
+    animation: offcanvas_overlay_closing_animation 0.3s forwards;
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    -o-transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(1, 0, 0.5, 1), -webkit-transform 0.3s cubic-bezier(1, 0, 0.5, 1);
+        transition-delay: 0s, 0s;
+    -webkit-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+}
+
+body.offcanvas_open .offcanvas_overlay {
+    -webkit-animation: offcanvas_overlay_open_animation 0.3s forwards;
+    animation: offcanvas_overlay_open_animation 0.3s forwards;
+}
+
+.woocommerce .product-images-wrapper .product-images-carousel .swiper-slide img {
+    padding-left: 0 !important;
+}
+.woocommerce ul.products li.product:hover .product_thumbnail:not(.with_second_image) img {
+    /* transform: translateX(0) translateY(0) !important; */
+    transform: none !important;
+    transition: none !important;
+}
+
+
+.woocommerce ul.products li.product:hover .product_thumbnail img {
+    /* transform: none !important; */
+    /* transition: none !important; */
+}
+
+
+@media only screen and (min-width: 64em) {
+    .woocommerce .product_title {
+        font-size: 2.8rem;
+        line-height: 1em;
+        margin: 0 0 1.66667rem 0;
+        text-align: left;
+    }
+
+    .woocommerce .product_price .price {
+        font-size: 2rem !important;
+        /* color: #757575 !important; */
+    }
+}
+
+.main-navigation-slices > ul > li > ul > li {
+    -webkit-transition: all 0.08s ease-out;
+    -o-transition: all 0.08s ease-out;
+    transition: all 0.08s ease-out;
+    display: table-cell;
+    text-align: left;
+    padding: 0;
+    vertical-align: top;
+    min-width: 1em;
+    border-right: 1px solid #eee;
+}
+
+.main-navigation-slices > ul > li > ul > li > a {
+    /* padding-bottom: 0 !important; */
+    padding: 2em 3em 2em 3em;
+    max-width: 30em;
+}
+
+.main-navigation-slices > ul > li > ul > li:first-child {
+        padding-left: 0 !important;
+    }
+
+.main-navigation-slices > ul > li a {
+    -webkit-transition: all 0.1s ease-out;
+    -o-transition: all 0.1s ease-out;
+    transition: all 0.1s ease-out;
+    min-height: 10%;
+}
+
+.woocommerce .product_infos .stock {
+    border-color: #00AA5B;
+    border-radius: 0px;
+    font-size: 0.8rem;
+    line-height: 1.4em;
+    color: #00AA5B;
+}
+
+.woocommerce .shop-product-badges .out_of_stock {
+    border-color: #333;
+    border-radius: 0px;
+    font-size: 0.5rem !important;
+    line-height: 1.3em !important;
+    color: #333;
+}
+
+.out_of_stock {
+    border-color: #333;
+    border-radius: 0px;
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.4em;
+    color: #333;
+}
+
+
+.ivpa_title a {
+    color: #757575 !important;
+}
 
 .product_meta .tagged_as {
    display: none !important;
@@ -251,9 +413,12 @@ background-color: transparent !important;
 #ivpa-content .ivpa_attribute.ivpa_image .ivpa_term.ivpa_active.ivpa_outofstock img {
     opacity: 0.4 !important;
 }
-.woocommerce ul.products li.product:hover .product_thumbnail:not(.with_second_image) img{
-      transform: translate3d(0, 0, 0)!important;
+
+.woocommerce ul.products li.product .product_thumbnail .shop_product_buttons_wrapper {
+    /* position: relative; */
+    transition: all 0.2s ease-out !important;
 }
+
 
 .woocommerce ul.products li.product .product_thumbnail .shop_product_buttons_wrapper .shop_product_buttons .button{
 		display: none!important;
@@ -263,14 +428,19 @@ background-color: transparent !important;
    font-size: 130%!important;
 }
 
-.page-title{
+/* .page-title{
    margin-bottom: 0px!important;
-}
+} */
 .widget-area {
     background: #ffffff;
 }
 
-.shop-page-category-description {
+
+.woocommerce .shop-page-header .shop-page-title-wrapper .shop-page-title {
+    font-weight: 400;
+}
+
+/* .shop-page-category-description {
 		display: none!important;
     }
     
@@ -283,10 +453,11 @@ background-color: transparent !important;
 .woocommerce .shop-page-header.with-padding{
     padding: 70px 0 0px !important;
 }
+
 .page-title {
     margin-bottom: -14px!important;
 }
-}
+} */
 
 .shop-tools-button{
 		display: none!important;

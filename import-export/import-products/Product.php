@@ -39,6 +39,8 @@ class Product {
    var $koketka = "";
    var $uhod = "";
    
+   var $video ="";
+   
    var $baseUrl = "http://static.dreamwhite.ru/photo/";
    
 	var $productPhotoUrl = "";
@@ -122,6 +124,9 @@ class Product {
          else if (is_object($attr->value)) {
             $value = $attr->value->name;
          }
+         else if(is_string($attr->value)) {
+	         $value = $attr->value;
+         }
       }
       return $value;
    }
@@ -131,8 +136,31 @@ class Product {
          if (property_exists($this->product, "attributes")) {
             $attrs = $this->product->attributes;
             
-            $finalAttrs = [];
-            $attrSize = count($attrs);
+            $attrSet = [];
+            
+            foreach ($attrs as $attr) {
+	            $attrSet[$attr->name] = $this->getAttributeValue($attr);
+            }
+	
+	         $this->material = $attrSet['Материал'];
+	         $this->uteplitel = $attrSet['Утеплитель'];
+	         $this->podkladka = $attrSet['Подкладка'];
+	         $this->siluet = $attrSet['Силуэт'];
+	         $this->dlina = $attrSet['Длина изделия'];
+	         $this->rukav = $attrSet['Рукав'];
+	         $this->dlina_rukava = $attrSet['Длина рукава'];
+	         $this->zastezhka = $attrSet['Застежка'];
+	         // need to convert boolean
+	         $this->kapushon = $attrSet['Капюшон'];
+	         $this->vorotnik = $attrSet['Воротник'];
+	         $this->poyas = $attrSet['Пояс'];
+	         $this->karmany = $attrSet['Карманы'];
+	         $this->koketka = $attrSet['Кокетка'];
+	         $this->uhod = $attrSet['Уход'];
+	
+	         if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
+            
+            /*$finalAttrs = [];
             for ($i = 0; $i < 14; $i++) {
                $finalAttrs[$i] = isset($attrs[$i]) ? $this->getAttributeValue($attrs[ $i ]) : "";
             }
@@ -151,7 +179,7 @@ class Product {
             $this->poyas = $finalAttrs[10];
             $this->karmany = $finalAttrs[11];
             $this->koketka = $finalAttrs[12];
-            $this->uhod = $finalAttrs[13];
+            $this->uhod = $finalAttrs[13];*/
             
          }
       }

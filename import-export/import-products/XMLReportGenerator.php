@@ -61,6 +61,8 @@ class XMLReportGenerator {
    
       self::addNode('photo', $product->productPhotoUrl, $xmlProduct);
 	  self::addNode('photoGallery', $product->galleryUrls, $xmlProduct);
+	   self::addNode('video', $product->video, $xmlProduct);
+	   self::addNode('video-youtube-part', Tools::removeYoutubeBase($product->video), $xmlProduct);
       self::addNode('tags', $product->tags, $xmlProduct);
       //$xmlProduct = self::addChild('variants', $xmlProduct);
       

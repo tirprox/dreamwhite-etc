@@ -6,10 +6,13 @@ include(dirname(__DIR__) . "/Timers.php");
 Log::enable();
 ini_set("memory_limit", "2048M");
 
-makeHeader();
 import();
-if (Settings::get("fromServer")) Log::writeSections();
-makeFooter();
+
+if (Settings::get("fromServer")) {
+	makeHeader();
+	Log::writeSections();
+	makeFooter();
+}
 
 function import() {
    Timers::start("overall");
