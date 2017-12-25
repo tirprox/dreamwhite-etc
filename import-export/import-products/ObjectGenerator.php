@@ -303,8 +303,8 @@ class ObjectGenerator {
 		}
 		$stockManager->update_stock_status();
 		Log::d("Queries executed: $stockManager->queriesExecuted", "sql", "p", "sql");
-      Log::d("Queries not executed because stock is the same: $stockManager->queriesNotExecuted", "sql", "p", "sql");
-      Log::d("Queries not executed sku not found: $stockManager->skuMiss", "sql", "p", "sql");
+        Log::d("Queries not executed because stock is the same: $stockManager->queriesNotExecuted", "sql", "p", "sql");
+        Log::d("Queries not executed sku not found: $stockManager->skuMiss", "sql", "p", "sql");
 		Timers::stop( "sql query stock updates" );
 	}
 	
