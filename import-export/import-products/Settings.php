@@ -3,7 +3,7 @@
 class Settings {
 	private static $config = [
 		"fromServer" => true,
-		"async"      => false,
+		"async"      => true,
 		"showProducts" =>true,
 	];
 	
