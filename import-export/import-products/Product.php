@@ -21,7 +21,8 @@ class Product {
    var $size = "";
    var $variantName = "";
    var $barcode = "";
-   var $salePrice = "0";
+   var $regularPrice = "0", $salePrice = "";
+   var $isOnSale = false;
    var $article = "";
    
    var $material = "";
@@ -85,7 +86,8 @@ class Product {
 		   $this->productPhotoUrl = $urlToEncode;
 		   $this->galleryUrls .= $urlToEncode . ",";
 	   }
-      
+    
+	   $this->getPrices();
       $this->setAttributes();
 	   $this->gender = Tools::match($this->productFolderName, "женские") ? "Женские" : "Мужские";
       
@@ -159,33 +161,27 @@ class Product {
 	         $this->uhod = $attrSet['Уход'];
 	
 	         if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
-            
-            /*$finalAttrs = [];
-            for ($i = 0; $i < 14; $i++) {
-               $finalAttrs[$i] = isset($attrs[$i]) ? $this->getAttributeValue($attrs[ $i ]) : "";
-            }
-            
-            $this->material = $finalAttrs[0];
-            $this->uteplitel = $finalAttrs[1];
-            $this->podkladka = $finalAttrs[2];
-            $this->siluet = $finalAttrs[3];
-            $this->dlina = $finalAttrs[4];
-            $this->rukav = $finalAttrs[5];
-            $this->dlina_rukava = $finalAttrs[6];
-            $this->zastezhka = $finalAttrs[7];
-            // need to convert boolean
-            $this->kapushon = $finalAttrs[8];
-            $this->vorotnik = $finalAttrs[9];
-            $this->poyas = $finalAttrs[10];
-            $this->karmany = $finalAttrs[11];
-            $this->koketka = $finalAttrs[12];
-            $this->uhod = $finalAttrs[13];*/
-            
          }
       }
    }
    function textFromBool($bool){
       return $bool ? "Есть" : "Нет";
+   }
+   
+   function getPrices () {
+      foreach ($this->product->salePrices as $price) {
+         if ( $price->priceType === "Цена продажи" ) {
+            $this->regularPrice = $price->value / 100;
+         }
+         else if ($price->priceType === "Распродажа") {
+            //var_dump($price);
+            if ($price->value > 0) {
+               $this->salePrice = $price->value / 100;
+               $this->isOnSale = true;
+            }
+            
+         }
+      }
    }
    
    function getAttributesString() {

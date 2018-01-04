@@ -39,7 +39,8 @@ class XMLReportGenerator {
       self::addNode('availability',
          $product->stock > 0 ? "instock" : "outofstock",
          $xmlProduct);
-      self::addNode('price', $product->salePrice, $xmlProduct);
+      self::addNode('price', $product->regularPrice, $xmlProduct);
+      self::addNode('salePrice', $product->salePrice, $xmlProduct);
       self::addNode('description', $product->description, $xmlProduct);
       
       $attrs = self::addChild('attributes', $xmlProduct);
@@ -77,7 +78,8 @@ class XMLReportGenerator {
          self::addNode('availability',
             $variant->stock > 0 ? "instock" : "outofstock",
             $xmlVariant);
-         self::addNode('price', $variant->salePrice, $xmlVariant);
+         self::addNode('price', $variant->regularPrice, $xmlVariant);
+         self::addNode('salePrice', $variant->salePrice, $xmlVariant);
    
          self::addNode('description', $variant->description, $xmlVariant);
    

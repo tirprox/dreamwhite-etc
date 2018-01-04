@@ -81,6 +81,11 @@ class CSVTagFactory {
    }
    
    function setProductTag($product) {
+      // sale tag
+      if ($product->isOnSale) {
+         $product->tags .= "Распродажа,";
+      }
+      
       foreach ($this->tags as $tag) {
          //check basic attrs
          if (!$this->compareAttrs($tag->group, $product->productFolderName)) continue;

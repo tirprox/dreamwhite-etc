@@ -22,9 +22,14 @@ class ProductVariant {
 	var $size = "";
 	var $variantName = "";
 	var $barcode = "";
+	
+	var $regularPrice = "";
 	var $salePrice = "";
+	
 	var $article = "";
 	var $variantPhotoUrl = "";
+	
+	var $isOnSale = false;
 	
 	public static $attributeString = "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"";
 	
@@ -39,13 +44,8 @@ class ProductVariant {
 		
 		$this->parentProductCode = $parentProduct->code;
 		$this->uom = $parentProduct->uom;
-		/*if ( property_exists( $variant->product, "uom" ) ) {
-			$this->uom = $variant->product->uom->name;
-		}*/
 		$this->supplier = $parentProduct->supplier;
-		/*if ( property_exists( $variant->product, "supplier" ) ) {
-			$this->supplier = $variant->product->supplier->name;
-		}*/
+
 		if ( property_exists( $variant, "description" ) ) {
 			$this->description = $variant->description;
 		}
@@ -59,12 +59,8 @@ class ProductVariant {
 		if ( count( $variant->barcodes ) > 0 ) {
 			$this->barcode = $variant->barcodes[ 0 ];
 		}
-		$this->salePrice  = $this->getSalePrice( $variant );
+		$this->getPrices();
 		$this->parentName = $parentProduct->name;
-		
-		/*if ( property_exists( $variant->product, "article" ) ) {
-			$this->article = $variant->product->article;
-		}*/
 		$this->article = $parentProduct->article;
 		
 		$photoFileName = $this->article . "-" . $this->color . ".jpg";
@@ -139,16 +135,19 @@ class ProductVariant {
 		
 		return "";
 	}
-	
-	function getSalePrice( $variant ) {
-		$salePrice = - 1;
-		foreach ( $variant->salePrices as $price ) {
-			if ( $price->priceType == "Цена продажи" ) {
-				$salePrice = $price->value / 100;
-			}
-		}
-		
-		return $salePrice;
-	}
+	function getPrices () {
+	   foreach ($this->variant->salePrices as $price) {
+         if ( $price->priceType === "Цена продажи" ) {
+            $this->regularPrice = $price->value / 100;
+         }
+         else if ($price->priceType === "Распродажа") {
+            if ($price->value > 0) {
+               $this->salePrice = $price->value / 100;
+               $this->isOnSale = true;
+            }
+            
+         }
+      }
+   }
 	
 }

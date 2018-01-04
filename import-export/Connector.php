@@ -65,6 +65,7 @@ class Connector {
    }
    
    public static function requestAsync($url) {
+     // var_dump($url);
       return self::$client->requestAsync('GET', $url);
    }
    
