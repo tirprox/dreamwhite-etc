@@ -4,7 +4,7 @@
     <include_path>
       <path value="C:\wamp\bin\php\php7.1.9" />
       <path value="." />
-      <path value="C:\wamp\www\dreamwhite" />
+      <path value="D:\wamp\www\dreamwhite" />
       <path value="$PROJECT_DIR$/import-export/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/import-export/vendor/automattic/woocommerce" />
       <path value="$PROJECT_DIR$/import-export/vendor/guzzlehttp/guzzle" />

@@ -5,8 +5,6 @@
  * Date: 05.11.2017
  * Time: 0:12
  */
-include "InvertableAttribute.php";
-include "Tag.php";
 
 class CSVTagFactory {
    var $tags = [];

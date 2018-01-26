@@ -1,18 +1,4 @@
 <?php
-include( dirname( __DIR__ ) . "/Connector.php" );
-include( "CSVReportGenerator.php" );
-include( "XMLReportGenerator.php" );
-include( "Product.php" );
-include( "ProductVariant.php" );
-include( "Group.php" );
-include( "Groups.php" );
-include( "StockManager.php" );
-include( "WooCommerceImporter.php" );
-include "Settings.php";
-
-include "CSVTagFactory.php";
-include "Tools.php";
-
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
@@ -346,19 +332,4 @@ class ObjectGenerator {
 		XMLReportGenerator::writeXmlToFile();
 	}
 	
-	function importViaAPI() {
-		
-		$importer = new WooCommerceImporter();
-		
-		foreach ( $this->groups->groupArray as $group ) {
-			$importer->batchCreateProducts( $group->products );
-			
-			/*foreach ($group->products as $product) {
-			   $importer->createProduct($product);
-			   foreach ($product->variants as $variant) {
-				  CSVReportGenerator::appendCSVString($variant->getCsvRow());
-			   }
-			}*/
-		}
-	}
 }

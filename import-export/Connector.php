@@ -6,7 +6,6 @@ use GuzzleHttp\Psr7\Request;
 
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
-include "import-products/Auth.php";
 class Connector {
    
    
