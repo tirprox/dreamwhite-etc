@@ -5,7 +5,7 @@
  * Date: 05.11.2017
  * Time: 0:12
  */
-
+namespace Dreamwhite\Import;
 class CSVTagFactory {
    var $tags = [];
    

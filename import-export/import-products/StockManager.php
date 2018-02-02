@@ -5,7 +5,7 @@
  * Date: 03.12.2017
  * Time: 2:02
  */
-
+namespace Dreamwhite\Import;
 class StockManager {
    var $wpdb;
    var $postIdSkuMap = [];

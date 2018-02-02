@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class ProductVariant {
 	var $variant, $parentProduct;
 	

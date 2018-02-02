@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class Product {
    var $product;
    var $productFolderName;

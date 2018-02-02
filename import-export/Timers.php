@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 include "Timer.php";
 
 class Timers {

@@ -5,7 +5,7 @@
  * Date: 06.11.2017
  * Time: 14:14
  */
-
+namespace Dreamwhite\Import;
 class Tools {
    static $iso9_table = [
       'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Ѓ' => 'G',

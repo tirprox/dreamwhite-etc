@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class Settings {
 	private static $config = [
 		"fromServer" => true,

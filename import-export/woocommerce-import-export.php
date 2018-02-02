@@ -11,8 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: moysklad-woocommerce
 Domain Path: /languages
 */
-include("import-products/Importer.php");
-include("export-orders/OrderExporter.php");
 
 add_action("admin_menu", "addMenu");
 //add_action('woocommerce_thankyou', 'onWooCommerceOrderCompleted');
@@ -36,18 +34,3 @@ function addImportMenu() {
 	<?php
 }
 
-function runImport() {
-   $importer = new Importer();
-   $importer->import(false);
-}
-
-function onWooCommerceOrderCompleted($order_id){
-   /*$order = new WC_Order( $order_id );
-   $myuser_id = (int)$order->user_id;
-   $user_info = get_userdata($myuser_id);
-   $items = $order->get_items();
-   $exporter = new OrderExporter();
-   
-   echo $exporter->prepareCustomerJSON($order_id);
-   return $order_id;*/
-}

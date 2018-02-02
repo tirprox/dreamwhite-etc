@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class XMLReportGenerator {
    private static $path = "" . __DIR__ . "/report.xml";
    private static $document;
@@ -13,7 +13,7 @@ class XMLReportGenerator {
    }
    
    static function createDocument() {
-         self::$document = new DOMDocument('1.0', 'UTF-8');
+         self::$document = new \DOMDocument('1.0', 'UTF-8');
          self::$document->formatOutput = true;
    
          self::$root = self::$document->createElement('products');
@@ -32,6 +32,7 @@ class XMLReportGenerator {
    
       self::addNode('name', $product->name, $xmlProduct);
       self::addNode('group', $product->categories, $xmlProduct);
+       //self::addNode('group', $product->categories, $xmlProduct);
       self::addNode('sku', $product->code, $xmlProduct);
       self::addNode('article', $product->article, $xmlProduct);
       self::addNode('uom', $product->uom, $xmlProduct);

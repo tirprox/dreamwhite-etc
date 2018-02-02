@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class Groups
 {
     var $remoteGroups;
@@ -60,47 +60,55 @@ class Groups
             "Свадебные пальто" => [
                 "store" => $this->stores['В белом'],
                 "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
+                "category" => "Свадебные пальто",
                 "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
             ],
             "Женские пальто" => [
                 "store" => $this->stores['Флигель'],
                 "pathName" => "Женские пальто",
+                "category" => "Женские пальто",
                 "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
             ],
             "Женские плащи" => [
                 "store" => $this->stores['Флигель'],
                 "pathName" => "Женские плащи",
+                "category" => "Женские плащи",
                 "id" => "2e7b7745-246a-11e7-7a31-d0fd00184b78",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/2e7b7745-246a-11e7-7a31-d0fd00184b78"
             ],
             "Мужские пальто" => [
                 "store" => $this->stores['Флигель'],
                 "pathName" => "Мужские пальто",
+                "category" => "Мужские пальто",
                 "id" => "3c1129d6-925a-11e7-7a69-971100078524",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3c1129d6-925a-11e7-7a69-971100078524"
             ],
             "Женские куртки" => [
                 "store" => $this->stores['Флигель'],
                 "pathName" => "Женские куртки",
+                "category" => "Женские куртки",
                 "id" => "c3e048e5-d358-11e7-7a6c-d2a900192646",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c3e048e5-d358-11e7-7a6c-d2a900192646"
             ],
             "Женские парки" => [
                 "store" => $this->stores['Флигель'],
                 "pathName" => "Женские куртки/Женские парки",
+                "category" => "Женские парки",
                 "id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccba5668-d359-11e7-7a31-d0fd00191b3a"
             ],
 
-            "Новая коллекция" => [
+/*            "Новая коллекция" => [
                 "store" => $this->stores['Склад'],
                 "pathName" => "Женские пальто",
+                "category" => "Новая коллекция",
                 "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
-            ],
+            ],*/
         ];
+
 
         $this->groupsInConfig = $config;
 
@@ -114,7 +122,7 @@ class Groups
             Log::d("ID: " . $options['id'], "groups");
             Log::d("StoreID: " . $options['store'], "groups");
 
-            $this->groupArray[] = new Group($options['href'], $groupName, $options['id'], $options['store'], $options['pathName']);
+            $this->groupArray[] = new Group($options['href'], $groupName, $options['id'], $options['store'], $options['pathName'], $options['category']);
         }
 
     }

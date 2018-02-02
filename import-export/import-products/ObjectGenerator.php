@@ -1,4 +1,5 @@
 <?php
+namespace Dreamwhite\Import;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
@@ -68,7 +69,7 @@ class ObjectGenerator {
 		Timers::start( "assortment" );
 		foreach ( $this->groups->groupArray as $group ) {
 			$requestUrl = $this->assortmentUrl . $group->url . "&stockstore=" . self::storePrefix . $group->storeId . self::expand;
-			
+            Log::d($requestUrl, "groups", "p", "groups");
 			$promise = Connector::requestAsync( $requestUrl );
 			$promise->then(
 				function ( ResponseInterface $res ) use ( $group, $requestUrl) {

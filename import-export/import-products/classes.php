@@ -1,4 +1,5 @@
 <?php
+namespace Dreamwhite\Import;
 require_once "ObjectGenerator.php";
 require_once "CSVReportGenerator.php";
 require_once "XMLReportGenerator.php";

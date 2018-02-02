@@ -5,7 +5,7 @@
  * Date: 05.12.2017
  * Time: 3:01
  */
-
+namespace Dreamwhite\Import;
 class Timer {
    var $name, $startTime;
    var $isRunning = false;

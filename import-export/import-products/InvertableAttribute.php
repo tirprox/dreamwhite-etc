@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class InvertableAttribute {
    var $attribute, $isInverted;
    

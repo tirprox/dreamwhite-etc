@@ -5,7 +5,7 @@
  * Date: 06.09.2017
  * Time: 3:38
  */
-
+namespace Dreamwhite\Import;
 class Log {
 	private static $isLoggingEnabled = false;
 	public static $ignore = [

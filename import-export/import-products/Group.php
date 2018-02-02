@@ -1,9 +1,10 @@
 <?php
-
+namespace Dreamwhite\Import;
 class Group {
     var $url;
     var $name;
     var $pathName;
+
     var $id;
     var $storeId;
     
@@ -14,6 +15,7 @@ class Group {
     var $unpreparedResponses = [];
     var $firstResponse, $firstRequestUrl;
     var $assortment;
+
     
     
     function __construct($url, $name, $id, $storeId, $pathName) {

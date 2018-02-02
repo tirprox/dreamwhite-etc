@@ -1,4 +1,5 @@
 <?php
+namespace Dreamwhite\Import;
 require_once "classes.php";
 
 Log::enable();
@@ -16,7 +17,7 @@ function import() {
    Timers::start("overall");
    $generator = new ObjectGenerator();
    $generator->generateObjects();
-   $generator->createCSVReport();
+   //$generator->createCSVReport();
    $generator->createXMLReport();
    Timers::stop("overall");
    

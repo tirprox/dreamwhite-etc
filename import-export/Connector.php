@@ -1,4 +1,5 @@
 <?php
+namespace Dreamwhite\Import;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
@@ -6,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
+
 class Connector {
    
    

@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Import;
 class CSVReportGenerator {
    private static $path = "" . __DIR__ . "/report.csv";
    private static $file;
