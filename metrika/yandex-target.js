@@ -29,6 +29,12 @@ else {
   }
 }
 
+
+if (yaCounter42085949 !== undefined) {
+    jQuery('#register-frontpage vc-btn3').on('click', yaCounter42085949.reachGoal('register-button-frontpage'));
+}
+
+
 function instagramOpened() {
   yaCounter42085949.reachGoal('instagram-opened-from-popup');
 }
