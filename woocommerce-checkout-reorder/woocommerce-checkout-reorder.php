@@ -70,13 +70,13 @@ function reorder_woo_fields( $fields ) {
 	$fields2[ 'billing' ][ 'billing_email' ]              = [
 		'label'    => __( 'Email', 'woocommerce' ),
 		'required' => true,
-		'class'    => [ 'form-row-first' ],
+		'class'    => [ 'form-row-last' ],
 		'clear'    => true
 	];
 	$fields2[ 'billing' ][ 'billing_phone' ]              = [
 		'label'    => __( 'Phone', 'woocommerce' ),
 		'required' => false,
-		'class'    => [ 'form-row-last' ],
+		'class'    => [ 'form-row-first' ],
 		'clear'    => true
 	];
 	$fields2[ 'billing' ][ 'billing_country' ][ 'class' ] = [ 'form-row-first' ];

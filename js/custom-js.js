@@ -1,6 +1,11 @@
 jQuery(document).ready(function() {
   jQuery(".site-social-icons-twitter .fa-twitter").removeClass("fa-twitter").addClass("fa-vk");
 
+  if (window.location.pathname == '/') {
+      jQuery("#header-top").removeClass("header-top").addClass("header-top-transparent");
+  }
+
+
   var hideActiveTab = function () {
     jQuery('ul.tabs.wc-tabs > li.active').removeClass("active");
     jQuery('div#tab-additional_information').hide();

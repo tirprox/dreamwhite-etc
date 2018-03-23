@@ -13,13 +13,17 @@ class Log {
 		//'groups',
 	];
 	
-	public static $sections;
+	public static $sections = [];
+
 	
 	public static function d( $string = "", $issuer = "default", $tag="p", $section = "config") {
 		if ( self::$isLoggingEnabled ) {
          $section = $issuer;
 			if ( ! in_array( $issuer, self::$ignore ) ) {
 				if ( Settings::get( "fromServer" ) ) {
+				    if(!array_key_exists($section, self::$sections)) {
+                        self::$sections[$section] = '';
+                    }
                self::$sections[$section] .= "<$tag>$string</$tag>";
                //self::$sections[$section] = "Test";
 					//print( "<$tag>$string</$tag>");

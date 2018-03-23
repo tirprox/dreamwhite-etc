@@ -32,6 +32,8 @@ else {
 
 if (yaCounter42085949 !== undefined) {
     jQuery('#register-frontpage vc-btn3').on('click', yaCounter42085949.reachGoal('register-button-frontpage'));
+    jQuery('.yith-wcwl-add-button a').on('click', yaCounter42085949.reachGoal('add-to-wishlist'));
+
 }
 
 

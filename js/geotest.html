@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        ymaps.ready(function() {
+            var country = ymaps.geolocation.country;
+            var city = ymaps.geolocation.city;
+
+            $('#country').html('Выша страна '+country);
+            $('#city').html('Выша город '+city);
+        });
+    });
+</script>
+</body>
+</html>

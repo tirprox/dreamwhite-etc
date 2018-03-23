@@ -56,6 +56,7 @@ class StockManager {
       $this->wpdb->query( $sql1 );
       $this->wpdb->query( $sql2 );
       $this->wpdb->query( $sql3 );
+       wp_cache_flush();
    }
    
    function update_stock($sku, $stock){
@@ -76,5 +77,6 @@ class StockManager {
          $this->skuMiss++;
          //Log::d("SKU miss. Total miss count: $this->skuMiss", "stock", "p", "sql");
       }
+
    }
 }

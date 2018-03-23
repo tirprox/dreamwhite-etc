@@ -11,6 +11,8 @@
             <mapping deploy="/wp-content/plugins/woocommerce-checkout-reorder" local="$PROJECT_DIR$/woocommerce-checkout-reorder" web="/" />
             <mapping deploy="/js" local="$PROJECT_DIR$/js" web="/" />
             <mapping deploy="/wp-content/plugins/product-videos" local="$PROJECT_DIR$/product-videos" web="/" />
+            <mapping deploy="/metrika" local="$PROJECT_DIR$/metrika" web="/" />
+            <mapping deploy="/wp-content/mu-plugins/" local="$PROJECT_DIR$/remove-textdomains" web="/" />
           </mappings>
         </serverdata>
       </paths>
