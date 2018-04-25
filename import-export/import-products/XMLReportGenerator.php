@@ -29,11 +29,14 @@ class XMLReportGenerator {
    
    static function addProduct($product) {
       $xmlProduct = self::addChild('product', self::$root);
-   
+
+       self::addNode('id', $product->id, $xmlProduct);
       self::addNode('name', $product->name, $xmlProduct);
       self::addNode('group', $product->categories, $xmlProduct);
        //self::addNode('group', $product->categories, $xmlProduct);
       self::addNode('sku', $product->code, $xmlProduct);
+       self::addNode('barcode', $product->barcode, $xmlProduct);
+
       self::addNode('article', $product->article, $xmlProduct);
       self::addNode('uom', $product->uom, $xmlProduct);
       self::addNode('stock', $product->stock, $xmlProduct);
@@ -71,8 +74,10 @@ class XMLReportGenerator {
       $variants = XMLReportGenerator::addChild('variations', $xmlProduct);
       foreach ($product->variants as $variant) {
          $xmlVariant = self::addChild('variation', $variants);
+          self::addNode('id', $variant->id, $xmlVariant);
          self::addNode('name', $variant->name, $xmlVariant);
          self::addNode('sku', $variant->code, $xmlVariant);
+          self::addNode('barcode', $variant->barcode, $xmlVariant);
          //self::addNode('article', $variant->article, $productNode);
          //self::addNode('uom', $variant->uom, $productNode);
          self::addNode('stock', $variant->stock, $xmlVariant);

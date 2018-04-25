@@ -3,6 +3,9 @@ namespace Dreamwhite\Import;
 class Product {
    var $product;
    var $productFolderName;
+
+   var $pathName = "";
+
    var $categories;
    var $name;
    var $id;
@@ -73,6 +76,10 @@ class Product {
       if (property_exists($product, "article")) {
          $this->article = $product->article;
       }
+
+       if ( count( $product->barcodes ) > 0 ) {
+           $this->barcode = $product->barcodes[ 0 ];
+       }
 	
 	   $photoFileName = $this->article . ".jpg";
 	   $photoFileName = str_replace(" ", "-", $photoFileName );

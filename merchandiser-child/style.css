@@ -12,6 +12,76 @@ Version: 1.0
 /****************************************************************/
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
+.added_to_cart {
+/*display: none;*/
+}
+
+.ss18 {
+    display: none;
+}
+
+.logged-in .ss18 {
+    display: block;
+}
+
+.logged-in .ss18-not-logged-in {
+    display: none;
+}
+
+
+.nav-register a {
+    color: white !important;
+    padding: 12px !important;
+    background: #4caf50;
+}
+
+.header-top {
+    padding-top: 8px;
+    background: #fff;
+color: black;
+padding-bottom: 8px;
+padding-left: 45px;
+width: 100%;
+padding-right: 45px;
+border-bottom: 1px solid #eee;
+}
+
+.header-top a, .header-top span  {
+    color: black;
+    margin-right: 16px;
+}
+
+.header-top-transparent {
+    padding-top: 8px;
+color: white;
+padding-bottom: 8px;
+padding-left: 45px;
+width: 100%;
+padding-right: 45px;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-top-transparent a, .header-top-transparent span {
+    color: white;
+    margin-right: 16px;
+}
+
+
+.white-transparent-links a {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+@media (max-width: 64em) {
+    #header-top {
+        display: none;
+    }
+}
+
+
+.shop_categories_list {
+	display: none;
+}
+
 .entry-content p a {
     color: #11c552 !important;
 }
@@ -38,6 +108,7 @@ Version: 1.0
     position: relative;
     padding: 16px;
 }
+
 
 .woocommerce .shop-page-header .shop-page-title-wrapper .mobile-sidebar-toggle {
     font-size: 13px;
@@ -67,6 +138,13 @@ Version: 1.0
     transition-delay: 0s;
 }
 
+@media (min-width: 1025px){
+    .site-content {
+        padding-top: 119px !important;
+    }
+}
+
+
 .offcanvas_overlay {
     -webkit-animation: offcanvas_overlay_closing_animation 1s forwards;
     animation: offcanvas_overlay_closing_animation 0.3s forwards;
@@ -89,16 +167,17 @@ body.offcanvas_open .offcanvas_overlay {
 .woocommerce .product-images-wrapper .product-images-carousel .swiper-slide img {
     padding-left: 0 !important;
 }
+
 .woocommerce ul.products li.product:hover .product_thumbnail:not(.with_second_image) img {
-    /* transform: translateX(0) translateY(0) !important; */
+    transform: translateX(0) translateY(0) !important;
     transform: none !important;
     transition: none !important;
 }
 
 
 .woocommerce ul.products li.product:hover .product_thumbnail img {
-    /* transform: none !important; */
-    /* transition: none !important; */
+    transform: none !important;
+    transition: none !important;
 }
 
 
@@ -298,9 +377,13 @@ body.offcanvas_open .offcanvas_overlay {
 
 @media only screen and (max-width: 30.063em) {
 	.hideonmobile {
-		display: none!important;
+		display: none !important;
 	}
-
+}
+@media only screen and (min-width: 30.063em) {
+	.hideondesktop {
+		display: none !important;
+	}
 }
 @media (max-width: 790px){
 .main_buttons{
@@ -482,9 +565,9 @@ prdctfltr_regular_title{
    
 }
 
-.wrap_mW._show_1e{
+/* .wrap_mW._show_1e{
 		display: none!important;
-	}
+	} */
 
 #chart-button {
     font-weight: 400!important;
@@ -525,6 +608,18 @@ span.count{
 .category_name{
     font-weight: 300!important;
     text-transform: none!important;
+}
+
+@media only screen and (min-width: 40em) {
+    .woocommerce-checkout:not(.woocommerce-order-received) .checkout-row #billing_phone_field {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 40em) {
+    .woocommerce-checkout:not(.woocommerce-order-received) .checkout-row #billing_email_field {
+        width: 50%;
+    }
 }
 
 

@@ -135,14 +135,22 @@ class ObjectGenerator {
 	
 	var $productPrefix = "https://online.moysklad.ru/api/remap/1.1/entity/product/";
 	function parseAssortment($assortment, $group) {
+	    // key = productHref, value = product
 		$productHashMap = [];
 		
 		foreach ($assortment->rows as $row) {
-			if ($row->meta->type === "product") {
-				$newProduct        = new Product( $row, $row->stock, $group->name );
-				
-				$productHashMap[$this->productPrefix . $row->id] = $newProduct;
-				unset($row);
+			if ($row->meta->type === "product" ) {
+
+                $newProduct        = new Product( $row, $row->stock, $group->name );
+                $newProduct->pathName = $row->pathName;
+
+                $productHashMap[$this->productPrefix . $row->id] = $newProduct;
+
+/*			    if ($row->pathName === $group->pathName) {
+                    Log::d($row->pathName, "product");
+
+                }*/
+                unset($row);
 			}
 		}
 		foreach ($assortment->rows as $row) {
@@ -154,7 +162,12 @@ class ObjectGenerator {
 		}
 		$products = [];
 		foreach($productHashMap as $href => $product) {
-			$products[] = $product;
+
+            if ($product->pathName === $group->pathName) {
+                $products[] = $product;
+            }
+			//$products[] = $product;
+
 		}
 		return $products;
 	}
@@ -280,10 +293,14 @@ class ObjectGenerator {
 	function updateStock() {
 		Timers::start( "sql query stock updates" );
 		$stockManager = new StockManager();
+		//$skuToPostId = array_flip($stockManager->postIdSkuMap);
+        $skuToPostId = $stockManager->postIdSkuMap;
+
 		foreach ( $this->groups->groupArray as $group ) {
 			foreach ( $group->products as $product ) {
 				foreach ( $product->variants as $variant ) {
 					$stockManager->update_stock( $variant->code, $variant->stock );
+					$stockManager->update_ms_id($skuToPostId[$variant->code], $variant->id);
 				}
 				$stockManager->update_stock( $product->code, $product->stock );
 			}
@@ -325,12 +342,25 @@ class ObjectGenerator {
 	function createXMLReport() {
 		
 		XMLReportGenerator::createDocument();
+        //XMLShortReportGenerator::createDocument();
+
 		foreach ( $this->groups->groupArray as $group ) {
 			foreach ( $group->products as $product ) {
 				$xmlProductNode = XMLReportGenerator::addProduct( $product );
+                //$xmlShortProductNode = XMLShortReportGenerator::addProduct( $product );
+                JSONShortReportGenerator::addProduct($product);
 			}
 		}
 		XMLReportGenerator::writeXmlToFile();
+        //XMLShortReportGenerator::writeXmlToFile();
+        JSONShortReportGenerator::writeJsonToFile();
+
+
+
+
+
 	}
+
+
 	
 }

@@ -106,6 +106,7 @@ function reorder_woo_fields( $fields ) {
 	$fields2[ 'billing' ][ 'billing_address_1' ][ 'placeholder' ]  = "Адрес";
 	
 	$fields2[ 'order' ][ 'order_comments' ] = $fields[ 'order' ][ 'order_comments' ];
+    $fields2[ 'order' ][ 'order_comments' ][ 'placeholder' ] = "Укажите свои параметры: обхват груди, талии, бёдер, а такжке рост и длину рукава.";
 
     $fields2[ 'account' ][ 'account_password' ] = $fields[ 'account' ][ 'account_password' ];
     //$fields2[ 'account' ][ 'account_password-2' ] = $fields[ 'account' ][ 'account_password-2' ];

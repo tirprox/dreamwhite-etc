@@ -15,7 +15,7 @@ class Groups
 
     ];
 
-    var $config = [
+    /*var $config = [
         "Свадебные пальто" => [
             "store" => "В белом",
             "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
@@ -46,7 +46,13 @@ class Groups
             "pathName" => "Женские куртки/Женские парки",
             "id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
         ],
-    ];
+
+        "SS18" => [
+            "store" => "Флигель",
+            "pathName" => "Женские пальто/SS18",
+            "id" => "1ada01b0-30f5-11e8-9107-5048001661e8",
+        ],
+    ];*/
 
     function getGroupsFromConfig()
     {
@@ -100,13 +106,23 @@ class Groups
                 "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccba5668-d359-11e7-7a31-d0fd00191b3a"
             ],
 
-/*            "Новая коллекция" => [
-                "store" => $this->stores['Склад'],
-                "pathName" => "Женские пальто",
-                "category" => "Новая коллекция",
-                "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
-                "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
-            ],*/
+            "SS18" => [
+                "store" => $this->stores['Флигель'],
+                "pathName" => "Женские пальто/SS18",
+                "category" => "SS18",
+                "id" => "1ada01b0-30f5-11e8-9107-5048001661e8",
+                "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/1ada01b0-30f5-11e8-9107-5048001661e8"
+            ],
+
+
+            "Жилеты" => [
+                "store" => $this->stores['Флигель'],
+                "pathName" => "Женские пальто/Жилеты",
+                "category" => "Жилеты",
+                "id" => "90e5d7fc-3819-11e8-9107-504800189a1b",
+                "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/90e5d7fc-3819-11e8-9107-504800189a1b"
+            ],
+
         ];
 
 

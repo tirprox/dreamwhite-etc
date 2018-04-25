@@ -6,16 +6,18 @@
  * Time: 2:02
  */
 namespace Dreamwhite\Import;
+require_once( $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' );
 class StockManager {
    var $wpdb;
    var $postIdSkuMap = [];
 	var $postIdStockMap = [];
    var $postmeta;
    var $queriesNotExecuted = 0, $skuMiss = 0, $queriesExecuted=0;
+
    
    function __construct() {
       define( 'SHORTINIT', true );
-      require_once( $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' );
+
       global $wpdb;
       $this->wpdb = $wpdb;
       $this->getPostIdSkuMap();
@@ -45,7 +47,12 @@ class StockManager {
 		   $this->postIdStockMap[$result['post_id']] =  $result['meta_value'];
 	   }
    }
-   
+
+   function update_ms_id($post_id, $id){
+           \update_post_meta( $post_id, "_ms_id", $id);
+   }
+
+
    function update_stock_status(){
       $sql1 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
          " WHERE meta_key = '_stock' AND meta_value < 1 ) id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
@@ -58,9 +65,14 @@ class StockManager {
       $this->wpdb->query( $sql3 );
        wp_cache_flush();
    }
-   
+
    function update_stock($sku, $stock){
       if (!empty($this->postIdSkuMap[$sku])){
+
+/*          $sql = "UPDATE " . $this->postmeta .
+              " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
+          $this->wpdb->query( $sql );*/
+
       	if ($this->postIdStockMap[$this->postIdSkuMap[$sku]] != $stock) {
 	        $sql = "UPDATE " . $this->postmeta .
 	               " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->postIdSkuMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
