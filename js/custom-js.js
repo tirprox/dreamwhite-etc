@@ -42,5 +42,7 @@ jQuery(document).ready(function() {
     //jQuery(".scroll-to-video-wrapper").css("height", "95px");
 
   }
+
+
 });
 
