@@ -12,9 +12,11 @@ Text Domain: dw-user-caps
 Domain Path: /languages
 */
 
-add_action( 'init', 'dw_custom_caps_prefix', 10, 3 );
+add_action( 'set_current_user', 'dw_custom_caps_prefix', '-1000', '0' );
 
 function dw_custom_caps_prefix() {
    $current_user = wp_get_current_user();
    $current_user->cap_key = "spb_capabilities";
+   $current_user->caps = get_user_meta($current_user->ID, $current_user->cap_key, true);
+   $current_user->get_role_caps();
 }
