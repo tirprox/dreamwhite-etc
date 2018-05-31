@@ -1,5 +1,5 @@
 <?php
-namespace Dreamwhite\Import;
+namespace Dreamwhite\Assortment;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
 
-class ObjectGenerator {
+class AssortmentManager {
 	
 	public $storeId = "baedb9ed-de2a-11e6-7a34-5acf00087a3f"; // Садовая
 	public $testUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?store.id=baedb9ed-de2a-11e6-7a34-5acf00087a3f&productFolder.id=cc91a970-07e7-11e6-7a69-93a700454ab8&stockMode=all";
@@ -20,6 +20,8 @@ class ObjectGenerator {
 	const storePrefix = "https://online.moysklad.ru/api/remap/1.1/entity/store/";
 	const expand = "&expand=uom,supplier";
 	public $groups = null;
+
+	public $stock = [];
 	
 	public $productRequestUrl;
 	public $imageDirPath = "http://static.dreamwhite.ru/photo/dir.php";
@@ -48,35 +50,44 @@ class ObjectGenerator {
 		);
 		Connector::addPromise( $imgPromise );
 		Connector::completeRequests();
-		Timers::start( "groups" );
+
 
 		// multiple cities start here
 
+        $cityGroups = [];
+        foreach (Config::CITIES as $city) {
+            Timers::start( "groups" );
 
-		$groups = new Groups();
-		$groups->groupArray = $groups->getGroupsForCity('spb');
-        $this->groups = $groups;
+            $groups = new Groups();
+            $groups->groupArray = $groups->getGroupsForCity($city);
+            $this->groups = $groups;
 
-        /*$this->groups = new Groups();
-		$this->groups->getGroupsFromConfig();
-		$this->groups->createGroups();*/
+            $cityGroups[] = $groups;
 
-		Timers::stop( "groups" );
+            Timers::stop( "groups" );
+
+            $groups = $this->getAssortmentForGroups($groups);
+            $this->setTagsForGroups($groups);
+
+        }
 
 
-        $groups = $this->getAssortmentForGroups($groups);
-		//$this->getAssortment();
 
-        $this->setTagsForGroups($groups);
 
-		//$this->setTags();
-        $this->createReportsForGroups($groups);
+        JSONStockGenerator::write($this->stock);
+
+        foreach ($cityGroups as $groups) {
+
+
+            $this->createReportsForGroups($groups);
+        }
+
 
 		
-		if (Settings::get("fromServer")) {
+		/*if (Settings::get("fromServer")) {
 			$this->updateStock();
 			//$this->serverMaintenanceFunctions();
-		}
+		}*/
 
 		//multi cities end here
 		
@@ -202,6 +213,8 @@ class ObjectGenerator {
                 $newProduct        = new Product( $row, $row->stock, $group->name );
                 $newProduct->pathName = $row->pathName;
 
+                $this->stock[$newProduct->code][$group->city] = $newProduct->stock;
+
                 $productHashMap[$this->productPrefix . $row->id] = $newProduct;
 
 /*			    if ($row->pathName === $group->pathName) {
@@ -214,6 +227,9 @@ class ObjectGenerator {
 		foreach ($assortment->rows as $row) {
 			if ($row->meta->type === "variant") {
 				$newVariant          = new ProductVariant( $row, $row->stock, $productHashMap[$row->product->meta->href]);
+
+                $this->stock[$newVariant->code][$group->city] = $newVariant->stock;
+
 				$productHashMap[$row->product->meta->href]->variants[] = $newVariant;
 				//unset($row);
 			}
@@ -320,7 +336,7 @@ class ObjectGenerator {
 	
 	function setTags() {
 		Timers::start( "tags" );
-		$tagFactory = new CSVTagFactory();
+		$tagFactory = new TagFactory();
 		$tagFactory->loadTagsFromFile();
 		foreach ( $this->groups->groupArray as $group ) {
 			foreach ( $group->products as $product ) {
@@ -350,7 +366,7 @@ class ObjectGenerator {
 
     function setTagsForGroups(&$groups) {
         Timers::start( "tags" );
-        $tagFactory = new CSVTagFactory();
+        $tagFactory = new TagFactory();
         $tagFactory->loadTagsFromFile();
         foreach ( $groups->groupArray as $group ) {
             foreach ( $group->products as $product ) {
@@ -449,16 +465,17 @@ class ObjectGenerator {
 
         XMLReportGenerator::createDocument();
         //XMLShortReportGenerator::createDocument();
+        XMLReportGenerator::stock($this->stock);
 
         foreach ( $groups->groupArray as $group ) {
             foreach ( $group->products as $product ) {
                 $xmlProductNode = XMLReportGenerator::addProduct( $product );
-                //$xmlShortProductNode = XMLShortReportGenerator::addProduct( $product );
                 JSONShortReportGenerator::addProduct($product);
             }
         }
+        XMLReportGenerator::city($groups->groupArray[0]->city);
+
         XMLReportGenerator::writeXmlToFile();
-        //XMLShortReportGenerator::writeXmlToFile();
         JSONShortReportGenerator::writeJsonToFile();
     }
 

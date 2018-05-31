@@ -1,5 +1,5 @@
 <?php
-namespace Dreamwhite\Import;
+namespace Dreamwhite\Assortment;
 class Groups
 {
     var $remoteGroups;
@@ -253,7 +253,11 @@ class Groups
             Log::d("ID: " . $options['id'], "groups");
             Log::d("StoreID: " . $options['store'], "groups");
 
-            $groups[] = new Group($options['href'], $groupName, $options['id'], $options['store'], $options['pathName'], $options['category']);
+            $group = new Group($options['href'], $groupName, $options['id'], $options['store'], $options['pathName'], $options['category']);
+
+            $group->city = $city;
+
+            $groups[] = $group;
         }
 
         return $groups;

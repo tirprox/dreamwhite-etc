@@ -1,17 +1,14 @@
 <?php
-namespace Dreamwhite\Import;
+namespace Dreamwhite\Assortment;
 class JSONShortReportGenerator {
-   private static $path = "" . __DIR__ . "/short-report.json";
-   private static $zipFile = "" . __DIR__ . "/short-report.json.zip";
-
    private static $root = [];
 
 
    static function writeJsonToFile() {
 
-       $json = \json_encode(self::$root, JSON_UNESCAPED_UNICODE);
-       file_put_contents(self::$path, $json);
-
+       $json = json_encode(self::$root, JSON_UNESCAPED_UNICODE);
+       $path = dirname(__DIR__) . "/output/short-assortment.json";
+       file_put_contents($path, $json);
 
        return true;
    }

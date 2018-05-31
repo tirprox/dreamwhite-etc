@@ -1,5 +1,5 @@
 <?php
-namespace Dreamwhite\Import;
+namespace Dreamwhite\Assortment;
 class Group {
     var $url;
     var $name;
@@ -16,6 +16,8 @@ class Group {
     var $unpreparedResponses = [];
     var $firstResponse, $firstRequestUrl;
     var $assortment;
+
+    var $city;
 
     
     

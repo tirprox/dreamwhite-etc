@@ -19,6 +19,7 @@ require_once "Log.php";
 require_once "Settings.php";
 require_once "Tools.php";
 require_once "Auth.php";
+require_once "Config.php";
 
 require_once dirname(__DIR__) . "/Connector.php";
 require_once dirname(__DIR__) . "/Timers.php";

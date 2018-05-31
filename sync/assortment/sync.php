@@ -1,6 +1,6 @@
 <?php
-namespace Dreamwhite\Import;
-require_once "classes.php";
+namespace Dreamwhite\Assortment;
+require_once "includes.php";
 
 Log::enable();
 ini_set("memory_limit", "2048M");
@@ -15,7 +15,7 @@ if (Settings::get("fromServer")) {
 
 function import() {
    Timers::start("overall");
-   $generator = new ObjectGenerator();
+   $generator = new AssortmentManager();
    $generator->generateObjects();
    //$generator->createCSVReport();
    //$generator->createXMLReport();

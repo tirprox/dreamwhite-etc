@@ -5,7 +5,7 @@
  * Date: 03.12.2017
  * Time: 2:02
  */
-namespace Dreamwhite\Import;
+namespace Dreamwhite\StockManager;
 include_once( $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' );
 class StockManager {
    var $wpdb;
@@ -13,6 +13,8 @@ class StockManager {
 	var $postIdStockMap = [];
    var $postmeta;
    var $queriesNotExecuted = 0, $skuMiss = 0, $queriesExecuted=0;
+
+
 
    
    function __construct() {
@@ -24,6 +26,10 @@ class StockManager {
 	   $this->getPostIdStockMap();
       //og::d(var_dump($this->wpdb));
       //$this->wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
+   }
+
+   function loadStocksFromFile($path) {
+
    }
    
    function getPostIdSkuMap() {
