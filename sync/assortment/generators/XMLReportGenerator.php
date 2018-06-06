@@ -52,8 +52,10 @@ class XMLReportGenerator {
       self::addNode('uom', $product->uom, $xmlProduct);
       self::addNode('stock', $product->stock, $xmlProduct);
 
+
+       $stocks = self::addChild('stocks', $xmlProduct);
       foreach ($stock as $city => $value) {
-          self::addNode('stock-' . $city, $value, $xmlProduct);
+          self::addNode('stock-' . $city, $value, $stocks);
       }
 
 
@@ -102,8 +104,9 @@ class XMLReportGenerator {
 
           $variantStock = self::$stock[$variant->code];
 
+          $varStocks = self::addChild('stocks', $xmlVariant);
           foreach ($variantStock as $city => $value) {
-              self::addNode('stock-' . $city, $value, $xmlVariant);
+              self::addNode($city, $value, $varStocks);
           }
 
 

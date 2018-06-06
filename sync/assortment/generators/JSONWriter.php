@@ -9,11 +9,11 @@
 namespace Dreamwhite\Assortment;
 
 
-class JSONStockGenerator
+class JSONWriter
 {
 
-    static function write($data) {
-        $path = dirname(__DIR__) . "/output/stock.json";
+    static function write($data, $filename) {
+        $path = dirname(__DIR__) . "/output/" .  $filename;
         $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         file_put_contents($path, $json);
         return true;

@@ -16,6 +16,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="dreamwhite.ru sync">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/sync/assortment" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="dreamwhiteru@dreamwhite.ru">
         <serverdata>
           <mappings>
@@ -24,6 +31,13 @@
             <mapping deploy="/js" local="$PROJECT_DIR$/js" web="/" />
             <mapping deploy="/wp-content/plugins/import-export" local="$PROJECT_DIR$/import-export" web="/" />
             <mapping deploy="/wp-content/themes/merchandiser-child" local="$PROJECT_DIR$/merchandiser-child" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="msk stock plugin">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/woocommerce-stock" local="$PROJECT_DIR$/woocommerce-stock" web="/" />
           </mappings>
         </serverdata>
       </paths>
