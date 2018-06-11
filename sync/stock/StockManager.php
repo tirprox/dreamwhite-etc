@@ -89,7 +89,14 @@ class StockManager {
     function updateStockFromCities($sku, $cityStockValues){
         if (!empty($this->skuPostIdMap[$sku])){
 
-            $stock = $cityStockValues[Config::CITY] ?? 0;
+            //$stock = $cityStockValues[Config::CITY] ?? 0;
+            $stock = 0;
+
+            foreach ($cityStockValues as $city => $value) {
+                update_post_meta($this->skuPostIdMap[$sku], "stock_" . $city, $value);
+                $this->queriesExecuted++;
+                $stock+=$value;
+            }
 
             if ($this->postIdStockMap[$this->skuPostIdMap[$sku]] != $stock) {
                 $sql = "UPDATE " . $this->postmeta .
@@ -101,10 +108,7 @@ class StockManager {
                 $this->queriesNotExecuted++;
             }
 
-            foreach ($cityStockValues as $city => $value) {
-                update_post_meta($this->skuPostIdMap[$sku], "stock_" . $city, $value);
-                $this->queriesExecuted++;
-            }
+
 
         }
         else {

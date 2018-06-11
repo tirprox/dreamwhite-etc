@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="wc stock">
+  <component name="PublishConfigData" serverName="msk stock plugin">
     <serverData>
       <paths name="dreamwhite.ru">
         <serverdata>
@@ -13,6 +13,13 @@
             <mapping deploy="/wp-content/plugins/product-videos" local="$PROJECT_DIR$/product-videos" web="/" />
             <mapping deploy="/metrika" local="$PROJECT_DIR$/metrika" web="/" />
             <mapping deploy="/wp-content/mu-plugins/" local="$PROJECT_DIR$/remove-textdomains" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="msk stock plugin">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/woocommerce-stock" local="$PROJECT_DIR$/woocommerce-stock" web="/" />
           </mappings>
         </serverdata>
       </paths>

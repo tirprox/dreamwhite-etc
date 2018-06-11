@@ -50,18 +50,25 @@ class XMLReportGenerator {
 
       self::addNode('article', $product->article, $xmlProduct);
       self::addNode('uom', $product->uom, $xmlProduct);
-      self::addNode('stock', $product->stock, $xmlProduct);
-
+      //self::addNode('stock', $product->stock, $xmlProduct);
 
        $stocks = self::addChild('stocks', $xmlProduct);
+       $stockSum = 0;
       foreach ($stock as $city => $value) {
           self::addNode('stock-' . $city, $value, $stocks);
+          $stockSum += $value;
       }
 
+       self::addNode('stock', $stockSum, $xmlProduct);
+       self::addNode('availability',
+           $stockSum > 0 ? "instock" : "outofstock",
+           $xmlProduct);
 
-      self::addNode('availability',
+
+
+      /*self::addNode('availability',
          $product->stock > 0 ? "instock" : "outofstock",
-         $xmlProduct);
+         $xmlProduct);*/
       self::addNode('price', $product->regularPrice, $xmlProduct);
       self::addNode('salePrice', $product->salePrice, $xmlProduct);
       self::addNode('description', $product->description, $xmlProduct);
@@ -99,20 +106,29 @@ class XMLReportGenerator {
           self::addNode('barcode', $variant->barcode, $xmlVariant);
          //self::addNode('article', $variant->article, $productNode);
          //self::addNode('uom', $variant->uom, $productNode);
-         self::addNode('stock', $variant->stock, $xmlVariant);
+         //self::addNode('stock', $variant->stock, $xmlVariant);
 
 
           $variantStock = self::$stock[$variant->code];
 
+          $varStockSum = 0;
           $varStocks = self::addChild('stocks', $xmlVariant);
           foreach ($variantStock as $city => $value) {
               self::addNode($city, $value, $varStocks);
+              $varStockSum += $value;
           }
 
+          self::addNode('stock', $varStockSum, $xmlVariant);
 
-         self::addNode('availability',
+          self::addNode('availability',
+              $varStockSum > 0 ? "instock" : "outofstock",
+              $xmlVariant);
+
+         /*self::addNode('availability',
             $variant->stock > 0 ? "instock" : "outofstock",
-            $xmlVariant);
+            $xmlVariant);*/
+
+
          self::addNode('price', $variant->regularPrice, $xmlVariant);
          self::addNode('salePrice', $variant->salePrice, $xmlVariant);
    

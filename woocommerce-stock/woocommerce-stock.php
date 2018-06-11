@@ -22,15 +22,25 @@ function revised_woocommerce_get_availability( $available_array , $product) {
    
    
     $stock = [];
-      $stock['spb'] = get_post_meta( $product->get_variation_id(), 'stock_spb', false );
-      $stock['msk'] = get_post_meta( $product->get_variation_id(), 'stock_msk', false );
-      
-      echo $stock['spb'][0] . " " . $stock['msk'][0] . PHP_EOL;
+      $stock['spb'] = get_post_meta( $product->get_variation_id(), 'stock_spb', true );
+      $stock['msk'] = get_post_meta( $product->get_variation_id(), 'stock_msk', true );
+
+
+      $spbTitle = "Наличие в Санкт-Петербурге: ";
+      $mskTitle = "Наличие в Москве:  ";
+
+      $avText = $spbTitle . $stock['spb'] . '<br>' . $mskTitle . $stock['msk'];
+
+      $available_array["availability"] = $avText;
+    //$available_array["class"] = 'out-of-stock';
+      //echo $stock['spb'][0] . " " . $stock['msk'][0] . PHP_EOL;
       
       
       
     return $available_array;
 }
+
+
 
 function resolveStockForCities($stockSpb, $stockMsk) {
 
