@@ -15,17 +15,20 @@ Domain Path: /languages
 add_filter( 'woocommerce_get_availability' , 'revised_woocommerce_get_availability' , 10, 2 );
 
 function revised_woocommerce_get_availability( $available_array , $product) {
-
-    if ( $product->managing_stock() ) {
-
-        $stock = [];
-        $stock['spb'] = get_post_meta( $product->id, 'stock_spb', false );
-        $stock['msk'] = get_post_meta( $product->id, 'stock_msk', false );
-
-        var_dump($product->id);
-        var_dump($stock['msk'][0] );
-
-    }
+   
+   //var_dump($product->get_variation_id());
+   
+ 
+   
+   
+    $stock = [];
+      $stock['spb'] = get_post_meta( $product->get_variation_id(), 'stock_spb', false );
+      $stock['msk'] = get_post_meta( $product->get_variation_id(), 'stock_msk', false );
+      
+      echo $stock['spb'][0] . " " . $stock['msk'][0] . PHP_EOL;
+      
+      
+      
     return $available_array;
 }
 

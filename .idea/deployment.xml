@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="dreamwhiteru@dreamwhite.ru">
+  <component name="PublishConfigData" serverName="wc stock">
     <serverData>
       <paths name="dreamwhite.ru">
         <serverdata>
@@ -16,28 +16,10 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="dreamwhite.ru sync">
+      <paths name="wc stock">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/sync/assortment" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="dreamwhiteru@dreamwhite.ru">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/wp-content/plugins/woocommerce-checkout-reorder" local="$PROJECT_DIR$/woocommerce-checkout-reorder" web="/" />
-            <mapping deploy="/wp-content/plugins/product-tag-seo" local="$PROJECT_DIR$/product-tag-seo" web="/" />
-            <mapping deploy="/js" local="$PROJECT_DIR$/js" web="/" />
-            <mapping deploy="/wp-content/plugins/import-export" local="$PROJECT_DIR$/import-export" web="/" />
-            <mapping deploy="/wp-content/themes/merchandiser-child" local="$PROJECT_DIR$/merchandiser-child" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="msk stock plugin">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/woocommerce-stock" local="$PROJECT_DIR$/woocommerce-stock" web="/" />
+            <mapping deploy="/wp-content/plugins/woocommerce-stock" local="$PROJECT_DIR$/woocommerce-stock" web="/" />
           </mappings>
         </serverdata>
       </paths>

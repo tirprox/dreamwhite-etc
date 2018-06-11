@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="ad93e301-9bdb-427e-85a2-91d551c72c8a" name="wc stock" url="http://dreamwhite.ru">
+        <fileTransfer host="dreamwhite.ru" port="22" rootFolder="/var/www/vhosts/dreamwhite.ru/msk.dreamwhite.ru" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
