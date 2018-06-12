@@ -12,35 +12,40 @@ Text Domain: woocommerce-stock
 Domain Path: /languages
 */
 
-add_filter( 'woocommerce_get_availability' , 'revised_woocommerce_get_availability' , 10, 2 );
+add_filter('woocommerce_get_availability', 'revised_woocommerce_get_availability', 10, 2);
 
-function revised_woocommerce_get_availability( $available_array , $product) {
+function revised_woocommerce_get_availability($available_array, $product) {
    
-   //var_dump($product->get_variation_id());
-   
- 
+   $stock = [];
    
    
-    $stock = [];
-      $stock['spb'] = get_post_meta( $product->get_variation_id(), 'stock_spb', true );
-      $stock['msk'] = get_post_meta( $product->get_variation_id(), 'stock_msk', true );
-
-
-      $spbTitle = "Наличие в Санкт-Петербурге: ";
-      $mskTitle = "Наличие в Москве:  ";
-
-      $avText = $spbTitle . $stock['spb'] . '<br>' . $mskTitle . $stock['msk'];
-
-      $available_array["availability"] = $avText;
-    //$available_array["class"] = 'out-of-stock';
-      //echo $stock['spb'][0] . " " . $stock['msk'][0] . PHP_EOL;
-      
-      
-      
-    return $available_array;
+   $stock[ 'spb' ] = get_post_meta($product->get_variation_id(), 'stock_spb', true);
+   $stock[ 'msk' ] = get_post_meta($product->get_variation_id(), 'stock_msk', true);
+   
+   $spbTitle = "В Санкт-Петербурге: ";
+   $mskTitle = "В Москве:  ";
+   $avText = '';
+   
+   $otherCity = CITY === 'spb' ? 'msk' : 'spb';
+   
+   if ($stock[CITY] > 0) {
+      $avText = $stock[CITY] . ' в наличии';
+   }
+   else if ($stock[$otherCity] > 0) {
+      $avText = $spbTitle . $stock[ 'spb' ]
+         . '<br>'
+         . $mskTitle . $stock[ 'msk' ]
+         . '<br>'
+         . 'Свяжитесь с нами для уточнения условий предзаказа'
+      ;
+   }
+   
+   //$avText = $spbTitle . $stock[ 'spb' ] . '<br>' . $mskTitle . $stock[ 'msk' ];
+   
+   $available_array[ "availability" ] = $avText;
+   
+   return $available_array;
 }
-
-
 
 function resolveStockForCities($stockSpb, $stockMsk) {
 
