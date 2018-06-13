@@ -12,6 +12,31 @@ Version: 1.0
 /****************************************************************/
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
+.city-select {
+    color: #000;
+    font-family: inherit;
+    font-size: 0.66667rem;
+    line-height: normal;
+    /*padding: 0.3rem;*/
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.5rem;
+    padding-right: 1rem;
+    border-radius: 0;
+    height: 2rem;
+    margin: 0;
+    width: initial;
+}
+
+.link-to-city {
+    float: right;
+    /*color: #4caf50 !important;*/
+}
+
+.link-to-city:hover {
+    color: #52e056;
+}
+
 .added_to_cart {
 /*display: none;*/
 }

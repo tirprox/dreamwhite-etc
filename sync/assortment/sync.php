@@ -1,5 +1,7 @@
 <?php
 namespace Dreamwhite\Assortment;
+use GuzzleHttp\Client;
+
 require_once "includes.php";
 
 Log::enable();
@@ -19,9 +21,18 @@ function import() {
    $generator->generateObjects();
    //$generator->createCSVReport();
    //$generator->createXMLReport();
+    updateDB();
    Timers::stop("overall");
-   
+
 }
+
+function updateDB () {
+    $client = new Client();
+    foreach (Config::DBUPDATEURLS as $url) {
+        $client->getAsync($url);
+    }
+}
+
 
 function makeHeader() {
    ?>

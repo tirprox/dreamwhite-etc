@@ -316,10 +316,10 @@ function awrr_states_russia( $states ) {
    );
    
    
-   $string = '';
+   /*$string = '';
    foreach ($states['RU'] as $key => $value) {
      $string .= $key . ",";
    }
-   echo $string;
+   echo $string;*/
    return $states;
 }

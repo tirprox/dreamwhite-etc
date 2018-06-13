@@ -16,6 +16,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="merchandiser-child">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/merchandiser-child" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="wc stock">
         <serverdata>
           <mappings>
