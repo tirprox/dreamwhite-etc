@@ -29,7 +29,7 @@ function import() {
 function updateDB () {
     $client = new Client();
     foreach (Config::DBUPDATEURLS as $url) {
-        $client->getAsync($url);
+        $client->get($url);
     }
 }
 

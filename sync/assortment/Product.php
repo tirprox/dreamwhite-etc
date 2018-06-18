@@ -151,21 +151,21 @@ class Product {
 	            $attrSet[$attr->name] = $this->getAttributeValue($attr);
             }
 	
-	         $this->material = $attrSet['Материал'];
-	         $this->uteplitel = $attrSet['Утеплитель'];
-	         $this->podkladka = $attrSet['Подкладка'];
-	         $this->siluet = $attrSet['Силуэт'];
-	         $this->dlina = $attrSet['Длина изделия'];
-	         $this->rukav = $attrSet['Рукав'];
-	         $this->dlina_rukava = $attrSet['Длина рукава'];
-	         $this->zastezhka = $attrSet['Застежка'];
+	         $this->material = $attrSet['Материал'] ?? "";
+	         $this->uteplitel = $attrSet['Утеплитель'] ?? "";
+	         $this->podkladka = $attrSet['Подкладка'] ?? "";
+	         $this->siluet = $attrSet['Силуэт'] ?? "";
+	         $this->dlina = $attrSet['Длина изделия'] ?? "";
+	         $this->rukav = $attrSet['Рукав'] ?? "";
+	         $this->dlina_rukava = $attrSet['Длина рукава'] ?? "";
+	         $this->zastezhka = $attrSet['Застежка'] ?? "";
 	         // need to convert boolean
-	         $this->kapushon = $attrSet['Капюшон'];
-	         $this->vorotnik = $attrSet['Воротник'];
-	         $this->poyas = $attrSet['Пояс'];
-	         $this->karmany = $attrSet['Карманы'];
-	         $this->koketka = $attrSet['Кокетка'];
-	         $this->uhod = $attrSet['Уход'];
+	         $this->kapushon = $attrSet['Капюшон'] ?? "";
+	         $this->vorotnik = $attrSet['Воротник'] ?? "";
+	         $this->poyas = $attrSet['Пояс'] ?? "";
+	         $this->karmany = $attrSet['Карманы'] ?? "";
+	         $this->koketka = $attrSet['Кокетка'] ?? "";
+	         $this->uhod = $attrSet['Уход'] ?? "";
 	
 	         if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
          }

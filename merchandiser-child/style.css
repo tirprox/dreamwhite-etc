@@ -12,6 +12,11 @@ Version: 1.0
 /****************************************************************/
 /*************** ADD YOUR CUSTOM CSS IN THIS AREA ***************/
 /****************************************************************/
+
+html {
+    font-family: 'Montserrat';
+}
+
 .city-select {
     color: #000;
     font-family: inherit;
@@ -536,9 +541,9 @@ background-color: transparent !important;
    font-size: 130%!important;
 }
 
-/* .page-title{
+ .page-title{
    margin-bottom: 0px!important;
-} */
+}
 .widget-area {
     background: #ffffff;
 }
