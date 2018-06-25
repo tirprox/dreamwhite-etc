@@ -239,10 +239,13 @@ class AssortmentManager
         foreach ($groups->groupArray as $group) {
             foreach ($group->products as $product) {
                 $xmlProductNode = XMLReportGenerator::addProduct($product);
+                JSONShortReportGenerator::addProduct($product);
             }
         }
         XMLReportGenerator::city($groups->groupArray[0]->city);
         XMLReportGenerator::writeXmlToFile();
+
+        JSONShortReportGenerator::writeJsonToFile();
     }
 
 }
