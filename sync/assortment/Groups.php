@@ -13,7 +13,7 @@ class Groups
         "В белом" => "4488e436-07e7-11e6-7a69-971100273f23",
         "Склад" => "4488e436-07e7-11e6-7a69-971100273f23",
         "АРМА" => "f201e208-5902-11e8-9109-f8fc00094a27",
-
+        "Флигель Спб" => "83351169-8038-11e8-9ff4-34e800057d4a",
     ];
 
     const baseConfig = [
@@ -85,35 +85,35 @@ class Groups
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
                     ],
                     "Женские пальто" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские пальто",
                         "category" => "Женские пальто",
                         "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
                     ],
                     "Женские плащи" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские плащи",
                         "category" => "Женские плащи",
                         "id" => "2e7b7745-246a-11e7-7a31-d0fd00184b78",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/2e7b7745-246a-11e7-7a31-d0fd00184b78"
                     ],
                     "Мужские пальто" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Мужские пальто",
                         "category" => "Мужские пальто",
                         "id" => "3c1129d6-925a-11e7-7a69-971100078524",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3c1129d6-925a-11e7-7a69-971100078524"
                     ],
                     "Женские куртки" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские куртки",
                         "category" => "Женские куртки",
                         "id" => "c3e048e5-d358-11e7-7a6c-d2a900192646",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c3e048e5-d358-11e7-7a6c-d2a900192646"
                     ],
                     "Женские парки" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские куртки/Женские парки",
                         "category" => "Женские парки",
                         "id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
@@ -121,7 +121,7 @@ class Groups
                     ],
 
                     "SS18" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские пальто/SS18",
                         "category" => "SS18",
                         "id" => "1ada01b0-30f5-11e8-9107-5048001661e8",
@@ -129,7 +129,7 @@ class Groups
                     ],
 
                     "Жилеты" => [
-                        "store" => $this->stores['Флигель'],
+                        "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские пальто/Жилеты",
                         "category" => "Жилеты",
                         "id" => "90e5d7fc-3819-11e8-9107-504800189a1b",
@@ -267,7 +267,7 @@ class Groups
         $config = self::baseConfig;
 
         $cities = [
-            "spb" => $this->stores['Флигель'],
+            "spb" => $this->stores['Флигель Спб'],
             "msk" => $this->stores['АРМА'],
         ];
 
