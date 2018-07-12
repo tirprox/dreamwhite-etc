@@ -23,6 +23,15 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="dreamwhiteru@dreamwhite.ru">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/wp-content/plugins/product-image-fix" local="$PROJECT_DIR$/product-image-fix" web="/" />
+            <mapping deploy="/wp-content/plugins/product-tag-seo" local="$PROJECT_DIR$/product-tag-seo" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="merchandiser-child">
         <serverdata>
           <mappings>

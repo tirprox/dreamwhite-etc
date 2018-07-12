@@ -20,39 +20,42 @@ class TagFactory {
       }
       
    }
-   
-   function createTag($csvRow) {
+
+   /* Creating a tag from a csv row, where row is represented as an array. */
+   function createTag($row) {
       $tag = new Tag();
-      $tag->name = $csvRow[0];
-      $tag->group = $this->splitAttr($csvRow[1]);
+      $tag->name = $row[0];
+      $tag->group = $this->splitAttr($row[1]);
       
-      $tag->color = $this->splitAttr($csvRow[2]);
+      $tag->color = $this->splitAttr($row[2]);
       if ($tag->color[0]->attribute !== "") {
 	      $tag->hasColors = true;
       }
       
-      $tag->size = $this->splitAttr($csvRow[3]);
+      $tag->size = $this->splitAttr($row[3]);
       
-      $tag->material = $this->splitAttr($csvRow[4]);
-      $tag->uteplitel = $this->splitAttr($csvRow[5]);
-      $tag->podkladka = $this->splitAttr($csvRow[6]);
-      $tag->siluet = $this->splitAttr($csvRow[7]);
-      $tag->dlina = $this->splitAttr($csvRow[8]);
-      $tag->rukav = $this->splitAttr($csvRow[9]);
-      $tag->dlina_rukava = $this->splitAttr($csvRow[10]);
-      $tag->zastezhka = $this->splitAttr($csvRow[11]);
-      $tag->kapushon = $this->splitAttr($csvRow[12]);
-      $tag->vorotnik = $this->splitAttr($csvRow[13]);
-      $tag->poyas = $this->splitAttr($csvRow[14]);
-      $tag->karmany = $this->splitAttr($csvRow[15]);
-      $tag->koketka = $this->splitAttr($csvRow[16]);
-      $tag->uhod = $this->splitAttr($csvRow[17]);
+      $tag->material = $this->splitAttr($row[4]);
+      $tag->uteplitel = $this->splitAttr($row[5]);
+      $tag->podkladka = $this->splitAttr($row[6]);
+      $tag->siluet = $this->splitAttr($row[7]);
+      $tag->dlina = $this->splitAttr($row[8]);
+      $tag->rukav = $this->splitAttr($row[9]);
+      $tag->dlina_rukava = $this->splitAttr($row[10]);
+      $tag->zastezhka = $this->splitAttr($row[11]);
+      $tag->kapushon = $this->splitAttr($row[12]);
+      $tag->vorotnik = $this->splitAttr($row[13]);
+      $tag->poyas = $this->splitAttr($row[14]);
+      $tag->karmany = $this->splitAttr($row[15]);
+      $tag->koketka = $this->splitAttr($row[16]);
+      $tag->uhod = $this->splitAttr($row[17]);
       
       
       
       $this->tags[] = $tag;
    }
-   
+
+   /* Determine whether attribute should be included or excluded.
+   If prepended with -, attribute is excluded from a tag (is inverted) */
    function splitAttr($atrrString){
       $data[] = str_getcsv($atrrString, ",");
       $attrs = [];
@@ -116,7 +119,15 @@ class TagFactory {
          
       }
    }
-   
+
+
+   /* The order is following:
+   First, if attr is empty,  tag match is returned instantly.
+   Second, comparing tag attrs to product attrs, on match check for inversion.
+   If not inverted, match is found. Else not.
+   If match not found, but attr is inverted, return match.
+    */
+
    function compareAttrs($tagAttrArray, $productAttr) {
       if ($tagAttrArray[0]->attribute == "") return true;
       $matchCount=0;
@@ -139,7 +150,7 @@ class TagFactory {
       return $match;
    }
    
-   function compareColors($tag, $productColors){
+   function compareColors($tag, $productColors) {
       $tagColors = $tag->color;
       $match = false;
       foreach ($tagColors as $tagColor){
