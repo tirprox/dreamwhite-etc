@@ -35,11 +35,14 @@ foreach ($filtered as $cat) {
             $files = array_diff(scandir($cdir ), array('..', '.'));
 
             $i = 1;
+            $isBkp = false;
 
             if (in_array('1.jpg', $files) || in_array('1.JPG', $files)) {
                 $name = $article . "-" . $color . "-" ."1.jpg";
+
                 if (in_array($name , $files)) {
                     rename($cdir . "/" . $name, $cdir . "/" . 'bkp.jpg' );
+                    $isBkp = true;
                 }
 
                 rename($cdir . "/" . "1.jpg", $cdir . "/" . $name );
@@ -47,32 +50,65 @@ foreach ($filtered as $cat) {
 
                 $files = array_diff(scandir($cdir ), array('..', '.'));
 
-                // first randomizing names except for 1 and bkp
-                $j = 2;
-                foreach ($files as $file) {
-                    $path = $cdir . "/" . $file;
+                if ($isBkp) {
+                    // first randomizing names except for 1 and bkp
+                    $j = 2;
+                    foreach ($files as $file) {
+                        $path = $cdir . "/" . $file;
 
-                    $newName = $j . ".jpg";
-                    if ($file !== $name && $file !== 'bkp.jpg') {
-                        rename($path, $cdir . "/" . $newName );
+                        $newName = $j . ".jpg";
+                        if ($file !== $name && $file !== 'bkp.jpg') {
+                            rename($path, $cdir . "/" . $newName );
+                        }
+                        $j++;
                     }
-                    $j++;
+                    $name2 = $article . "-" . $color . "-" ."2.jpg";
+                    rename($cdir . "/" . "bkp.jpg", $cdir . "/" . $name2 );
+
+                    $i=3;
+                    $files = array_diff(scandir($cdir ), array('..', '.'));
+
+                    foreach ($files as $file) {
+                        $path = $cdir . "/" . $file;
+
+                        $newName = $article . "-" . $color . "-" . $i . ".jpg";
+                        if ($file !== $name && $file !== $name2) {
+                            rename($path, $cdir . "/" . $newName );
+                            $i++;
+                        }
+                    }
+
+
                 }
-                $name2 = $article . "-" . $color . "-" ."2.jpg";
-                rename($cdir . "/" . "bkp.jpg", $cdir . "/" . $name2 );
 
-                $i=3;
-                $files = array_diff(scandir($cdir ), array('..', '.'));
+                else {
+                    // first randomizing names except for 1 and bkp
+                    $j = 2;
+                    foreach ($files as $file) {
+                        $path = $cdir . "/" . $file;
 
-                foreach ($files as $file) {
-                    $path = $cdir . "/" . $file;
+                        $newName = $j . ".jpg";
+                        if ($file !== $name) {
+                            rename($path, $cdir . "/" . $newName );
+                        }
+                        $j++;
+                    }
 
-                    $newName = $article . "-" . $color . "-" . $i . ".jpg";
-                    if ($file !== $name && $file !== $name2) {
-                        rename($path, $cdir . "/" . $newName );
-                        $i++;
+
+                    $i=2;
+                    $files = array_diff(scandir($cdir ), array('..', '.'));
+
+                    foreach ($files as $file) {
+                        $path = $cdir . "/" . $file;
+
+                        $newName = $article . "-" . $color . "-" . $i . ".jpg";
+                        if ($file !== $name) {
+                            rename($path, $cdir . "/" . $newName );
+                            $i++;
+                        }
                     }
                 }
+
             }
 
             else {

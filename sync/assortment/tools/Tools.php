@@ -61,5 +61,7 @@ class Tools {
    }
    
    static $imageDirList = [];
+
+    static $imageTree = [];
 }
 

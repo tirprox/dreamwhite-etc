@@ -49,6 +49,8 @@ class Product {
    
 	var $productPhotoUrl = "";
 	var $galleryUrls = "";
+
+	public $images = [];
 	
 	var $colors = [], $sizes = "";
 	var $tags = "";
@@ -62,6 +64,8 @@ class Product {
       $this->id = $product->id;
       $this->name = $product->name;
       $this->stock = $stock;
+
+       $this->color = "Серый DR 67 GREY";
       
       $this->code = $product->code;
       if (property_exists($product, "uom")) {
@@ -102,7 +106,9 @@ class Product {
          $this->categories .= "," . $this->gender . " пуховики";
       	//$this->productFolderName .= "," . $this->gender . " пуховики";
       }
-      
+
+      $this->images = $this->getImageUrls();
+
       Log::d($this->name, "product", "p", "products");
    }
    
@@ -174,7 +180,35 @@ class Product {
    function textFromBool($bool){
       return $bool ? "Есть" : "Нет";
    }
-   
+
+   function getImageUrls() {
+       $base = 'https://static.dreamwhite.ru/photo/new-test/';
+       $path = $base . $this->productFolderName
+           . '/' . $this->article
+           . '/' . $this->color . '/';
+
+       $primary = $this->article . '-' . $this->color . '-1.jpg';
+       $gallery = array_diff(Tools::$imageTree[$this->productFolderName][$this->article][$this->color], [$primary]);
+
+       $galleryUrls = [];
+
+       foreach ($gallery as $fileName) {
+           $galleryUrls[] = $this->encodeWhitespace($path . $fileName);
+       }
+
+       $images = [];
+       $images['primary'] = $this->encodeWhitespace($path . $primary);
+       $images['gallery'] = $galleryUrls;
+
+       if ($this->article === 'Д001') var_dump($images);
+
+       return $images;
+   }
+
+   function encodeWhitespace($string) {
+       return str_replace(' ', '%20', $string);
+   }
+
    function getPrices () {
       foreach ($this->product->salePrices as $price) {
          if ( $price->priceType === "Цена продажи" ) {
@@ -190,6 +224,16 @@ class Product {
          }
       }
    }
+
+    function getAttribute( $variant, $attrName ) {
+        foreach ( $variant->characteristics as $ch ) {
+            if ( $ch->name == $attrName ) {
+                return $ch->value;
+            }
+        }
+
+        return "";
+    }
    
    function getAttributesString() {
       return

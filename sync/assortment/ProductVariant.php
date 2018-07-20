@@ -135,6 +135,7 @@ class ProductVariant {
 		
 		return "";
 	}
+
 	function getPrices () {
 	   foreach ($this->variant->salePrices as $price) {
          if ( $price->priceType === "Цена продажи" ) {

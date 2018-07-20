@@ -88,10 +88,14 @@ class XMLReportGenerator {
       self::addNode('karmany', $product->karmany, $attrs);
       self::addNode('koketka', $product->koketka, $attrs);
       self::addNode('uhod', $product->uhod, $attrs);
-      
-   
-      self::addNode('photo', $product->productPhotoUrl, $xmlProduct);
-	  self::addNode('photoGallery', $product->galleryUrls, $xmlProduct);
+
+       /*self::addNode('photo', $product->productPhotoUrl, $xmlProduct);
+       self::addNode('photoGallery', $product->galleryUrls, $xmlProduct);*/
+
+
+      self::addNode('photo', $product->images['primary'], $xmlProduct);
+	  self::addNode('photoGallery', implode(',', $product->images['gallery']), $xmlProduct);
+
 	  self::addNode('video', $product->video, $xmlProduct);
 	   self::addNode('video-youtube-part', Tools::removeYoutubeBase($product->video), $xmlProduct);
       self::addNode('tags', $product->tags, $xmlProduct);
