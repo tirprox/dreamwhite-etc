@@ -41,21 +41,28 @@ function my_extra_button_on_product_page()
 
         $image = wp_get_attachment_image_src( get_post_thumbnail_id( $item_id ), 'woocommerce_gallery_thumbnail' );
 
-
-
-
         if ($item_id === $product_id) {
             ?>
-            <div class="" style="border: 4px solid #78BC9C; box-sizing: border-box; display: inline-block">
-            <a href="<?php echo $item->get_permalink() ?>"><img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>"></a>
+            <div class="" style="box-sizing: border-box; display: inline-block; position:relative;" >
+            <img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>">
+                <div class="shadow"
+                     style="
+                     width: 100px;
+                     height: 100px;
+                     box-shadow: 0 0 0 4px #78BC9C inset;
+                     top: 0;
+                       left: 0;
+                     position:absolute;" >
+
+                </div>
             </div>
             <?php
         }
         else {
             ?>
-            <span class="">
+            <div class="" style="box-sizing: border-box; display: inline-block">
             <a href="<?php echo $item->get_permalink() ?>"><img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>"></a>
-            </span>
+            </div>
             <?php
         }
     }
