@@ -87,10 +87,10 @@ class TagFactory {
          // colors do not support attr inversion for now
          //
          if ($tag->hasColors) {
-            if (!$this->compareColors($tag, $product->colors)) continue;
+            if (!$this->compareColors($tag, $product->color)) continue;
          }
          else {
-            if (!$this->compareAttrs($tag->color, $product->colors)) continue;
+            if (!$this->compareAttrs($tag->color, $product->color)) continue;
          }
         
          if (!$this->compareAttrs($tag->size, $product->sizes)) continue;
@@ -150,10 +150,11 @@ class TagFactory {
       return $match;
    }
    
-   function compareColors($tag, $productColors) {
+   function compareColors($tag, $productColor) {
       $tagColors = $tag->color;
       $match = false;
-      foreach ($tagColors as $tagColor){
+      /*foreach ($tagColors as $tagColor){
+
          foreach ($productColors as $productColor) {
             if (Tools::match($productColor, $tagColor->attribute)) {
                $match = true;
@@ -163,7 +164,20 @@ class TagFactory {
                }
             }
          }
-      }
+      }*/
+       foreach ($tagColors as $tagColor){
+
+               if (Tools::match($productColor, $tagColor->attribute)) {
+                   $match = true;
+                   $productColorTranslit = strtolower(Tools::transliterate($productColor));
+                   if (!in_array($productColorTranslit, $tag->realColors)) {
+                       $tag->realColors[] = $productColorTranslit;
+                   }
+               }
+       }
+
+
+
       return $match;
    }
 

@@ -74,8 +74,15 @@ class XMLReportGenerator {
       self::addNode('description', $product->description, $xmlProduct);
       
       $attrs = self::addChild('attributes', $xmlProduct);
+
+       self::addNode('color', $product->color, $attrs);
+       self::addNode('colorGroup', $product->colorGroup, $attrs);
+       self::addNode('texture', $product->texture, $attrs);
+
       self::addNode('material', $product->material, $attrs);
       self::addNode('uteplitel', $product->uteplitel, $attrs);
+       self::addNode('season', $product->season, $attrs);
+
       self::addNode('podkladka', $product->podkladka, $attrs);
       self::addNode('siluet', $product->siluet, $attrs);
       self::addNode('dlina', $product->dlina, $attrs);
@@ -140,6 +147,8 @@ class XMLReportGenerator {
    
          self::addNode('color', $variant->color, $xmlVariant);
          self::addNode('size', $variant->size, $xmlVariant);
+          self::addNode('height', $variant->height, $xmlVariant);
+
          self::addNode('photo', $variant->variantPhotoUrl, $xmlVariant);
       }
       

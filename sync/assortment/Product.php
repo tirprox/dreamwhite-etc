@@ -20,7 +20,7 @@ class Product {
    
    var $supplier = "";
    var $description = "";
-   var $color = "";
+   public $color = "", $colorGroup = "", $texture = "";
    var $size = "";
    var $variantName = "";
    var $barcode = "";
@@ -29,8 +29,8 @@ class Product {
    var $article = "";
    
    var $material = "";
-   var $uteplitel = "";
-   var $podkladka = "";
+   var $uteplitel = "", $podkladka = "", $season = "";
+
    var $siluet = "";
    var $dlina = "";
    var $rukav = "";
@@ -65,7 +65,7 @@ class Product {
       $this->name = $product->name;
       $this->stock = $stock;
 
-       $this->color = "Серый DR 67 GREY";
+       //$this->color = "Серый DR 67 GREY";
       
       $this->code = $product->code;
       if (property_exists($product, "uom")) {
@@ -156,8 +156,15 @@ class Product {
             foreach ($attrs as $attr) {
 	            $attrSet[$attr->name] = $this->getAttributeValue($attr);
             }
-	
+
+
+             $this->color = $attrSet['Цвет'] ?? "";
+             $this->colorGroup = $attrSet['Цветовая группа'] ?? "";
+             $this->texture = $attrSet['Текстура'] ?? "";
+
 	         $this->material = $attrSet['Материал'] ?? "";
+
+             $this->season = $attrSet['Сезон'] ?? "";
 	         $this->uteplitel = $attrSet['Утеплитель'] ?? "";
 	         $this->podkladka = $attrSet['Подкладка'] ?? "";
 	         $this->siluet = $attrSet['Силуэт'] ?? "";

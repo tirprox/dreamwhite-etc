@@ -39,6 +39,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="new.dreamwhite.ru">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/wp-content/plugins" local="$PROJECT_DIR$/" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="wc stock">
         <serverdata>
           <mappings>

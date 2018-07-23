@@ -18,8 +18,9 @@ class ProductVariant {
 	
 	var $supplier = "";
 	var $description = "";
-	var $color = "";
-	var $size = "";
+
+	var $color = "", $size = "", $height = "";
+
 	var $variantName = "";
 	var $barcode = "";
 	
@@ -50,8 +51,13 @@ class ProductVariant {
 			$this->description = $variant->description;
 		}
 		
-		$this->color       = $this->getAttribute( $variant, "Цвет" );
+		/*$this->color       = $this->getAttribute( $variant, "Цвет" );
 		$this->size        = $this->getAttribute( $variant, "Размер" );
+        $this->size        = $this->getAttribute( $variant, "Рост" );*/
+
+        $this->setAttributes();
+
+
 		$this->variantName = $variant->name;
 		if ( property_exists( $variant, "code" ) ) {
 			$this->code = $variant->code;
@@ -125,7 +131,22 @@ class ProductVariant {
 		       self::$attributeString .
 		       "\n";
 	}
-	
+
+
+	function setAttributes() {
+	    $attrs = $this->variant->characteristics;
+
+	    $chars = [];
+	    foreach ($attrs as $attr) {
+	        $chars[$attr->name] = $attr->value;
+        }
+
+        $this->color = $chars['Цвет'] ?? "";
+        $this->size = $chars['Размер'] ?? "";
+	    $this->height = $chars['Рост'] ?? "";
+    }
+
+
 	function getAttribute( $variant, $attrName ) {
 		foreach ( $variant->characteristics as $ch ) {
 			if ( $ch->name == $attrName ) {
