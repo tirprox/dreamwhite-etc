@@ -2,14 +2,6 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="8b6ebcc2-0b4b-464e-911e-210b2cca186a" name="dreamwhite.ru" url="http://178.63.10.81">
-        <fileTransfer host="178.63.10.81" port="22" rootFolder="/var/www/vhosts/dreamwhite.ru/dreamwhite.ru" accessType="SFTP">
-          <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" />
-          </advancedOptions>
-          <option name="port" value="22" />
-        </fileTransfer>
-      </webServer>
       <webServer id="ad93e301-9bdb-427e-85a2-91d551c72c8a" name="wc stock" url="http://dreamwhite.ru">
         <fileTransfer host="dreamwhite.ru" port="22" rootFolder="/var/www/vhosts/dreamwhite.ru/msk.dreamwhite.ru" accessType="SFTP">
           <advancedOptions>

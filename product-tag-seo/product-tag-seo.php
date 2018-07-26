@@ -171,7 +171,7 @@ add_filter('wpseo_title', 'yoast_add_page_number_to_title_and_meta', 100, 1);
 
 function filter_woocommerce_page_title($title)
 {
-    if (is_product_category()) {
+    if (is_product_category() || is_product_tag()) {
         $paged = get_query_var('paged', 1);
         if ($paged >= 2) {
             $title .= ' ' . ' - Страница ' . $paged;
@@ -188,10 +188,10 @@ class RedirectMap
 {
     const PREFIX = '/product-category';
     const REDIRECT_MAP = [
-        'zhenskie-palto' => self:: PREFIX . '/palto/zhenskie-palto',
-        'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi',
-        'zhilety' => self:: PREFIX . '/zhilety',
-        'muzhskie-palto' => self:: PREFIX . '/palto/muzhskie-palto',
+        'zhenskie-palto' => self:: PREFIX . '/palto/zhenskie-palto/',
+        'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
+        'zhilety' => self:: PREFIX . '/zhilety/',
+        'muzhskie-palto' => self:: PREFIX . '/palto/muzhskie-palto/',
         'zhenskie-puhoviki' => self:: PREFIX . '/kurtki/zhenskie-kurtki/zhenskie-puhoviki/',
     ];
 }
@@ -205,7 +205,7 @@ function redirect_if_empty_shop_loop() {
 
         foreach (RedirectMap::REDIRECT_MAP as $slugPart => $url) {
             if (mb_strpos($slug, $slugPart) !== false) {
-                wp_redirect($url);
+                wp_redirect($url, 302);
                 break;
             }
         }

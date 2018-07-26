@@ -298,7 +298,7 @@ body.offcanvas_open .offcanvas_overlay {
 }
 
 .product_meta .tagged_as a:nth-child(odd) {
-    color: #2b7754 !important;
+    /*color: #2b7754 !important;*/
     /*display: none !important;*/
 }
 
