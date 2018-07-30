@@ -1,35 +1,51 @@
 <?php
 $tree = [];
 
-$categories = array_diff(scandir(__DIR__), array('..', '.'));
+$categories = getDirsOnly(array_diff(scandir(__DIR__), array('..', '.')));
 
-$filtered = [];
 
-foreach ($categories as $file) {
-    if (is_dir($file)) {$filtered[] =  $file;}
-}
 
-foreach ($filtered as $cat) {
+foreach ($categories as $cat) {
     $dir = __DIR__ . "/" . $cat;
-    $articles = array_diff(scandir($dir), array('..', '.'));
+
+    $articles = getDirsOnly(array_diff(scandir($dir), array('..', '.')), $dir);
+
+
 
     foreach ($articles as $article) {
 
         $adir = $dir . "/" . $article;
-        $colors = array_diff(scandir($adir), array('..', '.'));
+        $colors = getDirsOnly(array_diff(scandir($adir), array('..', '.')), $adir);
 
-        foreach ($colors as $color) {
+        if (!empty($colors)) {
+            foreach ($colors as $color) {
 
-            $cdir = $adir . "/" . $color;
-            $files = array_diff(scandir($cdir ), array('..', '.'));
+                $cdir = $adir . "/" . $color;
+                $files = array_diff(scandir($cdir ), array('..', '.'));
 
-                foreach ($files as $file) {
-                    $path = $cdir . "/" . $file;
-                    $tree[$cat][$article][$color][] = $file;
+                if(!empty($files)) {
+                    foreach ($files as $file) {
+                        $path = $cdir . "/" . $file;
+                        $tree[$cat][$article][$color][] = $file;
+                    }
                 }
-
+            }
         }
     }
 }
 
-echo json_encode($tree, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+echo json_encode($tree, JSON_UNESCAPED_UNICODE);
+
+function getDirsOnly($array, $prefix = "") {
+    $dirs = [];
+    foreach ($array as $file) {
+        if ($prefix !== "") {
+            if (is_dir($prefix . "/" . $file)) {$dirs[] =  $file;}
+        }
+        else {
+            if (is_dir($file)) {$dirs[] =  $file;}
+        }
+
+    }
+    return $dirs;
+}

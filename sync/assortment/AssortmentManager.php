@@ -64,10 +64,6 @@ class AssortmentManager
         $imageTreePromise->then(
             function (ResponseInterface $res) {
                 Tools::$imageTree = json_decode($res->getBody(), true);
-                /*$count = count(Tools::$imageTree);
-                for ($i = 0; $i < $count; $i++) {
-                    Tools::$imageDirList[$i] = str_replace("\0", "", Tools::$imageDirList[$i]);
-                }*/
             },
             function (RequestException $e) {
                 echo $e->getMessage() . "\n";

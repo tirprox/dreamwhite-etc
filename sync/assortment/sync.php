@@ -6,6 +6,9 @@ require_once "includes.php";
 
 Log::enable();
 ini_set("memory_limit", "2048M");
+ini_set("log_errors", 1);
+ini_set("error_log", "php-error.log");
+error_reporting(-1);
 
 import();
 

@@ -195,6 +195,9 @@ class Product {
            . '/' . $this->color . '/';
 
        $primary = $this->article . '-' . $this->color . '-1.jpg';
+
+       $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color];
+
        $gallery = array_diff(Tools::$imageTree[$this->productFolderName][$this->article][$this->color], [$primary]);
 
        $galleryUrls = [];
@@ -207,7 +210,7 @@ class Product {
        $images['primary'] = $this->encodeWhitespace($path . $primary);
        $images['gallery'] = $galleryUrls;
 
-       if ($this->article === 'Д001') var_dump($images);
+       //if ($this->article === 'Д001') var_dump($images);
 
        return $images;
    }
