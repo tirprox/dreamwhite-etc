@@ -54,10 +54,13 @@ class XMLReportGenerator {
 
        $stocks = self::addChild('stocks', $xmlProduct);
        $stockSum = 0;
+
       foreach ($stock as $city => $value) {
           self::addNode('stock-' . $city, $value, $stocks);
           $stockSum += $value;
       }
+
+
 
        self::addNode('stock', $stockSum, $xmlProduct);
        self::addNode('availability',
@@ -65,10 +68,11 @@ class XMLReportGenerator {
            $xmlProduct);
 
 
-
-      /*self::addNode('availability',
+       /*self::addNode('stock', $product->stock, $xmlProduct);
+      self::addNode('availability',
          $product->stock > 0 ? "instock" : "outofstock",
          $xmlProduct);*/
+
       self::addNode('price', $product->regularPrice, $xmlProduct);
       self::addNode('salePrice', $product->salePrice, $xmlProduct);
       self::addNode('description', $product->description, $xmlProduct);

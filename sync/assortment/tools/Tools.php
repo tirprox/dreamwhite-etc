@@ -59,6 +59,10 @@ class Tools {
       $text = preg_replace('/-+$/', '', $text);
       return $text;
    }
+
+    static function encodeWhitespace($string) {
+        return str_replace(' ', '%20', $string);
+    }
    
    static $imageDirList = [];
 

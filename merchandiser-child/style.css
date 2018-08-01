@@ -17,6 +17,12 @@ html {
     font-family: 'Montserrat';
 }
 
+.single-product-color-thumbnail {
+    box-sizing: border-box;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
 .city-select {
     color: #000;
     font-family: inherit;

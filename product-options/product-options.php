@@ -31,22 +31,24 @@ function my_extra_button_on_product_page()
     );
 
 
+
     echo '<h4>Цвет</h4>';
     echo '<div class="variation-colors">';
 
     foreach ($products as $item) {
-        $color = $item->get_attribute( 'pa_tsvet' );
+        if ($item->get_stock_quantity() > 0) {
+            $color = $item->get_attribute( 'pa_tsvet' );
 
-        $item_id = $item->get_id();
+            $item_id = $item->get_id();
 
-        $image = wp_get_attachment_image_src( get_post_thumbnail_id( $item_id ), 'woocommerce_gallery_thumbnail' );
+            $image = wp_get_attachment_image_src( get_post_thumbnail_id( $item_id ), 'woocommerce_gallery_thumbnail' );
 
-        if ($item_id === $product_id) {
-            ?>
-            <div class="" style="box-sizing: border-box; display: inline-block; position:relative;" >
-            <img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>">
-                <div class="shadow"
-                     style="
+            if ($item_id === $product_id) {
+                ?>
+                <div class="" style="box-sizing: border-box; display: inline-block; position:relative;" >
+                    <img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>">
+                    <div class="shadow"
+                         style="
                      width: 100px;
                      height: 100px;
                      box-shadow: 0 0 0 4px #78BC9C inset;
@@ -54,17 +56,19 @@ function my_extra_button_on_product_page()
                        left: 0;
                      position:absolute;" >
 
+                    </div>
                 </div>
-            </div>
-            <?php
-        }
-        else {
-            ?>
-            <div class="" style="box-sizing: border-box; display: inline-block">
-            <a href="<?php echo $item->get_permalink() ?>"><img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>"></a>
-            </div>
-            <?php
-        }
+                <?php
+            }
+            else {
+                ?>
+                <div class="single-product-color-thumbnail" style="box-sizing: border-box; display: inline-block">
+                    <a href="<?php echo $item->get_permalink() ?>"><img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>"></a>
+                </div>
+                <?php
+            }
+       }
+
     }
 
     echo '</div>';

@@ -145,6 +145,11 @@ class Product {
       }
       return $value;
    }
+
+   function addVariant($variant) {
+       $this->variants[] = $variant;
+       $this->stock += $variant->stock;
+   }
    
    function setAttributes() {
       if ($this->product != null) {
@@ -189,34 +194,28 @@ class Product {
    }
 
    function getImageUrls() {
-       $base = 'https://static.dreamwhite.ru/photo/new-test/';
+       $base = 'https://static.dreamwhite.ru/photo/new/';
        $path = $base . $this->productFolderName
            . '/' . $this->article
            . '/' . $this->color . '/';
 
        $primary = $this->article . '-' . $this->color . '-1.jpg';
 
-       $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color];
 
-       $gallery = array_diff(Tools::$imageTree[$this->productFolderName][$this->article][$this->color], [$primary]);
+       $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color] ?? [$primary];
+       $gallery = array_diff($articlePhotoFolder, [$primary]);
 
        $galleryUrls = [];
 
        foreach ($gallery as $fileName) {
-           $galleryUrls[] = $this->encodeWhitespace($path . $fileName);
+           $galleryUrls[] = Tools::encodeWhitespace($path . $fileName);
        }
 
        $images = [];
-       $images['primary'] = $this->encodeWhitespace($path . $primary);
+       $images['primary'] = Tools::encodeWhitespace($path . $primary);
        $images['gallery'] = $galleryUrls;
 
-       //if ($this->article === 'Д001') var_dump($images);
-
        return $images;
-   }
-
-   function encodeWhitespace($string) {
-       return str_replace(' ', '%20', $string);
    }
 
    function getPrices () {

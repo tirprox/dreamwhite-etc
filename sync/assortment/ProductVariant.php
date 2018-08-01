@@ -41,7 +41,7 @@ class ProductVariant {
 		$this->id                   = $variant->id;
 		$this->name                 = $variant->name;
 		$this->stock                = $stock;
-		$this->parentProduct->stock += $this->stock;
+		//$this->parentProduct->stock += $this->stock;
 		
 		$this->parentProductCode = $parentProduct->code;
 		$this->uom = $parentProduct->uom;

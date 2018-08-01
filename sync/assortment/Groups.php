@@ -14,6 +14,7 @@ class Groups
         "Склад" => "4488e436-07e7-11e6-7a69-971100273f23",
         "АРМА" => "f201e208-5902-11e8-9109-f8fc00094a27",
         "Флигель Спб" => "83351169-8038-11e8-9ff4-34e800057d4a",
+        "Арма Мск" => "c8d5b255-932f-11e8-9109-f8fc0012c318",
     ];
 
     const baseConfig = [
@@ -267,8 +268,9 @@ class Groups
         $config = self::baseConfig;
 
         $cities = [
+            //"spb" => $this->stores['Флигель Спб'],
             "spb" => $this->stores['Флигель Спб'],
-            "msk" => $this->stores['АРМА'],
+            "msk" => $this->stores['Арма Мск'],
         ];
 
         foreach ($config as $name => &$values) {

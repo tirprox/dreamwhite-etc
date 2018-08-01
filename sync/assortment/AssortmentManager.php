@@ -30,7 +30,7 @@ class AssortmentManager
     public $productRequestUrl;
     public $imageDirPath = "http://static.dreamwhite.ru/photo/dir.php";
 
-    public $imageTreePath = "http://static.dreamwhite.ru/photo/new-test/dir.php";
+    public $imageTreePath = "http://static.dreamwhite.ru/photo/new/dir.php";
 
     var $fromServer = true;
 
@@ -189,7 +189,7 @@ class AssortmentManager
                 $newProduct = new Product($row, $row->stock, $group->name);
                 $newProduct->pathName = $row->pathName;
 
-                $this->stock[$newProduct->code][$group->city] = $newProduct->stock;
+
                 $this->msidToSku[$newProduct->code] = $newProduct->id;
                 $productHashMap[$this->productPrefix . $row->id] = $newProduct;
 
@@ -203,7 +203,9 @@ class AssortmentManager
                 $this->stock[$newVariant->code][$group->city] = $newVariant->stock;
                 $this->msidToSku[$newVariant->code] = $newVariant->id;
 
-                $productHashMap[$row->product->meta->href]->variants[] = $newVariant;
+
+                $productHashMap[$row->product->meta->href]->addVariant($newVariant);
+                //$productHashMap[$row->product->meta->href]->variants[] = $newVariant;
                 //unset($row);
             }
         }
@@ -211,6 +213,7 @@ class AssortmentManager
         foreach ($productHashMap as $href => $product) {
 
             if ($product->pathName === $group->pathName) {
+                $this->stock[$product->code][$group->city] = $product->stock;
                 $products[] = $product;
             }
             //$products[] = $product;
