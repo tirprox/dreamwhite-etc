@@ -12,6 +12,7 @@ class Tag {
    var $group = [];
    
    var $color = [];
+    var $colorGroup = [];
    var $size = [];
    
    var $material = "";
@@ -29,6 +30,9 @@ class Tag {
    var $kapushon = "";
    var $poyas = "";
    var $karmany = "";
+
+   var $parent = "";
+   var $description = "";
    
    var $hasColors = false;
    var $realColors = [];

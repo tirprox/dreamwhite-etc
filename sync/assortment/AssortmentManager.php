@@ -228,9 +228,15 @@ class AssortmentManager
         $tagFactory = new TagFactory();
         $tagFactory->loadTagsFromFile();
         foreach ($groups->groupArray as $group) {
+
+            $globalAttrs = [];
             foreach ($group->products as $product) {
                 $tagFactory->setProductTag($product);
+                $globalAttrs['color'][]=$product->colorGroup;
+                $globalAttrs['size'][]=$product->size;
             }
+
+            $tagFactory->getTagList($globalAttrs);
         }
 
         $header = "<?php class TagRewriteRules {\nstatic \$rules = [\n";

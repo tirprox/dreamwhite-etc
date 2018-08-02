@@ -2,6 +2,8 @@
 namespace Dreamwhite\Assortment;
 class TagFactory {
    var $tags = [];
+
+   var $parsedTags = [];
    
    function loadTagsFromFile() {
       $csvFile = file(__DIR__ . '/tags.csv');
@@ -18,7 +20,23 @@ class TagFactory {
          $this->createTag($item);
          //var_dump($item);
       }
-      
+
+   }
+
+   function getTagList($globalAttrs) {
+       XMLTaxonomyListGenerator::createDocument();
+       foreach ($this->tags as $tag) {
+
+           $colors = [];
+           foreach ($tag->color as $color) {
+               $colors[] = $color->attribute;
+           }
+
+           $tag->colorGroup = array_intersect($colors, $globalAttrs['color']);
+           XMLTaxonomyListGenerator::addTag($tag);
+       }
+       XMLTaxonomyListGenerator::writeXmlToFile();
+
    }
 
    /* Creating a tag from a csv row, where row is represented as an array. */
@@ -81,6 +99,7 @@ class TagFactory {
       }
       
       foreach ($this->tags as $tag) {
+          $parsed = [];
          //check basic attrs
          if (!$this->compareAttrs($tag->group, $product->productFolderName)) continue;
          
@@ -153,18 +172,7 @@ class TagFactory {
    function compareColors($tag, $productColor) {
       $tagColors = $tag->color;
       $match = false;
-      /*foreach ($tagColors as $tagColor){
 
-         foreach ($productColors as $productColor) {
-            if (Tools::match($productColor, $tagColor->attribute)) {
-               $match = true;
-               $productColorTranslit = strtolower(Tools::transliterate($productColor));
-               if (!in_array($productColorTranslit, $tag->realColors)) {
-                  $tag->realColors[] = $productColorTranslit;
-               }
-            }
-         }
-      }*/
        foreach ($tagColors as $tagColor){
 
                if (Tools::match($productColor, $tagColor->attribute)) {
