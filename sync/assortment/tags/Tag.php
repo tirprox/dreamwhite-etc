@@ -15,24 +15,24 @@ class Tag {
     var $colorGroup = [];
    var $size = [];
    
-   var $material = "";
+   var $material = '';
    var $uteplitel = [];
-   var $podkladka = "";
-   var $siluet = "";
-   var $dlina = "";
-   var $rukav = "";
-   var $dlina_rukava = "";
-   var $zastezhka = "";
-   var $vorotnik = "";
-   var $koketka = "";
-   var $uhod = "";
+   var $podkladka = '';
+   var $siluet = '';
+   var $dlina = '';
+   var $rukav = '';
+   var $dlina_rukava = '';
+   var $zastezhka = '';
+   var $vorotnik = '';
+   var $koketka = '';
+   var $uhod = '';
    
-   var $kapushon = "";
-   var $poyas = "";
-   var $karmany = "";
+   var $kapushon = '';
+   var $poyas = '';
+   var $karmany = '';
 
-   var $parent = "";
-   var $description = "";
+   var $parent = '';
+   var $description = '';
    
    var $hasColors = false;
    var $realColors = [];

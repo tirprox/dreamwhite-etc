@@ -13,24 +13,24 @@ use GuzzleHttp\Exception\RequestException;
 class AssortmentManager
 {
 
-    public $storeId = "baedb9ed-de2a-11e6-7a34-5acf00087a3f"; // Садовая
-    public $testUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?store.id=baedb9ed-de2a-11e6-7a34-5acf00087a3f&productFolder.id=cc91a970-07e7-11e6-7a69-93a700454ab8&stockMode=all";
-    public $assortmentUrl = "https://online.moysklad.ru/api/remap/1.1/entity/assortment?limit=100&filter=productFolder=";
-    public $productsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/product/?limit=100&expand=uom,supplier&filter=pathName=";
-    public $variantsUrl = "https://online.moysklad.ru/api/remap/1.1/entity/variant?limit=100&expand=product.uom,product.supplier&filter=productid=";
-    public $stocksUrl = "https://online.moysklad.ru/api/remap/1.1/report/stock/all?stockMode=all&limit=1000&store.id=";
+    public $storeId = 'baedb9ed-de2a-11e6-7a34-5acf00087a3f'; // Садовая
+    public $testUrl = 'https://online.moysklad.ru/api/remap/1.1/report/stock/all?store.id=baedb9ed-de2a-11e6-7a34-5acf00087a3f&productFolder.id=cc91a970-07e7-11e6-7a69-93a700454ab8&stockMode=all';
+    public $assortmentUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/assortment?limit=100&filter=productFolder=';
+    public $productsUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/product/?limit=100&expand=uom,supplier&filter=pathName=';
+    public $variantsUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/variant?limit=100&expand=product.uom,product.supplier&filter=productid=';
+    public $stocksUrl = 'https://online.moysklad.ru/api/remap/1.1/report/stock/all?stockMode=all&limit=1000&store.id=';
 
-    const storePrefix = "https://online.moysklad.ru/api/remap/1.1/entity/store/";
-    const expand = "&expand=uom,supplier";
+    const storePrefix = 'https://online.moysklad.ru/api/remap/1.1/entity/store/';
+    const expand = '&expand=uom,supplier';
     public $groups = null;
 
     public $stock = [];
     public $msidToSku = [];
 
     public $productRequestUrl;
-    public $imageDirPath = "http://static.dreamwhite.ru/photo/dir.php";
+    public $imageDirPath = 'http://static.dreamwhite.ru/photo/dir.php';
 
-    public $imageTreePath = "http://static.dreamwhite.ru/photo/new/dir.php";
+    public $imageTreePath = 'http://static.dreamwhite.ru/photo/new/dir.php';
 
     var $fromServer = true;
 
@@ -40,18 +40,18 @@ class AssortmentManager
         Connector::init();
         Settings::load();
 
-        Log::d(Settings::get("fromServer") ? "Using Server Config" : "Using Local Config", "config", "p");
+        Log::d(Settings::get('fromServer') ? 'Using Server Config' : 'Using Local Config', 'config', 'p');
         $imgPromise = Connector::requestAsync($this->imageDirPath);
         $imgPromise->then(
             function (ResponseInterface $res) {
                 Tools::$imageDirList = json_decode($res->getBody());
                 $count = count(Tools::$imageDirList);
                 for ($i = 0; $i < $count; $i++) {
-                    Tools::$imageDirList[$i] = str_replace("\0", "", Tools::$imageDirList[$i]);
+                    Tools::$imageDirList[$i] = str_replace('\0', '', Tools::$imageDirList[$i]);
                 }
             },
             function (RequestException $e) {
-                echo $e->getMessage() . "\n";
+                echo $e->getMessage() . '\n';
                 echo $e->getRequest()->getMethod();
             }
         );
@@ -78,7 +78,7 @@ class AssortmentManager
 
         $cityGroups = [];
         foreach (Config::CITIES as $city) {
-            Timers::start("groups");
+            Timers::start('groups');
 
             $groups = new Groups();
             $groups->groupArray = $groups->getGroupsForCity($city);
@@ -86,15 +86,15 @@ class AssortmentManager
 
             $cityGroups[] = $groups;
 
-            Timers::stop("groups");
+            Timers::stop('groups');
 
             $groups = $this->getAssortmentForGroups($groups);
             $this->setTagsForGroups($groups);
 
         }
 
-        JSONWriter::write($this->stock, "stock.json");
-        JSONWriter::write($this->msidToSku, "ids.json");
+        JSONWriter::write($this->stock, 'stock.json');
+        JSONWriter::write($this->msidToSku, 'ids.json');
 
 
         foreach ($cityGroups as $groups) {
@@ -105,10 +105,10 @@ class AssortmentManager
 
     function getAssortmentForGroups(&$groups)
     {
-        Timers::start("assortment");
+        Timers::start('assortment');
         foreach ($groups->groupArray as $group) {
-            $requestUrl = $this->assortmentUrl . $group->url . "&stockstore=" . self::storePrefix . $group->storeId . self::expand;
-            Log::d($requestUrl, "groups", "p", "groups");
+            $requestUrl = $this->assortmentUrl . $group->url . '&stockstore=' . self::storePrefix . $group->storeId . self::expand;
+            Log::d($requestUrl, 'groups', 'p', 'groups');
             $promise = Connector::requestAsync($requestUrl);
             $promise->then(
                 function (ResponseInterface $res) use ($group, $requestUrl) {
@@ -118,20 +118,20 @@ class AssortmentManager
 
                 },
                 function (RequestException $e) {
-                    Log::d("Getting initial assortment error" . $e->getMessage(), "errors", "p", "errors");
-                    Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
+                    Log::d('Getting initial assortment error' . $e->getMessage(), 'errors', 'p', 'errors');
+                    Log::d($e->getRequest()->getMethod(), 'errors', 'p', 'errors');
                 });
             Connector::addPromise($promise);
-            if (!Settings::get("async")) Connector::completeRequests();
+            if (!Settings::get('async')) Connector::completeRequests();
         }
-        if (Settings::get("async")) Connector::completeRequests();
+        if (Settings::get('async')) Connector::completeRequests();
 
         foreach ($groups->groupArray as $group) {
             $group->assortment = $group->firstResponse;
             $this->getNextAssortments($group->firstResponse, $group->firstRequestUrl, $group);
-            if (!Settings::get("async")) Connector::completeRequests();
+            if (!Settings::get('async')) Connector::completeRequests();
         }
-        if (Settings::get("async")) Connector::completeRequests();
+        if (Settings::get('async')) Connector::completeRequests();
 
         foreach ($groups->groupArray as $group) {
             foreach ($group->unpreparedResponses as $temp) {
@@ -141,7 +141,7 @@ class AssortmentManager
         }
 
 
-        Timers::stop("assortment");
+        Timers::stop('assortment');
 
         return $groups;
     }
@@ -152,31 +152,31 @@ class AssortmentManager
         $limit = $res->meta->limit;
 
         if ($size > $limit) {
-            Log::d("size more than limit", "http-client");
+            Log::d('size more than limit', 'http-client');
             $iterations = intdiv($size, $limit) + 1;
             for ($i = 1; $i < $iterations; $i++) {
-                $offset = "&offset=" . $i * $limit;
+                $offset = '&offset=' . $i * $limit;
                 $offsetUrl = $requestUrl . $offset;
                 $promise = Connector::requestAsync($offsetUrl);
 
                 $promise->then(
                     function (ResponseInterface $res) use ($group) {
                         $resp = json_decode($res->getBody());
-                        Log::d("next url json received", "http-client");
+                        Log::d('next url json received', 'http-client');
                         $group->unpreparedResponses[] = $resp;
                     },
                     function (RequestException $e) {
-                        Log::d("Getting next assortments error" . $e->getMessage(), "errors", "p", "errors");
-                        Log::d($e->getRequest()->getMethod(), "errors", "p", "errors");
+                        Log::d('Getting next assortments error' . $e->getMessage(), 'errors', 'p', 'errors');
+                        Log::d($e->getRequest()->getMethod(), 'errors', 'p', 'errors');
                     });
                 Connector::addPromise($promise);
-                if (!Settings::get("async")) Connector::completeRequests();
+                if (!Settings::get('async')) Connector::completeRequests();
             }
-            if (Settings::get("async")) Connector::completeRequests();
+            if (Settings::get('async')) Connector::completeRequests();
         }
     }
 
-    var $productPrefix = "https://online.moysklad.ru/api/remap/1.1/entity/product/";
+    var $productPrefix = 'https://online.moysklad.ru/api/remap/1.1/entity/product/';
 
     function parseAssortment($assortment, $group)
     {
@@ -184,7 +184,7 @@ class AssortmentManager
         $productHashMap = [];
 
         foreach ($assortment->rows as $row) {
-            if ($row->meta->type === "product") {
+            if ($row->meta->type === 'product') {
 
                 $newProduct = new Product($row, $row->stock, $group->name);
                 $newProduct->pathName = $row->pathName;
@@ -197,7 +197,7 @@ class AssortmentManager
             }
         }
         foreach ($assortment->rows as $row) {
-            if ($row->meta->type === "variant") {
+            if ($row->meta->type === 'variant') {
                 $newVariant = new ProductVariant($row, $row->stock, $productHashMap[$row->product->meta->href]);
 
                 $this->stock[$newVariant->code][$group->city] = $newVariant->stock;
@@ -224,37 +224,39 @@ class AssortmentManager
 
     function setTagsForGroups(&$groups)
     {
-        Timers::start("tags");
+        Timers::start('tags');
         $tagFactory = new TagFactory();
         $tagFactory->loadTagsFromFile();
         foreach ($groups->groupArray as $group) {
 
-            $globalAttrs = [];
             foreach ($group->products as $product) {
                 $tagFactory->setProductTag($product);
-                $globalAttrs['color'][]=$product->colorGroup;
-                $globalAttrs['size'][]=$product->size;
+
+                TagMap::addAttribute('color', $product->colorGroup);
+                TagMap::addAttribute('size', $product->size);
+
             }
 
-            $tagFactory->getTagList($globalAttrs);
+            $tagFactory->getTagList(TagMap::getAll());
         }
 
         $header = "<?php class TagRewriteRules {\nstatic \$rules = [\n";
         $footer = "\n];\n}";
-        $tagRewriteRules = "";
+        $tagRewriteRules = '';
         foreach ($tagFactory->tags as $tag) {
             if ($tag->hasColors && !empty($tag->realColors)) {
                 $tagName = strtolower(Tools::transliterate($tag->name));
-                $colorList = implode(",", $tag->realColors);
+                $colorList = implode(',', $tag->realColors);
 
-                $tagRewriteRules .= "\"" . $tagName . "\"" . " => "
-                    . "\"" . $colorList . "\"" . ",\n";
+
+                $tagRewriteRules .= "'$tagName' => '$colorList',\n";
+
             }
         }
         $file = $header . $tagRewriteRules . $footer;
-        file_put_contents("TagRewriteRules.php", $file);
-        require_once("TagRewriteRules.php");
-        Timers::stop("tags");
+        file_put_contents('TagRewriteRules.php', $file);
+        require_once('TagRewriteRules.php');
+        Timers::stop('tags');
     }
 
     function createReportsForGroups($groups)

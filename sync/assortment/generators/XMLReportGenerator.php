@@ -30,7 +30,7 @@ class XMLReportGenerator {
 
    static function writeXmlToFile() {
       if (self::$document != null) {
-          $path = dirname(__DIR__) . "/output/assortment-" . self::$city . ".xml";
+          $path = dirname(__DIR__) . '/output/assortment-' . self::$city . '.xml';
           self::$document->save($path);
       }
    }
@@ -64,13 +64,13 @@ class XMLReportGenerator {
 
        self::addNode('stock', $stockSum, $xmlProduct);
        self::addNode('availability',
-           $stockSum > 0 ? "instock" : "outofstock",
+           $stockSum > 0 ? 'instock' : 'outofstock',
            $xmlProduct);
 
 
        /*self::addNode('stock', $product->stock, $xmlProduct);
       self::addNode('availability',
-         $product->stock > 0 ? "instock" : "outofstock",
+         $product->stock > 0 ? 'instock' : 'outofstock',
          $xmlProduct);*/
 
       self::addNode('price', $product->regularPrice, $xmlProduct);
@@ -136,11 +136,11 @@ class XMLReportGenerator {
           self::addNode('stock', $varStockSum, $xmlVariant);
 
           self::addNode('availability',
-              $varStockSum > 0 ? "instock" : "outofstock",
+              $varStockSum > 0 ? 'instock' : 'outofstock',
               $xmlVariant);
 
          /*self::addNode('availability',
-            $variant->stock > 0 ? "instock" : "outofstock",
+            $variant->stock > 0 ? 'instock' : 'outofstock',
             $xmlVariant);*/
 
 
@@ -158,29 +158,7 @@ class XMLReportGenerator {
       
       return $xmlProduct;
    }
-   
-   /*static function addVariantToProductNode($variant, $productNode) {
-      $xmlVariant = self::addChild('variant', $productNode);
-      self::addNode('name', $variant->name, $xmlVariant);
-      self::addNode('sku', $variant->code, $xmlVariant);
-      //self::addNode('article', $variant->article, $productNode);
-      //self::addNode('uom', $variant->uom, $productNode);
-      
-      self::addNode('stock', $variant->stock, $xmlVariant);
-      
-      self::addNode('available',
-         $variant->stock > 0 ? "instock" : "outofstock",
-         $xmlVariant);
-      self::addNode('price', $variant->salePrice, $xmlVariant);
-      
-      self::addNode('description', $variant->description, $xmlVariant);
-   
-      self::addNode('color', $variant->color, $xmlVariant);
-      self::addNode('size', $variant->size, $xmlVariant);
-      return $productNode;
-   
-   }*/
-   
+
    static function addNode($name, $value, $parent) {
       $node = self::addChild($name, $parent);
       $nodeVal = self::addTextNode($value, $node);

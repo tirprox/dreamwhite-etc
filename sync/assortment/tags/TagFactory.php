@@ -10,7 +10,7 @@ class TagFactory {
       $data = [];
       
       foreach ($csvFile as $line) {
-         $data[] = str_getcsv($line, ";");
+         $data[] = str_getcsv($line, ';');
       }
       
       // removing csv header
@@ -46,7 +46,7 @@ class TagFactory {
       $tag->group = $this->splitAttr($row[1]);
       
       $tag->color = $this->splitAttr($row[2]);
-      if ($tag->color[0]->attribute !== "") {
+      if ($tag->color[0]->attribute !== '') {
 	      $tag->hasColors = true;
       }
       
@@ -75,12 +75,12 @@ class TagFactory {
    /* Determine whether attribute should be included or excluded.
    If prepended with -, attribute is excluded from a tag (is inverted) */
    function splitAttr($atrrString){
-      $data[] = str_getcsv($atrrString, ",");
+      $data[] = str_getcsv($atrrString, ',');
       $attrs = [];
       foreach ($data[0] as $item) {
          $item = trim($item);
          
-         if (substr($item, 0, 1) === "-") {
+         if (substr($item, 0, 1) === '-') {
             $item=substr($item,1);
             $attrs[] = new InvertableAttribute($item, true);
          }
@@ -95,7 +95,7 @@ class TagFactory {
    function setProductTag($product) {
       // sale tag
       if ($product->isOnSale) {
-         $product->tags .= "Распродажа,";
+         $product->tags .= 'Распродажа,';
       }
       
       foreach ($this->tags as $tag) {
@@ -134,7 +134,7 @@ class TagFactory {
          
          
          
-         $product->tags .= $tag->name . ",";
+         $product->tags .= $tag->name . ',';
          
       }
    }
@@ -148,7 +148,7 @@ class TagFactory {
     */
 
    function compareAttrs($tagAttrArray, $productAttr) {
-      if ($tagAttrArray[0]->attribute == "") return true;
+      if ($tagAttrArray[0]->attribute == '') return true;
       $matchCount=0;
       $match = false;
       foreach ($tagAttrArray as $attr){

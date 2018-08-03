@@ -5,16 +5,16 @@ class Groups
     var $remoteGroups;
     var $groupsInConfig;
     var $groupArray = [];
-    const base = "https://online.moysklad.ru/api/remap/1.1/entity/productfolder";
+    const base = 'https://online.moysklad.ru/api/remap/1.1/entity/productfolder';
 
     var $showUnusedGroups = false;
     var $stores = [
-        "Флигель" => "baedb9ed-de2a-11e6-7a34-5acf00087a3f",
-        "В белом" => "4488e436-07e7-11e6-7a69-971100273f23",
-        "Склад" => "4488e436-07e7-11e6-7a69-971100273f23",
-        "АРМА" => "f201e208-5902-11e8-9109-f8fc00094a27",
-        "Флигель Спб" => "83351169-8038-11e8-9ff4-34e800057d4a",
-        "Арма Мск" => "c8d5b255-932f-11e8-9109-f8fc0012c318",
+        'Флигель' => 'baedb9ed-de2a-11e6-7a34-5acf00087a3f',
+        'В белом' => '4488e436-07e7-11e6-7a69-971100273f23',
+        'Склад' => '4488e436-07e7-11e6-7a69-971100273f23',
+        'АРМА' => 'f201e208-5902-11e8-9109-f8fc00094a27',
+        'Флигель Спб' => '83351169-8038-11e8-9ff4-34e800057d4a',
+        'Арма Мск' => 'c8d5b255-932f-11e8-9109-f8fc0012c318',
     ];
 
     const baseConfig = [
@@ -221,7 +221,7 @@ class Groups
 
     function getGroupsFromServer($baseUrl, $context)
     {
-        $groupsUrl = $baseUrl . "/entity/productFolder?" . "offset=0&limit=100";
+        $groupsUrl = $baseUrl . '/entity/productFolder?' . 'offset=0&limit=100';
         $this->remoteGroups = json_decode(file_get_contents($groupsUrl, false, $context));
     }
 
@@ -230,10 +230,10 @@ class Groups
         foreach ($this->remoteGroups->rows as $group) {
             foreach ($this->groupsInConfig as $configGroup => $options) {
                 if ($group->name === $configGroup) {
-                    Log::d($group->name, "groups");
-                    Log::d("URL: " . $group->meta->href, "groups");
-                    Log::d("ID: " . $group->id, "groups");
-                    Log::d("StoreID: " . $options['store'], "groups");
+                    Log::d($group->name, 'groups');
+                    Log::d('URL: ' . $group->meta->href, 'groups');
+                    Log::d('ID: ' . $group->id, 'groups');
+                    Log::d('StoreID: ' . $options['store'], 'groups');
                     Log::d();
 
                     $this->groupArray[] = new Group($group->meta->href, $group->name, $group->id, $options['store'], $options['pathName']);
@@ -249,10 +249,10 @@ class Groups
         $groups = [];
 
         foreach ($config as $groupName => $options) {
-            Log::d($groupName, "groups");
-            Log::d("URL: " . $options['href'], "groups");
-            Log::d("ID: " . $options['id'], "groups");
-            Log::d("StoreID: " . $options['store'], "groups");
+            Log::d($groupName, 'groups');
+            Log::d('URL: ' . $options['href'], 'groups');
+            Log::d('ID: ' . $options['id'], 'groups');
+            Log::d('StoreID: ' . $options['store'], 'groups');
 
             $group = new Group($options['href'], $groupName, $options['id'], $options['store'], $options['pathName'], $options['category']);
 
@@ -269,12 +269,12 @@ class Groups
 
         $cities = [
             //"spb" => $this->stores['Флигель Спб'],
-            "spb" => $this->stores['Флигель Спб'],
-            "msk" => $this->stores['Арма Мск'],
+            'spb' => $this->stores['Флигель Спб'],
+            'msk' => $this->stores['Арма Мск'],
         ];
 
         foreach ($config as $name => &$values) {
-            $values['store'] = $name === "Свадебные пальто" ? $this->stores['В белом'] : $cities[$city];
+            $values['store'] = $name === 'Свадебные пальто' ? $this->stores['В белом'] : $cities[$city];
         }
 
         return $config;

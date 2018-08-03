@@ -42,8 +42,8 @@ class Tools {
    		return $url;
     }
     else {
-	    $url = str_replace("https://www.youtube.com/watch?v=", "", $url);
-	    return "[youtube]" . $url . "[/youtube]";
+	    $url = str_replace('https://www.youtube.com/watch?v=', '', $url);
+	    return '[youtube]' . $url . '[/youtube]';
     }
    	
 	}

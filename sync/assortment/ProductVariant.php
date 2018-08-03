@@ -4,7 +4,7 @@ class ProductVariant {
 	var $variant, $parentProduct;
 	
 	var $parentProductCode;
-	var $parentName = "";
+	var $parentName = '';
 	
 	var $id;
 	var $vc_id;
@@ -12,23 +12,23 @@ class ProductVariant {
 	var $name;
 	var $stock;
 	
-	var $price = "";
-	var $code = "";
-	var $uom = "";
+	var $price = '';
+	var $code = '';
+	var $uom = '';
 	
-	var $supplier = "";
-	var $description = "";
+	var $supplier = '';
+	var $description = '';
 
-	var $color = "", $size = "", $height = "";
+	var $color = '', $size = '', $height = '';
 
-	var $variantName = "";
-	var $barcode = "";
+	var $variantName = '';
+	var $barcode = '';
 	
-	var $regularPrice = "";
-	var $salePrice = "";
+	var $regularPrice = '';
+	var $salePrice = '';
 	
-	var $article = "";
-	var $variantPhotoUrl = "";
+	var $article = '';
+	var $variantPhotoUrl = '';
 	
 	var $isOnSale = false;
 	
@@ -47,19 +47,19 @@ class ProductVariant {
 		$this->uom = $parentProduct->uom;
 		$this->supplier = $parentProduct->supplier;
 
-		if ( property_exists( $variant, "description" ) ) {
+		if ( property_exists( $variant, 'description' ) ) {
 			$this->description = $variant->description;
 		}
 		
-		/*$this->color       = $this->getAttribute( $variant, "Цвет" );
-		$this->size        = $this->getAttribute( $variant, "Размер" );
-        $this->size        = $this->getAttribute( $variant, "Рост" );*/
+		/*$this->color       = $this->getAttribute( $variant, 'Цвет' );
+		$this->size        = $this->getAttribute( $variant, 'Размер' );
+        $this->size        = $this->getAttribute( $variant, 'Рост' );*/
 
         $this->setAttributes();
 
 
 		$this->variantName = $variant->name;
-		if ( property_exists( $variant, "code" ) ) {
+		if ( property_exists( $variant, 'code' ) ) {
 			$this->code = $variant->code;
 		}
 		if ( count( $variant->barcodes ) > 0 ) {
@@ -69,27 +69,27 @@ class ProductVariant {
 		$this->parentName = $parentProduct->name;
 		$this->article = $parentProduct->article;
 		
-		$photoFileName = $this->article . "-" . $this->color . ".jpg";
-		$photoFileName = str_replace( " ", "-", $photoFileName );
-		$photoFileName = str_replace( "\0", "", $photoFileName );
+		$photoFileName = $this->article . '-' . $this->color . '.jpg';
+		$photoFileName = str_replace( ' ', '-', $photoFileName );
+		$photoFileName = str_replace( '\0', '', $photoFileName );
 		$photoFileName = trim( $photoFileName );
-		$str1          = "й";
-		$str2          = "й";
+		$str1          = 'й';
+		$str2          = 'й';
 		$photoFileName = str_replace( $str1, $str2, $photoFileName ); // буква й
 		
 		foreach ( Tools::$imageDirList as $image ) {
 			$imgFixed = str_replace($str1, $str2, $image); // перед сравнением конвертим букву й
 			if ( $imgFixed === $photoFileName ) {
 				
-				$urlToEncode           = $this->parentProduct->baseUrl
+				$urlToEncode           = Product::BASE_URL
 				                         . $this->parentProduct->productFolderName
-				                         . "/" . $this->article
-				                         . "/" . $image; // используем й из имени файла
-				$urlToEncode           = str_replace( " ", "-", $urlToEncode );
+				                         . '/' . $this->article
+				                         . '/' . $image; // используем й из имени файла
+				$urlToEncode           = str_replace( ' ', '-', $urlToEncode );
 				$this->variantPhotoUrl = $urlToEncode;
 				
 				if ( ! Tools::match( $this->parentProduct->galleryUrls, $urlToEncode ) ) {
-					$this->parentProduct->galleryUrls .= $urlToEncode . ",";
+					$this->parentProduct->galleryUrls .= $urlToEncode . ',';
 				}
 				break;
 			}
@@ -107,7 +107,7 @@ class ProductVariant {
 			
 		}
 		
-		Log::d( "$this->name (В наличии $this->stock)", "variant", "p", "products");
+		Log::d( "$this->name (В наличии $this->stock)", 'variant', 'p', 'products');
 	}
 	
 	function getCsvRow() {
@@ -141,9 +141,9 @@ class ProductVariant {
 	        $chars[$attr->name] = $attr->value;
         }
 
-        $this->color = $chars['Цвет'] ?? "";
-        $this->size = $chars['Размер'] ?? "";
-	    $this->height = $chars['Рост'] ?? "";
+        $this->color = $chars['Цвет'] ?? '';
+        $this->size = $chars['Размер'] ?? '';
+	    $this->height = $chars['Рост'] ?? '';
     }
 
 
@@ -159,10 +159,10 @@ class ProductVariant {
 
 	function getPrices () {
 	   foreach ($this->variant->salePrices as $price) {
-         if ( $price->priceType === "Цена продажи" ) {
+         if ( $price->priceType === 'Цена продажи' ) {
             $this->regularPrice = $price->value / 100;
          }
-         else if ($price->priceType === "Распродажа") {
+         else if ($price->priceType === 'Распродажа') {
             if ($price->value > 0) {
                $this->salePrice = $price->value / 100;
                $this->isOnSale = true;

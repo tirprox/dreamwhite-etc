@@ -12,6 +12,7 @@ require_once "generators/JSONShortReportGenerator.php";
 require_once "generators/JSONWriter.php";
 
 require_once "tags/TagFactory.php";
+require_once "tags/TagMap.php";
 require_once "tags/InvertableAttribute.php";
 require_once "tags/Tag.php";
 
