@@ -55,6 +55,7 @@ class Product {
 	var $colors = [], $sizes = '';
 	var $tags = '';
 	var $gender;
+	var $attrs = [];
    
    
    function __construct($product, $stock, $folderName) {
@@ -186,6 +187,8 @@ class Product {
 	         $this->uhod = $attrSet['Уход'] ?? '';
 	
 	         if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
+
+	         $this->attrs = $this->getAttrs();
          }
       }
    }
@@ -242,6 +245,33 @@ class Product {
         }
 
         return '';
+    }
+
+    function getAttrs() {
+
+       $attrs = [
+           'color' => $this->color,
+           'colorGroup' =>  $this->colorGroup,
+           'texture' =>  $this->texture,
+           'material' => $this->material,
+           'season' =>  $this->season,
+           'uteplitel' => $this->uteplitel,
+           'podkladka' =>  $this->podkladka,
+           'siluet' => $this->siluet,
+           'dlina' =>  $this->dlina,
+           'rukav' => $this->rukav,
+           'dlina_rukava' =>  $this->dlina_rukava,
+           'zastezhka' => $this->zastezhka,
+           'kapushon' =>  $this->kapushon,
+           'vorotnik' => $this->vorotnik,
+           'poyas' =>  $this->poyas,
+           'karmany' =>  $this->karmany,
+           'koketka' => $this->koketka,
+           'uhod' =>  $this->uhod,
+           'size' => $this->sizes
+       ];
+
+       return $attrs;
     }
    
    function getAttributesString() {

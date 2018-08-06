@@ -97,9 +97,9 @@ class ProductVariant {
 
 		
 		if ( $this->stock > 0 ) {
-			if ( ! in_array( $this->color, $this->parentProduct->colors ) ) {
+			/*if ( ! in_array( $this->color, $this->parentProduct->colors ) ) {
 				$this->parentProduct->colors[] = $this->color;
-			}
+			}*/
 
 			if ( ! Tools::match( $this->parentProduct->sizes, $this->size ) ) {
 				$this->parentProduct->sizes .= $this->size . ",";
@@ -109,29 +109,6 @@ class ProductVariant {
 		
 		Log::d( "$this->name (В наличии $this->stock)", 'variant', 'p', 'products');
 	}
-	
-	function getCsvRow() {
-		
-		return "\"" . $this->parentProductCode . "\"," .
-		       "\"" . $this->parentProduct->productFolderName . "\"," .
-		       "\"" . $this->uom . "\"," .
-		       "\"" . $this->supplier . "\"," .
-		
-		       "\"" . $this->description . "\"," .
-		       "\"" . $this->color . "\"," .
-		       "\"" . $this->size . "\"," .
-		       "\"" . $this->name . "\"," .
-		       "\"" . $this->code . "\"," .
-		
-		       "\"" . $this->barcode . "\"," .
-		       "\"" . $this->stock . "\"," .
-		       "\"" . $this->salePrice . "\"," .
-		       "\"" . $this->parentName . "\"," .
-		       "\"" . $this->article . "\"," .
-		       self::$attributeString .
-		       "\n";
-	}
-
 
 	function setAttributes() {
 	    $attrs = $this->variant->characteristics;

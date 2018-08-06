@@ -12,6 +12,8 @@ Text Domain: dw-product-filter
 Domain Path: /languages
 */
 
+namespace Dreamwhite\Site;
+
 function ess_custom_taxonomy_Item()  {
 
     $labels = array(
@@ -38,9 +40,29 @@ function ess_custom_taxonomy_Item()  {
         'show_admin_column'          => true,
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => true,
+        'rewrite'                    => true
     );
     register_taxonomy( 'attr', 'product', $args );
 
 }
 
 add_action( 'init', 'ess_custom_taxonomy_item', 0 );
+
+// Add Shortcode
+function custom_shortcode() {
+
+
+    $tax = get_queried_object();
+    $meta = get_term_meta($tax->term_id);
+
+    echo '<h4>Цвет</h4>';
+    echo '<div class="variation-colors">';
+
+    $colors = explode(',', $meta['color'][0]);
+    var_dump($colors);
+
+    echo '</div>';
+}
+
+
+add_shortcode( 'custom_filter', 'custom_shortcode' );
