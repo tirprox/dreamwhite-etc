@@ -12,6 +12,34 @@ Text Domain: dw-product-filter
 Domain Path: /languages
 */
 
+class FilterConfig
+{
+    const TAX_NAME = 'attr';
+}
+
+class Attrs
+{
+    public const VALUES = [
+        'color',
+        'colorGroup',
+        'texture',
+        'material',
+        'season',
+        'uteplitel',
+        'podkladka',
+        'siluet',
+        'dlina',
+        'rukav',
+        'dlina_rukava',
+        'zastezhka',
+        'kapushon',
+        'vorotnik',
+        'poyas',
+        'karmany',
+        'koketka',
+        'uhod',];
+}
+
 init();
 
 function init()
@@ -52,7 +80,7 @@ function dw_custom_seo_taxonomy()
             'with_front' => false
         ]
     );
-    register_taxonomy('attr', 'product', $args);
+    register_taxonomy(FilterConfig::TAX_NAME, 'product', $args);
 
 }
 
@@ -61,6 +89,8 @@ function dw_filter_tags_shortcode()
 
     echo '<div style="padding: 8px 16px">';
 
+    $taxDataHolder = new TaxonomyDataHolder();
+
     $tax = get_queried_object();
 
     $params = new TaxonomyParams($tax);
@@ -68,11 +98,15 @@ function dw_filter_tags_shortcode()
     $queryManager = new QueryManager();
     $queryManager->fromTaxonomyParams($params);
 
+    $queryManager->setQueryParameter('color', 'Бежевый');
+
     $term_id = $tax->term_id;
+
+    $matches = $taxDataHolder->match('kapushon', $queryManager->getQueryParameter('kapushon'));
+    var_dump($matches);
 
 
     $args = $queryManager->getQueryArgs();
-
 
 
     Renderer::header('Matching Taxonomies:');
@@ -90,6 +124,69 @@ function dw_filter_tags_shortcode()
     echo '</div>';
 }
 
+class TaxonomyDataHolder
+{
+    public $taxByColor = [];
+
+    public $taxes = [];
+
+    public function __construct()
+    {
+        global $wpdb;
+
+        foreach (Attrs::VALUES as $attr) {
+            $query = "SELECT meta_value, term_id FROM " . $wpdb->termmeta . " WHERE meta_key = '" . $attr . "' AND meta_value <> ''";
+            $result = $wpdb->get_results($query, "ARRAY_A");
+
+            foreach ($result as $value) {
+                $this->taxes[$attr][$value['term_id']] = explode(',', $value['meta_value']);
+            }
+
+        }
+
+    }
+
+    public function matchValues($attr, $values)
+    {
+        $matches = [];
+
+        foreach ($this->taxes[$attr] as $taxId => $taxValues) {
+            if (!empty(array_intersect($values, $taxValues))) {
+                $matches[] = $taxId;
+            }
+        }
+
+        return $matches;
+    }
+
+
+    public function matchValue($attr, $value)
+    {
+        $matches = [];
+
+        foreach ($this->taxes[$attr] as $taxId => $values) {
+            if (in_array($value, $values)) {
+                $matches[] = $taxId;
+            }
+        }
+
+        return $matches;
+    }
+
+    public function matchColor($color)
+    {
+        $matches = [];
+
+        foreach ($this->taxByColor as $taxId => $colors) {
+            if (in_array($color, $colors)) {
+                $matches[] = $taxId;
+            }
+        }
+
+        return $matches;
+    }
+}
+
 
 class QueryManager
 {
@@ -98,7 +195,7 @@ class QueryManager
 
     public function setQueryParameter($name, $value)
     {
-        if($value !== '') {
+        if ($value !== '') {
             $this->queryParams[$name] = $value;
             set_query_var($name, $value);
         }
@@ -133,12 +230,12 @@ class QueryManager
             $metaQuery[] = [
                 'key' => $name,
                 'value' => $value,
-                'compare' => '='
+                'compare' => 'LIKE'
             ];
         }
 
         $args = [
-            'taxonomy' => 'attr',
+            'taxonomy' => FilterConfig::TAX_NAME,
             'hide_empty' => false,
             'meta_query' => $metaQuery
         ];
