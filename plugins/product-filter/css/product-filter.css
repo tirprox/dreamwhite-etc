@@ -1,0 +1,9 @@
+.dw-color-button {
+  display: inline-block;
+  text-align: center;
+  vertical-align: center;
+  margin: 8px;
+  padding: 8px;
+  /*background: #fa3042;*/
+  color: white;
+}
