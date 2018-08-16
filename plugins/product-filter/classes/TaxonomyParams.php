@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gleb
- * Date: 8/15/18
- * Time: 2:22 PM
- */
 
 class TaxonomyParams
 {
@@ -23,17 +17,6 @@ class TaxonomyParams
             $this->params[$param] = $value[0] !== '' ? explode(',', $value[0]) : [];
         }
 
-        /*$this->params['type'] = ['Пальто'];
-        $this->params['gender'] = ['Женский'];*/
-
-        /*foreach ($this->params as $param => $value) {
-            if (!empty($value)) {
-                Renderer::header($param);
-                foreach ($value as $item) {
-                    Renderer::tag($item);
-                }
-            }
-        }*/
     }
 
 }

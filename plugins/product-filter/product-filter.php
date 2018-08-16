@@ -141,14 +141,19 @@ function dw_filter_tags_shortcode()
         return 'data-attr-type="' . $attr . '" data-attr-value="' . $value .'"';
     };
 
+    $class = function($attr, $value) {
+        return 'class="dw-color-button"';
+    };
+
+
     echo '<div>';
-    echo '<a style="background: #e9b281" class="dw-color-button"' . $data('color', 'Бежевый') . '>Бежевый</a>';
-    echo '<a style="background: black" class="dw-color-button"' . $data('color', 'Черный') . '>Черный</a>';
-    echo '<a style="background: cyan" class="dw-color-button"' . $data('color', 'Бирюзовый') . '>Бирюзовый</a>';
+    echo '<a style="background: #e9b281" class="dw-color-button"' . $data('color', 'Бежевый') . '></a>';
+    echo '<a style="background: #1f1f1f" class="dw-color-button"' . $data('color', 'Черный') . '></a>';
+    echo '<a style="background: #45d5ff" class="dw-color-button"' . $data('color', 'Бирюзовый') . '></a>';
     echo '</div>';
 
     echo '<div>';
-    echo '<a style="background: black" class="dw-color-button"' . $data('kapushon', 'Есть') . '>Капюшон</a>';
+    echo '<a style="background: black" class="dw-color-button"' . $data('kapushon', 'Есть') . '><span class="dw-filter-button-text">Капюшон</span></a>';
     echo '</div>';
 
     //$queryManager->setQueryParameter('color', 'Бежевый');
