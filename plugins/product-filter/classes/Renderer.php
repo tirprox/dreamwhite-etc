@@ -8,6 +8,12 @@ class Renderer
         echo "<div style='font-size: 12px; display: inline-block; padding: 0px 4px; margin: 2px;border: 1px solid #cccccc'>$content</div>";
     }
 
+    public static function color($content)
+    {
+        echo "<div style='font-size: 12px; display: inline-block; padding: 0px 4px; margin: 2px;border: 1px solid #cccccc'>$content</div>";
+    }
+
+
     public static function header($content)
     {
         echo "<h3 style=''>$content</h3>";

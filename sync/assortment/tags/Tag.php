@@ -44,6 +44,12 @@ class Tag {
    var $realAttrs = [];
 
 
+   function fromGlobal($globalAttrs) {
+       $this->name = "GLOBAL_TAG";
+       $this->realAttrs = $globalAttrs;
+
+   }
+
    function getFilterAttrs() {
 
        $attrs = [

@@ -39,6 +39,11 @@ class TagFactory
             $tag->colorGroup = array_intersect($colors, $globalAttrs['color']);
             XMLTaxonomyListGenerator::addTag($tag);
         }
+
+        $globalTag = new Tag();
+        $globalTag->fromGlobal($globalAttrs);
+        XMLTaxonomyListGenerator::addTag($globalTag);
+
         XMLTaxonomyListGenerator::writeXmlToFile();
 
     }

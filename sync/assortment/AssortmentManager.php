@@ -59,7 +59,6 @@ class AssortmentManager
         Connector::completeRequests();
 
 
-
         $imageTreePromise = Connector::requestAsync($this->imageTreePath);
         $imageTreePromise->then(
             function (ResponseInterface $res) {
@@ -234,6 +233,31 @@ class AssortmentManager
 
                 TagMap::addAttribute('color', $product->colorGroup);
                 TagMap::addAttribute('size', $product->size);
+
+                $attrs = [
+                    //'color' => $product->color,
+                    'colorGroup' => $product->colorGroup,
+                    'texture' => $product->texture,
+                    'material' => $product->material,
+                    'season' => $product->season,
+                    'uteplitel' => $product->uteplitel,
+                    'podkladka' => $product->podkladka,
+                    'siluet' => $product->siluet,
+                    'dlina' => $product->dlina,
+                    'rukav' => $product->rukav,
+                    'dlina_rukava' => $product->dlina_rukava,
+                    'zastezhka' => $product->zastezhka,
+                    'kapushon' => $product->kapushon,
+                    'vorotnik' => $product->vorotnik,
+                    'poyas' => $product->poyas,
+                    'karmany' => $product->karmany,
+                    'koketka' => $product->koketka,
+                    'uhod' => $product->uhod,
+                ];
+
+                foreach ($attrs as $key => $value) {
+                    TagMap::addAttribute($key, $value);
+                }
 
             }
 

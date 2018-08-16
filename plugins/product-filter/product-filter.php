@@ -126,8 +126,6 @@ function dw_filter_tags_shortcode()
     echo '<div style="padding: 8px 16px">';
 
 
-
-
     $taxDataHolder = new TaxonomyDataHolder();
 
     $tax = get_queried_object();
@@ -141,19 +139,20 @@ function dw_filter_tags_shortcode()
         return 'data-attr-type="' . $attr . '" data-attr-value="' . $value .'"';
     };
 
-    $class = function($attr, $value) {
-        return 'class="dw-color-button"';
+    $class = function($attr, $value) use ($queryManager) {
+        $isActive = mb_strpos($queryManager->getQueryParameter($attr), $value) !== false;
+        return $isActive ? 'class="dw-color-button dw-filter-active"' : 'class="dw-color-button"';
     };
 
 
     echo '<div>';
-    echo '<a style="background: #e9b281" class="dw-color-button"' . $data('color', 'Бежевый') . '></a>';
-    echo '<a style="background: #1f1f1f" class="dw-color-button"' . $data('color', 'Черный') . '></a>';
-    echo '<a style="background: #45d5ff" class="dw-color-button"' . $data('color', 'Бирюзовый') . '></a>';
+    echo '<a style="background: #e9b281" ' . $class('color', 'Бежевый') . $data('color', 'Бежевый') . '></a>';
+    echo '<a style="background: #1f1f1f" ' . $class('color', 'Черный') . $data('color', 'Черный') . '></a>';
+    echo '<a style="background: #45d5ff" ' . $class('color', 'Бирюзовый') . $data('color', 'Бирюзовый') . '></a>';
     echo '</div>';
 
     echo '<div>';
-    echo '<a style="background: black" class="dw-color-button"' . $data('kapushon', 'Есть') . '><span class="dw-filter-button-text">Капюшон</span></a>';
+    echo '<a style="background: black" ' . $class('kapushon', 'Есть') . $data('kapushon', 'Есть') . '><span class="dw-filter-button-text">Капюшон</span></a>';
     echo '</div>';
 
     //$queryManager->setQueryParameter('color', 'Бежевый');
@@ -176,5 +175,25 @@ function dw_filter_tags_shortcode()
     echo '</div>';
 }
 
+class FilterView {
+    private $sections = [];
 
+    function render() {
+        echo '<div style="padding: 8px 16px">';
+
+        foreach ($this->sections as $section) {
+            Renderer::header($section['title']);
+            foreach ($section['attrs'] as $attr) {
+            }
+        }
+        echo '</div>';
+    }
+
+    function addSection($title, $attrs) {
+        $sections[] = [
+            'title' => $title,
+            'attrs' => $attrs
+        ];
+    }
+}
 

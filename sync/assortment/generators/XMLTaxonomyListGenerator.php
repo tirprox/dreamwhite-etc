@@ -3,7 +3,14 @@ namespace Dreamwhite\Assortment;
 class XMLTaxonomyListGenerator {
    private static $document;
    private static $root;
-   
+
+   public static $globalAttrs = [];
+
+   static function addGlobalAttr($attr, $value) {
+
+
+   }
+
    static function getDocument() {
       if (self::$document == null) {
          self::createDocument();
