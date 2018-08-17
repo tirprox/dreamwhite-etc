@@ -15,6 +15,7 @@ require_once "tags/TagFactory.php";
 require_once "tags/TagMap.php";
 require_once "tags/InvertableAttribute.php";
 require_once "tags/Tag.php";
+require_once "tags/CsvTagParser.php";
 
 require_once "Product.php";
 require_once "ProductVariant.php";

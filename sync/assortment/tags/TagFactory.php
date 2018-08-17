@@ -9,7 +9,29 @@ class TagFactory
 
     function loadTagsFromFile()
     {
-        $csvFile = file(__DIR__ . '/tags.csv');
+
+        $filePath = __DIR__ . '/tags.csv';
+
+        $tagRows = CsvTagParser::fromFile($filePath);
+
+        foreach ($tagRows as $tagRow) {
+           $tag =  $this->createTag2($tagRow);
+
+
+           $this->tags[] = $tag;
+        }
+
+
+        usort($this->tags[], function($tag1, $tag2) {
+            return $tag1['relations']['level'] <=> $tag2['relations']['level'];
+        });
+
+        $json = json_encode($this->tags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        file_put_contents("tags.json", $json);
+
+
+        /*$csvFile = file(__DIR__ . '/tags.csv');
         $data = [];
 
         foreach ($csvFile as $line) {
@@ -22,7 +44,7 @@ class TagFactory
         foreach ($data as $item) {
             $this->createTag($item);
             //var_dump($item);
-        }
+        }*/
 
     }
 
@@ -46,6 +68,22 @@ class TagFactory
 
         XMLTaxonomyListGenerator::writeXmlToFile();
 
+    }
+
+    function createTag2($tagRow) {
+        $tag = new Tag();
+
+        $tag->name = $tagRow['name'];
+
+        $tag->relations = $tagRow['relations'];
+        $tag->seo = $tagRow['seo'];
+
+        foreach ($tagRow['attrs'] as $name => $value) {
+            $tag->attributes[$name] = $this->splitAttr($value);
+        }
+
+
+        return $tag;
     }
 
     /* Creating a tag from a csv row, where row is represented as an array. */

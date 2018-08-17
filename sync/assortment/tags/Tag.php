@@ -7,12 +7,19 @@
  */
 namespace Dreamwhite\Assortment;
 class Tag {
-   var $name;
-   
+   public $name;
+
+   public $relations = [];
+
+   public $attributes = [];
+
+   public $seo = [];
+
+   // OLD
    var $group = [];
    
    var $color = [];
-    var $colorGroup = [];
+   var $colorGroup = [];
    var $size = [];
 
    var $texture = [];
@@ -40,8 +47,8 @@ class Tag {
    var $hasColors = false;
    var $realColors = [];
 
-   var $filterAttrs = [];
-   var $realAttrs = [];
+   public $filterAttrs = [];
+   public $realAttrs = [];
 
 
    function fromGlobal($globalAttrs) {
