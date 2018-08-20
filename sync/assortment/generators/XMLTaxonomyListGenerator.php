@@ -42,14 +42,22 @@ class XMLTaxonomyListGenerator {
 
       self::addNode('name', $tag->name, $xmlTagNode);
 
-      self::addNode('description', $tag->description, $xmlTagNode);
-      self::addNode('parent', $tag->parent, $xmlTagNode);
-      
-      $attrs = self::addChild('attributes', $xmlTagNode);
+       $relations = self::addChild('relations', $xmlTagNode);
+       foreach ($tag->relations as $attr => $value) {
+           self::addNode($attr, $value, $relations);
+       }
 
+
+      $attrs = self::addChild('attributes', $xmlTagNode);
+       //var_dump($tag->realAttrs);
       foreach ($tag->realAttrs as $attr => $value) {
           self::addNode($attr , implode(",", $value), $attrs);
       }
+
+       $seo = self::addChild('seo', $xmlTagNode);
+       foreach ($tag->seo as $attr => $value) {
+           self::addNode($attr, $value, $seo);
+       }
 
       return $xmlTagNode;
    }

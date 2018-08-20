@@ -107,4 +107,15 @@ class Tag {
         return implode(',', $this->realAttrs[$attr]);
     }
 
+    public function has($attrName) {
+       if (isset($this->attributes[$attrName])) {
+           if (!empty($this->attributes[$attrName]))
+           {
+
+           }
+       }
+       return !empty($this->attributes[$attrName]);
+
+    }
+
 }

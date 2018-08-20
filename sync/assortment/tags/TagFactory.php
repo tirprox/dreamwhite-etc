@@ -15,36 +15,19 @@ class TagFactory
         $tagRows = CsvTagParser::fromFile($filePath);
 
         foreach ($tagRows as $tagRow) {
-           $tag =  $this->createTag2($tagRow);
+            $tag = $this->createTag2($tagRow);
 
-
-           $this->tags[] = $tag;
+            $this->tags[] = $tag;
         }
 
 
-        usort($this->tags[], function($tag1, $tag2) {
-            return $tag1['relations']['level'] <=> $tag2['relations']['level'];
+        usort($this->tags, function ($tag1, $tag2) {
+            return $tag1->relations['level'] <=> $tag2->relations['level'];
         });
 
         $json = json_encode($this->tags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
         file_put_contents("tags.json", $json);
-
-
-        /*$csvFile = file(__DIR__ . '/tags.csv');
-        $data = [];
-
-        foreach ($csvFile as $line) {
-            $data[] = str_getcsv($line, ';');
-        }
-
-        // removing csv header
-        unset($data[0]);
-
-        foreach ($data as $item) {
-            $this->createTag($item);
-            //var_dump($item);
-        }*/
 
     }
 
@@ -70,7 +53,8 @@ class TagFactory
 
     }
 
-    function createTag2($tagRow) {
+    private function createTag2($tagRow)
+    {
         $tag = new Tag();
 
         $tag->name = $tagRow['name'];
@@ -125,7 +109,7 @@ class TagFactory
 
     /* Determine whether attribute should be included or excluded.
     If prepended with -, attribute is excluded from a tag (is inverted) */
-    function splitAttr($atrrString)
+    private function splitAttr($atrrString)
     {
         $data = str_getcsv($atrrString, ',');
         $attrs = [];
@@ -143,6 +127,69 @@ class TagFactory
         }
 
         return $attrs;
+    }
+
+
+    public function setProductTag2($product)
+    {
+        // sale tag
+        if ($product->isOnSale) {
+            $product->tags .= 'Распродажа,';
+        }
+
+        foreach ($this->tags as $tag) {
+
+
+            //if (!$this->compareAttrs($tag->relations['group'], $product->productFolderName)) continue;
+
+            if ($tag->relations['group'] !== $product->productFolderName) continue;
+
+            $result = false;
+
+            foreach ($tag->attributes as $name => $value) {
+
+                if ($name === 'article') {
+                    $result = $this->compareAttrs($tag->attributes[$name], $product->article);
+                }
+
+                else if ($name === 'size') {
+                    $tagSizes = [];
+                    $productSizes = $product->size;
+
+                    foreach ($value as $size) {
+                        $tagSizes[] = $size->attribute;
+                    }
+
+                    if (!empty(array_intersect($tagSizes, $productSizes))) {
+                        $result = true;
+                        $tag->addRealAttribute('size', implode(',', $tagSizes));
+                    }
+                }
+
+                else {
+                    if (isset($product->attrs[$name])) {
+                        $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
+                    }
+
+                    if ($result === false) break;
+                }
+
+            }
+
+            if ($result === false) continue;
+
+            $product->tags .= $tag->name . ',';
+
+            foreach ($product->attrs as $attr => $value) {
+
+                if (!empty($tag->attributes[$attr])) {
+                    if ($attr !== 'size') {
+                        $tag->addRealAttribute($attr, $value);
+                    }
+                }
+
+            }
+        }
     }
 
     function setProductTag($product)
@@ -211,8 +258,9 @@ class TagFactory
     If match not found, but attr is inverted, return match.
      */
 
-    function compareAttrs($tagAttrArray, $productAttr)
+    private function compareAttrs($tagAttrArray, $productAttr)
     {
+
         if (empty($tagAttrArray)) return true;
 
         $matchCount = 0;
@@ -234,7 +282,7 @@ class TagFactory
         return $match;
     }
 
-    function compareColors($tag, $productColor)
+    private function compareColors($tag, $productColor)
     {
         $tagColors = $tag->color;
         $match = false;

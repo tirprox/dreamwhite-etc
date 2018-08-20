@@ -229,7 +229,7 @@ class AssortmentManager
         foreach ($groups->groupArray as $group) {
 
             foreach ($group->products as $product) {
-                $tagFactory->setProductTag($product);
+                $tagFactory->setProductTag2($product);
 
                 TagMap::addAttribute('color', $product->colorGroup);
                 TagMap::addAttribute('size', $product->size);
@@ -254,6 +254,7 @@ class AssortmentManager
                     'koketka' => $product->koketka,
                     'uhod' => $product->uhod,
                 ];
+
 
                 foreach ($attrs as $key => $value) {
                     TagMap::addAttribute($key, $value);
