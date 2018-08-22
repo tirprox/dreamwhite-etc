@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Фильтр товаров
+Plugin Name: DreamWhite Фильтр товаров
 Plugin URI:
-Description: Работает с метками и
+Description: Фильтрация меток как атрибутов
 Version:     1.0
 Author:      Gleb Samsonov
 Author URI:  https://developer.wordpress.org/
@@ -14,11 +14,11 @@ Domain Path: /languages
 
 require_once "includes.php";
 
-init();
+dw_product_filter_init();
 
-function init()
+function dw_product_filter_init()
 {
-    add_action('init', 'dw_custom_seo_taxonomy', 0);
+    //add_action('init', 'dw_custom_seo_taxonomy', 0);
     add_shortcode('custom_filter', 'dw_filter_tags_shortcode');
 
 
@@ -57,7 +57,7 @@ function post_filter_var() {
 
 }
 
-function dw_custom_seo_taxonomy()
+/*function dw_custom_seo_taxonomy()
 {
 
     $labels = array(
@@ -91,7 +91,7 @@ function dw_custom_seo_taxonomy()
     );
     register_taxonomy(FilterConfig::TAX_NAME, 'product', $args);
 
-}
+}*/
 
 
 function set_query_parameter($attr, $value) {
@@ -146,9 +146,9 @@ function dw_filter_tags_shortcode()
 
 
     echo '<div>';
-    echo '<a style="background: #e9b281" ' . $class('color', 'Бежевый') . $data('color', 'Бежевый') . '></a>';
-    echo '<a style="background: #1f1f1f" ' . $class('color', 'Черный') . $data('color', 'Черный') . '></a>';
-    echo '<a style="background: #45d5ff" ' . $class('color', 'Бирюзовый') . $data('color', 'Бирюзовый') . '></a>';
+    echo '<a style="background: #e9b281" ' . $class('colorGroup', 'Бежевый') . $data('colorGroup', 'Бежевый') . '></a>';
+    echo '<a style="background: #1f1f1f" ' . $class('colorGroup', 'Черный') . $data('colorGroup', 'Черный') . '></a>';
+    echo '<a style="background: #45d5ff" ' . $class('colorGroup', 'Бирюзовый') . $data('colorGroup', 'Бирюзовый') . '></a>';
     echo '</div>';
 
     echo '<div>';

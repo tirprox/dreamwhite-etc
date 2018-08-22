@@ -48,7 +48,7 @@ class QueryManager
             $metaQuery[] = [
                 'key' => $name,
                 'value' => $value,
-                'compare' => 'LIKE'
+                'compare' => '='
             ];
         }
 
