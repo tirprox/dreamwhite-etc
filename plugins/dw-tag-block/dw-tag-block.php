@@ -61,6 +61,8 @@ function dw_tag_block_shortcode()
 
     $parent = get_term_meta($tax->term_id, 'parent', true);
 
+    $topParent = $parent;
+
     $parentTerm = get_term_by( 'name', $parent, 'attr');
 
     $parents = [];
@@ -74,10 +76,15 @@ function dw_tag_block_shortcode()
 
     $args = $childrenQueryManager->getQueryArgs();
 
-
-    //Renderer::header('Matching Taxonomies:');
-
     $terms = get_terms($args);
+
+    if (empty($terms)) {
+        $childrenQueryManager->setQueryParameter('parent', $topParent);
+        $args = $childrenQueryManager->getQueryArgs();
+        $terms = get_terms($args);
+    }
+
+
 
     foreach (array_reverse($parents) as $parentTerm) {
         if ($parentTerm->name != '') {
@@ -107,7 +114,10 @@ function dw_tag_block_shortcode()
     }
 
 
-    echo '<div class="matching-taxonomies">';
+    echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
+
+
+    echo '<div class="dw-tag-block dw-tag-block-collapsed">';
     foreach ($terms as $term) {
         Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
     }
