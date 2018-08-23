@@ -62,7 +62,7 @@ class TagFactory
         $tag->relations = $tagRow['relations'];
         $tag->seo = $tagRow['seo'];
 
-        foreach ($tagRow['attrs'] as $name => $value) {
+        foreach ($tagRow['Attrs'] as $name => $value) {
             $tag->attributes[$name] = $this->splitAttr($value);
         }
 

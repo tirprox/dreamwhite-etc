@@ -183,7 +183,7 @@ class FilterView {
 
         foreach ($this->sections as $section) {
             Renderer::header($section['title']);
-            foreach ($section['attrs'] as $attr) {
+            foreach ($section['Attrs'] as $attr) {
             }
         }
         echo '</div>';
@@ -192,7 +192,7 @@ class FilterView {
     function addSection($title, $attrs) {
         $sections[] = [
             'title' => $title,
-            'attrs' => $attrs
+            'Attrs' => $attrs
         ];
     }
 }

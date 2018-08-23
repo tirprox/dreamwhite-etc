@@ -74,7 +74,7 @@ class CsvTagParser
             }
 
             foreach (self::ATTR_MAP as $key => $value) {
-                $tagRow['attrs'][$key] = $row[$value];
+                $tagRow['Attrs'][$key] = $row[$value];
             }
 
             foreach (self::SEO_MAP as $key => $value) {
