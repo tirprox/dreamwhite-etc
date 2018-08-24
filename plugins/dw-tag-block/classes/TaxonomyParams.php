@@ -1,4 +1,7 @@
 <?php
+
+namespace Dreamwhite\Plugins\TagBlock;
+
 class TaxonomyParams
 {
     private $params = [];

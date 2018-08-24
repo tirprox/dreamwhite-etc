@@ -25,9 +25,7 @@ class TagFactory
             return $tag1->relations['level'] <=> $tag2->relations['level'];
         });
 
-        $json = json_encode($this->tags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        file_put_contents("tags.json", $json);
 
     }
 
@@ -47,6 +45,10 @@ class TagFactory
 
         $globalTag = new Tag();
         $globalTag->fromGlobal($globalAttrs);
+
+        $json = json_encode($this->tags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        file_put_contents("tags.json", $json);
+
         XMLTaxonomyListGenerator::addTag($globalTag);
 
         XMLTaxonomyListGenerator::writeXmlToFile();

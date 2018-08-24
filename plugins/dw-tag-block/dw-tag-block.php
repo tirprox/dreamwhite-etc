@@ -11,7 +11,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: dw-tag-block
 Domain Path: /languages
 */
-//use dw_tag_block;
+use Dreamwhite\Plugins\TagBlock\TaxonomyParams;
+use Dreamwhite\Plugins\TagBlock\QueryManager;
+use Dreamwhite\Plugins\TagBlock\Renderer;
+
 require_once "includes.php";
 
 dw_tag_block_init();
@@ -49,8 +52,6 @@ function dw_tag_block_shortcode()
 
     echo '<div style="padding: 8px 16px">';
 
-
-    $taxDataHolder = new TaxonomyDataHolder();
 
     $tax = get_queried_object();
 
@@ -119,7 +120,10 @@ function dw_tag_block_shortcode()
 
     echo '<div class="dw-tag-block dw-tag-block-collapsed">';
     foreach ($terms as $term) {
-        Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
+        if ($term->term_id !== $tax->term_id) {
+            Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
+
+        }
     }
     echo '</div>';
     echo '</div>';

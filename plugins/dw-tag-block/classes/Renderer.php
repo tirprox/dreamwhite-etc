@@ -1,4 +1,6 @@
 <?php
+namespace Dreamwhite\Plugins\TagBlock;
+
 class Renderer
 {
 

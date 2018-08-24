@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Plugins\ProductFilter;
 class TaxonomyParams
 {
     private $params = [];
@@ -16,6 +16,7 @@ class TaxonomyParams
         foreach ($meta as $param => $value) {
             $this->params[$param] = $value[0] !== '' ? explode(',', $value[0]) : [];
         }
+
 
     }
 

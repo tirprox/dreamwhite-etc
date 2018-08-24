@@ -26,6 +26,7 @@ function my_extra_button_on_product_page()
         [
             'article' => $article,
             'status' => 'publish',
+            'limit' => 1000,
             //'exclude' => [ $product->get_id() ],
         ]
     );
@@ -45,7 +46,7 @@ function my_extra_button_on_product_page()
 
             if ($item_id === $product_id) {
                 ?>
-                <div class="" style="box-sizing: border-box; display: inline-block; position:relative;" >
+                <div class="" style="box-sizing: border-box; display: inline-block; position:relative; margin-right: 4px; margin-bottom: 8px" >
                     <img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>">
                     <div class="shadow"
                          style="
@@ -62,7 +63,7 @@ function my_extra_button_on_product_page()
             }
             else {
                 ?>
-                <div class="single-product-color-thumbnail" style="box-sizing: border-box; display: inline-block">
+                <div class="single-product-color-thumbnail" style="box-sizing: border-box; display: inline-block; margin-right: 4px; margin-bottom: 8px">
                     <a href="<?php echo $item->get_permalink() ?>"><img src="<?php echo $image[0] ?>" alt="<?php echo $color ?>"></a>
                 </div>
                 <?php

@@ -1,5 +1,5 @@
 <?php
-
+namespace Dreamwhite\Plugins\ProductFilter;
 class Renderer
 {
 

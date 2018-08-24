@@ -1,4 +1,6 @@
 jQuery( document ).on( 'click', '.dw-color-button', function() {
+    let term_id = jQuery('.dw-product-filter-wrapper').data('term-id');
+
     let attr_type = jQuery(this).data('attr-type');
     let attr_value = jQuery(this).data('attr-value');
 
@@ -7,6 +9,7 @@ jQuery( document ).on( 'click', '.dw-color-button', function() {
         type : 'post',
         data : {
             action : 'post_filter_var',
+            term_id: term_id,
             attr_type: attr_type,
             attr_value: attr_value
         },

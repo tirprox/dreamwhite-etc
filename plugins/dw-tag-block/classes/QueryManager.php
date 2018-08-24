@@ -5,6 +5,8 @@
  * Date: 8/15/18
  * Time: 2:21 PM
  */
+namespace Dreamwhite\Plugins\TagBlock;
+
 class QueryManager
 {
 
@@ -52,7 +54,7 @@ class QueryManager
         }
 
         $args = [
-            'taxonomy' => FilterConfig::TAX_NAME,
+            'taxonomy' => Config::TAX_NAME,
             'hide_empty' => false,
             'meta_query' => $metaQuery
         ];

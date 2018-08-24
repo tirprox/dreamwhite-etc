@@ -5,10 +5,12 @@
  * Date: 8/15/18
  * Time: 2:19 PM
  */
-
+namespace Dreamwhite\Plugins\ProductFilter;
 class Attrs
 {
     public const VALUES = [
+        'type',
+        'gender',
         'color',
         'colorGroup',
         'texture',

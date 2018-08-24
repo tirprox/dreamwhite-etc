@@ -5,7 +5,7 @@
  * Date: 8/15/18
  * Time: 2:21 PM
  */
-
+namespace Dreamwhite\Plugins\ProductFilter;
 class QueryManager
 {
 
@@ -13,7 +13,7 @@ class QueryManager
 
     public function setQueryParameter($name, $value)
     {
-        if ($value !== '') {
+        if ($value !== '' && in_array($name, Attrs::VALUES)) {
             $this->queryParams[$name] = $value;
             set_query_var($name, $value);
         }
@@ -54,7 +54,7 @@ class QueryManager
 
         $args = [
             'taxonomy' => FilterConfig::TAX_NAME,
-            'hide_empty' => false,
+            'hide_empty' => true,
             'meta_query' => $metaQuery
         ];
 

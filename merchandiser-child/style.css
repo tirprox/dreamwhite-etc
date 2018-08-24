@@ -245,7 +245,7 @@ body.offcanvas_open .offcanvas_overlay {
 
 .main-navigation-slices > ul > li > ul > li > a {
     /* padding-bottom: 0 !important; */
-    padding: 2em 3em 2em 3em;
+    padding: 1.5em 2em;
     max-width: 30em;
 }
 

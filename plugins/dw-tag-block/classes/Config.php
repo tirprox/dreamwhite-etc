@@ -5,7 +5,9 @@
  * Date: 8/15/18
  * Time: 2:18 PM
  */
-class FilterConfig
+namespace Dreamwhite\Plugins\TagBlock;
+
+class Config
 {
     const TAX_NAME = 'attr';
 }
