@@ -171,7 +171,7 @@ add_filter('wpseo_title', 'yoast_add_page_number_to_title_and_meta', 100, 1);
 
 function filter_woocommerce_page_title($title)
 {
-    if (is_product_category() || is_product_tag()) {
+    if (is_product_category() || is_product_tag() || is_tax('attr')) {
         $paged = get_query_var('paged', 1);
         if ($paged >= 2) {
             $title .= ' ' . ' - Страница ' . $paged;
@@ -186,12 +186,12 @@ add_filter('woocommerce_page_title', 'filter_woocommerce_page_title', 10, 1);
 // Empty tag redirects to a cat
 class RedirectMap
 {
-    const PREFIX = '/product-category';
+    const PREFIX = '/catalog';
     const REDIRECT_MAP = [
-        'zhenskie-palto' => self:: PREFIX . '/palto/zhenskie-palto/',
+        'zhenskie-palto' => self:: PREFIX . '/zhenskie-palto/',
         'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
         'zhilety' => self:: PREFIX . '/zhilety/',
-        'muzhskie-palto' => self:: PREFIX . '/palto/muzhskie-palto/',
+        'muzhskie-palto' => self:: PREFIX . '/muzhskie-palto/',
         'zhenskie-puhoviki' => self:: PREFIX . '/kurtki/zhenskie-kurtki/zhenskie-puhoviki/',
     ];
 }

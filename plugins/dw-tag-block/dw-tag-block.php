@@ -55,29 +55,17 @@ function dw_tag_block_shortcode()
 
     $tax = get_queried_object();
 
-    $params = new TaxonomyParams($tax);
+   // $params = new TaxonomyParams($tax);
 
     $childrenQueryManager = new QueryManager();
     $childrenQueryManager->setQueryParameter('parent', $tax->name);
 
-    $parent = get_term_meta($tax->term_id, 'parent', true);
+    $args = $childrenQueryManager->getQueryArgs();
+    $terms = get_terms($args);
 
+    $parent = get_term_meta($tax->term_id, 'parent', true);
     $topParent = $parent;
 
-    $parentTerm = get_term_by( 'name', $parent, 'attr');
-
-    $parents = [];
-    $parents[] = $parentTerm;
-
-    while ($parent !== '') {
-        $parent = get_term_meta($parentTerm->term_id, 'parent', true);
-        $parentTerm = get_term_by( 'name', $parent, 'attr');
-        $parents[] = $parentTerm;
-    }
-
-    $args = $childrenQueryManager->getQueryArgs();
-
-    $terms = get_terms($args);
 
     if (empty($terms)) {
         $childrenQueryManager->setQueryParameter('parent', $topParent);
@@ -85,44 +73,54 @@ function dw_tag_block_shortcode()
         $terms = get_terms($args);
     }
 
+    if  ($parent !== '') {
+        $parentTerm = get_term_by( 'name', $parent, 'attr');
 
+        $parents = [];
+        $parents[] = $parentTerm;
 
-    foreach (array_reverse($parents) as $parentTerm) {
-        if ($parentTerm->name != '') {
-            $level = get_term_meta($parentTerm->term_id, 'level', true);
-            //echo $level;
-
-            if ($level > 1) {
-
-                $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
-                Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug);
-            }
-            else {
-                Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug);
-            }
-
-            echo '<span style="font-size: 12px"> / </span>';
+        while ($parent !== '' && isset($parentTerm)) {
+            $parent = get_term_meta($parentTerm->term_id, 'parent', true);
+            $parentTerm = get_term_by( 'name', $parent, 'attr');
+            $parents[] = $parentTerm;
         }
 
-    }
-    $current_level = get_term_meta($tax->term_id, 'level', true);
-    if ($current_level > 1 ) {
-        $short_name = get_term_meta($tax->term_id, 'short_name', true);
-        Renderer::tag_block_parent($short_name, '/catalog/' . $tax->slug);
-    }
-    else {
-        Renderer::tag_block_parent($tax->name, '/catalog/' . $tax->slug);
+        foreach (array_reverse($parents) as $parentTerm) {
+            if (isset($parentTerm) && $parentTerm->name != '') {
+                $level = get_term_meta($parentTerm->term_id, 'level', true);
+                //echo $level;
+
+                if ($level > 1) {
+
+                    $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
+                    Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug);
+                }
+                else {
+                    Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug);
+                }
+
+                echo '<span style="font-size: 12px"> / </span>';
+            }
+
+        }
+
+        $current_level = get_term_meta($tax->term_id, 'level', true);
+        if ($current_level > 1 ) {
+            $short_name = get_term_meta($tax->term_id, 'short_name', true);
+            Renderer::tag_block_parent($short_name, '/catalog/' . $tax->slug);
+        }
+        else {
+            Renderer::tag_block_parent($tax->name, '/catalog/' . $tax->slug);
+        }
     }
 
 
     echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
 
-
     echo '<div class="dw-tag-block dw-tag-block-collapsed">';
     foreach ($terms as $term) {
         if ($term->term_id !== $tax->term_id) {
             Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
-
         }
     }
     echo '</div>';
