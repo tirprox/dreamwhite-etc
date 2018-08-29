@@ -43,6 +43,7 @@
 
 .dw-tag-block-collapsed {
   max-height: 25px;
+  overflow: hidden;
 }
 
 .dw-tag-block-expanded {

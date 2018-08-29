@@ -56,6 +56,8 @@ $options = ['upsert' => true];
     ]
 ], []);*/
 
+// db.getCollection('tags').find({"attributes.colorGroup" : {"$eq": "Бежевый", "$size" : 1}, "relations.gender" : "Женские", "relations.type" : "Пальто" })
+
 $result = $collection->find(
     [
         'attributes.colorGroup' => 'Бежевый',

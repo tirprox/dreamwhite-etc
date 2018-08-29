@@ -5,6 +5,7 @@ require_once "vendor/autoload.php";
 
 require_once "AssortmentManager.php";
 require_once "ImportHandler.php";
+require_once "MongoTagAdapter.php";
 
 require_once "generators/XMLReportGenerator.php";
 require_once "generators/XMLTaxonomyListGenerator.php";
