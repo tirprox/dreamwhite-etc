@@ -35,11 +35,21 @@ class TagFactory
         foreach ($this->tags as $tag) {
 
             $colors = [];
-            foreach ($tag->color as $color) {
-                $colors[] = $color->attribute;
+            $sizes = [];
+            if (isset($tag->attributes['color'])) {
+                foreach ($tag->attributes['color'] as $color) {
+                    $colors[] = $color->attribute;
+                }
+                $tag->attributes['colorGroup'] = array_intersect($colors, $globalAttrs['color']);
             }
 
-            $tag->colorGroup = array_intersect($colors, $globalAttrs['color']);
+            if (isset($tag->attributes['size'])) {
+                foreach ($tag->attributes['size'] as $size) {
+                    $sizes[] = $size->attribute;
+                }
+                $tag->attributes['size'] = array_intersect($colors, $globalAttrs['size']);
+            }
+
             XMLTaxonomyListGenerator::addTag($tag);
         }
 
@@ -53,6 +63,12 @@ class TagFactory
 
         XMLTaxonomyListGenerator::writeXmlToFile();
 
+        $mongo = new MongoTagAdapter();
+
+        $data = json_decode($json, true);
+
+        $mongo->updateAll($data);
+
     }
 
     private function createTag2($tagRow)
@@ -64,8 +80,12 @@ class TagFactory
         $tag->relations = $tagRow['relations'];
         $tag->seo = $tagRow['seo'];
 
-        foreach ($tagRow['Attrs'] as $name => $value) {
-            $tag->attributes[$name] = $this->splitAttr($value);
+        foreach ($tagRow['attrs'] as $name => $value) {
+            $splitted = $this->splitAttr($value);
+            if (!empty($splitted)) {
+                $tag->attributes[$name] = $splitted;
+            }
+
         }
 
 
@@ -73,7 +93,7 @@ class TagFactory
     }
 
     /* Creating a tag from a csv row, where row is represented as an array. */
-    function createTag($row)
+    /*function createTag($row)
     {
         $tag = new Tag();
         $tag->name = $row[0];
@@ -107,7 +127,7 @@ class TagFactory
 
         //var_dump($tag->name, $tag->filterAttrs);
         $this->tags[] = $tag;
-    }
+    }*/
 
     /* Determine whether attribute should be included or excluded.
     If prepended with -, attribute is excluded from a tag (is inverted) */
@@ -128,7 +148,7 @@ class TagFactory
             }
         }
 
-        return $attrs;
+        return array_filter($attrs);
     }
 
 
@@ -146,36 +166,38 @@ class TagFactory
 
             if ($tag->relations['group'] !== $product->productFolderName) continue;
 
-            $result = false;
+            $result = true;
 
-            foreach ($tag->attributes as $name => $value) {
+            if (!empty($tag->attributes)) {
+                foreach ($tag->attributes as $name => $value) {
 
-                if ($name === 'article') {
-                    $result = $this->compareAttrs($tag->attributes[$name], $product->article);
-                }
-
-                else if ($name === 'size') {
-                    $tagSizes = [];
-                    $productSizes = $product->size;
-
-                    foreach ($value as $size) {
-                        $tagSizes[] = $size->attribute;
+                    if ($name === 'article') {
+                        $result = $this->compareAttrs($tag->attributes[$name], $product->article);
                     }
 
-                    if (!empty(array_intersect($tagSizes, $productSizes))) {
-                        $result = true;
-                        $tag->addRealAttribute('size', implode(',', $tagSizes));
+                    else if ($name === 'size') {
+                        $tagSizes = [];
+                        $productSizes = $product->size;
+
+                        foreach ($value as $size) {
+                            $tagSizes[] = $size->attribute;
+                        }
+
+                        if (!empty(array_intersect($tagSizes, $productSizes))) {
+                            $result = true;
+                            $tag->addRealAttribute('size', implode(',', $tagSizes));
+                        }
                     }
-                }
 
-                else {
-                    if (isset($product->attrs[$name])) {
-                        $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
+                    else {
+                        if (isset($product->attrs[$name])) {
+                            $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
+                        }
+
+                        if ($result === false) break;
                     }
 
-                    if ($result === false) break;
                 }
-
             }
 
             if ($result === false) continue;

@@ -105,10 +105,10 @@ function dw_tag_block_shortcode()
             $current_level = get_term_meta($current_term->term_id, 'level', true);
             if ($current_level > 1 ) {
                 $short_name = get_term_meta($current_term->term_id, 'short_name', true);
-                Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug);
+                Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug . '/');
             }
             else {
-                Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug);
+                Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug . '/');
             }
         }
 

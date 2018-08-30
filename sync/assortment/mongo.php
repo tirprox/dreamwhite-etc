@@ -19,25 +19,24 @@ $collection = $client->tags->tags;
 
 $data = json_decode(file_get_contents('tags.json'), true);
 
-$filter = ['name' => 'test'];
 $options = ['upsert' => true];
 
 
-/*foreach ($data as $item) {
+foreach ($data as $item) {
     $filter = ['name' => $item['name']];
     //$values = explode(",", $value);
 
     $record = [
         'name' => $item['name'],
-        'attributes' => $item['realAttrs'],
         'relations' => $item['relations'],
+        'attributes' => $item['realAttrs'],
         'seo' => $item['seo'],
     ];
 
 
     $collection->updateOne($filter, ['$set' => $record], $options);
     //$collection->updateOne($filter, ['$pull' => ['colors' => 'testColor']], $options);
-}*/
+}
 
 //$collection->updateOne($filter, ['$set' => $update], $options);
 
@@ -58,7 +57,7 @@ $options = ['upsert' => true];
 
 // db.getCollection('tags').find({"attributes.colorGroup" : {"$eq": "Бежевый", "$size" : 1}, "relations.gender" : "Женские", "relations.type" : "Пальто" })
 
-$result = $collection->find(
+/*$result = $collection->find(
     [
         'attributes.colorGroup' => 'Бежевый',
         'attributes.season' => 'Демисезонные',
@@ -67,9 +66,6 @@ $result = $collection->find(
     ]
 );
 
-//$result = $collection->find();
-
-
 foreach ($result as $item) {
     var_dump($item);
-}
+}*/

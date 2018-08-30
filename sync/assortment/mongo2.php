@@ -9,20 +9,21 @@
 namespace Dreamwhite\Assortment;
 require "includes.php";
 
-
 $mongo = new MongoTagAdapter();
 
 $MOCK_ATTRS = [
-    'colorGroup' => 'Черный',
-    'dlina' => '120см',
-    //'poyas' => 'Есть',
-//    'vorotnik' => 'Стойка',
-//        'season' => 'Зимние'
-    //'siluet' => 'Приталенный'
+    'colorGroup' => 'Синий',
+//    'dlina' => '120см',
+//    'poyas' => 'Есть',
+//    'vorotnik' => 'Есть',
+    'season' => 'Зимние',
+//    'siluet' => 'Приталенный',
+//    'kapushon' => 'Есть',
 ];
 $MOCK_RELS = [
     'gender' => 'Женские',
-    'type' => 'Пальто'
+    'type' => 'Пальто',
+    'filterable' => 1
 ];
 
 $results = [];
@@ -33,7 +34,8 @@ foreach ($mongo->find($MOCK_ATTRS, $MOCK_RELS) as $result) {
 selectBestCandidate($results, count($MOCK_ATTRS), count($MOCK_RELS));
 
 
-function selectBestCandidate($results, $attrCount, $relCount) {
+function selectBestCandidate($results, $attrCount, $relCount)
+{
     foreach ($results as $item) {
         if (count($item->attributes) === $attrCount) {
             echo $item->name . PHP_EOL;

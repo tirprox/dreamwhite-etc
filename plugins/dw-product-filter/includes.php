@@ -1,4 +1,5 @@
 <?php
+require_once "vendor/autoload.php";
 
 require_once "classes/FilterConfig.php";
 require_once "classes/Attrs.php";

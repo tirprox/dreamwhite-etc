@@ -232,7 +232,12 @@ class AssortmentManager
                 $tagFactory->setProductTag2($product);
 
                 TagMap::addAttribute('color', $product->colorGroup);
-                TagMap::addAttribute('size', $product->size);
+
+                $sizes = array_filter(explode(',', $product->sizes));
+                foreach ($sizes as $size) {
+                    TagMap::addAttribute('size', $size);
+                }
+
 
                 $attrs = [
                     //'color' => $product->color,
@@ -265,22 +270,10 @@ class AssortmentManager
             $tagFactory->getTagList(TagMap::getAll());
         }
 
-        $header = "<?php class TagRewriteRules {\nstatic \$rules = [\n";
-        $footer = "\n];\n}";
-        $tagRewriteRules = '';
-        foreach ($tagFactory->tags as $tag) {
-            if ($tag->hasColors && !empty($tag->realColors)) {
-                $tagName = strtolower(Tools::transliterate($tag->name));
-                $colorList = implode(',', $tag->realColors);
 
 
-                $tagRewriteRules .= "'$tagName' => '$colorList',\n";
 
-            }
-        }
-        $file = $header . $tagRewriteRules . $footer;
-        file_put_contents('TagRewriteRules.php', $file);
-        require_once('TagRewriteRules.php');
+
         Timers::stop('tags');
     }
 

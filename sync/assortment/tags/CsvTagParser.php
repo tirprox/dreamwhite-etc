@@ -4,8 +4,9 @@ namespace Dreamwhite\Assortment;
 class CsvTagParser
 {
     private const NAME_START = 0, NAME_END = 9;
+    private const FILTERABLE_OFFSET = 10;
 
-    private const RELATION_OFFSET = 10;
+    private const RELATION_OFFSET = 11;
     private const RELATION_MAP = [
         'parent' => self::RELATION_OFFSET,
         'type' => self::RELATION_OFFSET+1,
@@ -13,7 +14,7 @@ class CsvTagParser
         'group' => self::RELATION_OFFSET+3,
     ];
 
-    private const ATTR_OFFSET = 14;
+    private const ATTR_OFFSET = 15;
     private const ATTR_MAP = [
         'article' => self::ATTR_OFFSET,
         'color' => self::ATTR_OFFSET+1,
@@ -37,7 +38,7 @@ class CsvTagParser
         'size' => self::ATTR_OFFSET+19,
     ];
 
-    private const SEO_OFFSET = 34;
+    private const SEO_OFFSET = 35;
     private const SEO_MAP = [
         'h1' => self::SEO_OFFSET,
         'short_name' => self::SEO_OFFSET+1,
@@ -66,6 +67,7 @@ class CsvTagParser
         foreach ($data as $row) {
             $tagRow = [];
             $tagRow['name'] = self::getName($row)['name'];
+            $tagRow['relations']['filterable'] = $row[self::FILTERABLE_OFFSET] == 1 ? 1 : 0;
             $tagRow['relations']['level'] = self::getName($row)['level'];
 
 
@@ -74,7 +76,7 @@ class CsvTagParser
             }
 
             foreach (self::ATTR_MAP as $key => $value) {
-                $tagRow['Attrs'][$key] = $row[$value];
+                $tagRow['attrs'][$key] = $row[$value];
             }
 
             foreach (self::SEO_MAP as $key => $value) {

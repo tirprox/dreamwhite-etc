@@ -160,8 +160,11 @@ class XMLReportGenerator {
    }
 
    static function addNode($name, $value, $parent) {
-      $node = self::addChild($name, $parent);
-      $nodeVal = self::addTextNode($value, $node);
+       if ($value !== '') {
+           $node = self::addChild($name, $parent);
+           $nodeVal = self::addTextNode($value, $node);
+       }
+
    }
    
    static function addChild($elementName, $parent) {

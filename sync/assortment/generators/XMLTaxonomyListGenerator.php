@@ -51,7 +51,7 @@ class XMLTaxonomyListGenerator {
       $attrs = self::addChild('attributes', $xmlTagNode);
        //var_dump($tag->realAttrs);
       foreach ($tag->realAttrs as $attr => $value) {
-          self::addNode($attr , implode(",", $value), $attrs);
+          self::addNode($attr , implode(",", array_filter($value)), $attrs);
       }
 
        $seo = self::addChild('seo', $xmlTagNode);
@@ -63,8 +63,10 @@ class XMLTaxonomyListGenerator {
    }
 
    static function addNode($name, $value, $parent) {
-      $node = self::addChild($name, $parent);
-      $nodeVal = self::addTextNode($value, $node);
+       if ($value !== '') {
+           $node = self::addChild($name, $parent);
+           $nodeVal = self::addTextNode($value, $node);
+       }
    }
    
    static function addChild($elementName, $parent) {

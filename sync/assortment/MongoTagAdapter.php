@@ -13,28 +13,23 @@ require "includes.php";
 class MongoTagAdapter
 {
     private const LOGIN = 'admin', PASSWORD = '6h8s4ksoq';
-    private const URI = 'mongodb://' . self::LOGIN . ':' . self::PASSWORD . '@localhost:27017';
-
-    private const MOCK_ATTRS = [
-        'colorGroup' => 'Черный',
-    ];
-    private const MOCK_RELS = [
-        'gender' => 'Женские',
-        'type' => 'Пальто'
-    ];
+    //private const URI = 'mongodb://' . self::LOGIN . ':' . self::PASSWORD . '@localhost:27017';
 
     private $client;
 
     private $db, $collection;
 
-    private $query = [];
+    private function constructUri($login, $password) {
+        return 'mongodb://' . $login . ':' . $password . '@localhost:27017';
+    }
 
-    public function __construct()
+
+
+    public function __construct($login = self::LOGIN, $password = self::PASSWORD)
     {
-        $this->client = new \MongoDB\Client(self::URI);
+        $this->client = new \MongoDB\Client($this->constructUri($login, $password));
 
         $this->setCollection();
-
     }
 
     public function setDB($db = 'tags') {
@@ -69,6 +64,36 @@ class MongoTagAdapter
 
         return $this->collection->find($query);
 
+    }
+
+    public function updateOne($item) {
+        $options = ['upsert' => true];
+        $filter = ['name' => $item['name']];
+
+        $record = [
+            'name' => $item['name'],
+            'relations' => $item['relations'],
+            'attributes' => $item['realAttrs'],
+            'seo' => $item['seo'],
+        ];
+        $this->collection->updateOne($filter, ['$set' => $record], $options);
+    }
+
+    public function updateAll($data) {
+        $options = ['upsert' => true];
+
+        foreach ($data as $item) {
+            $filter = ['name' => $item['name']];
+
+            $record = [
+                'name' => $item['name'],
+                'relations' => $item['relations'],
+                'attributes' => $item['realAttrs'],
+                'seo' => $item['seo'],
+            ];
+
+            $this->collection->updateOne($filter, ['$set' => $record], $options);
+        }
     }
 
     private function getAttributeName($attr) {
