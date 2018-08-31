@@ -16,6 +16,8 @@ use Dreamwhite\Plugins\ProductFilter\TaxonomyDataHolder;
 use Dreamwhite\Plugins\ProductFilter\TaxonomyParams;
 use Dreamwhite\Plugins\ProductFilter\QueryManager;
 use Dreamwhite\Plugins\ProductFilter\Renderer;
+//use Dreamwhite\Plugins\ProductFilter\MongoAdapter;
+
 
 require_once "includes.php";
 
@@ -76,22 +78,36 @@ function set_query_parameter($term_id, $attr, $value) {
     $queryManager = new QueryManager();
     $queryManager->fromTaxonomyParams($params);
     $queryManager->setQueryParameter($attr, $value);
+    $queryManager->setQueryParameter('filterable', 1);
 
+    $query = $queryManager->getMongoQuery();
+    //var_dump($query);
+
+    $mongo = new MongoAdapter();
+
+    /*$results = $mongo->find($query['attributes'], $query['relations']);
+    foreach ($results as $result) {
+        //var_dump(get_term_link($term));
+        Renderer::a($result->name, 'https://new.dreamwhite.ru/catalog/' . $result->slug . '/');
+    }*/
 
 
     //mock_meta_query_args($queryManager);
-    var_dump($queryManager->getQueryArgs());
-    $terms = get_terms($queryManager->getQueryArgs());
+    //var_dump($queryManager->getQueryArgs());
+    //$terms = get_terms($queryManager->getQueryArgs());
 
-    foreach ($terms as $term) {
+
+
+    /*foreach ($terms as $term) {
         //var_dump(get_term_link($term));
         Renderer::a($term->name, get_term_link($term));
-    }
+    }*/
 }
 
 function mock_meta_query_args(&$queryManager) {
-    $queryManager->setQueryParameter('gender', 'Женский');
-    $queryManager->setQueryParameter('type', 'Пальто');
+    //$queryManager->setQueryParameter('gender', 'Женский');
+    //$queryManager->setQueryParameter('type', 'Пальто');
+    $queryManager->setQueryParameter('filterable', '1');
 }
 
 function dw_filter_tags_shortcode()
@@ -102,8 +118,7 @@ function dw_filter_tags_shortcode()
 
 
     //$taxDataHolder = new TaxonomyDataHolder();
-
-
+    $mongo = new MongoAdapter();
 
     $params = new TaxonomyParams($tax);
 

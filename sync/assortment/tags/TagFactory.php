@@ -76,8 +76,10 @@ class TagFactory
         $tag = new Tag();
 
         $tag->name = $tagRow['name'];
-
+        $tag->slug = strtolower(Tools::transliterate($tag->name));
         $tag->relations = $tagRow['relations'];
+
+        //$tag->relations['slug'] = strtolower(Tools::transliterate($tag->name));
         $tag->seo = $tagRow['seo'];
 
         foreach ($tagRow['attrs'] as $name => $value) {

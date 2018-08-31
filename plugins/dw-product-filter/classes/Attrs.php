@@ -11,6 +11,7 @@ class Attrs
     public const VALUES = [
         'type',
         'gender',
+        'filterable',
         'color',
         'colorGroup',
         'texture',

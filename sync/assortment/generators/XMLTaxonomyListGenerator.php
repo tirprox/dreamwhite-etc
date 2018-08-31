@@ -38,9 +38,8 @@ class XMLTaxonomyListGenerator {
    static function addTag($tag) {
       $xmlTagNode = self::addChild('taxonomy', self::$root);
 
-
-
       self::addNode('name', $tag->name, $xmlTagNode);
+       self::addNode('slug', $tag->slug, $xmlTagNode);
 
        $relations = self::addChild('relations', $xmlTagNode);
        foreach ($tag->relations as $attr => $value) {

@@ -6,9 +6,11 @@
  * Time: 5:35 PM
  */
 
-namespace Dreamwhite\Plugins\ProductFilter;
+//namespace Dreamwhite\Plugins\ProductFilter;
 
-require_once "../includes.php";
+//require_once dirname(__DIR__) . "/includes.php";
+
+require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 class MongoAdapter
 {

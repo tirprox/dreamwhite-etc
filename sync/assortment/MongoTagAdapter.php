@@ -72,6 +72,7 @@ class MongoTagAdapter
 
         $record = [
             'name' => $item['name'],
+            'slug' => $item['slug'],
             'relations' => $item['relations'],
             'attributes' => $item['realAttrs'],
             'seo' => $item['seo'],
@@ -87,6 +88,7 @@ class MongoTagAdapter
 
             $record = [
                 'name' => $item['name'],
+                'slug' => $item['slug'],
                 'relations' => $item['relations'],
                 'attributes' => $item['realAttrs'],
                 'seo' => $item['seo'],

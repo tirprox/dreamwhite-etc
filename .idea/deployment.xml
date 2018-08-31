@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" serverName="new.dreamwhite.ru">
     <serverData>
+      <paths name="dreamwhite.ru sync">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/sync/assortment" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="dreamwhiteru@dreamwhite.ru">
         <serverdata>
           <mappings>

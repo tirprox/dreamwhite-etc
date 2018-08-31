@@ -7,7 +7,7 @@
  */
 namespace Dreamwhite\Assortment;
 class Tag {
-   public $name;
+   public $name, $slug;
 
    public $relations = [];
 

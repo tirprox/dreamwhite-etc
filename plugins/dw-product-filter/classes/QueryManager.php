@@ -5,11 +5,40 @@
  * Date: 8/15/18
  * Time: 2:21 PM
  */
+
 namespace Dreamwhite\Plugins\ProductFilter;
 class QueryManager
 {
 
     private $queryParams = [];
+
+
+    private const ATTRIBUTES = [
+
+        'color',
+        'colorGroup',
+        'texture',
+        'material',
+        'season',
+        'uteplitel',
+        'podkladka',
+        'siluet',
+        'dlina',
+        'rukav',
+        'dlina_rukava',
+        'zastezhka',
+        'kapushon',
+        'vorotnik',
+        'poyas',
+        'karmany',
+        'koketka',
+        'uhod',],
+
+        RELATIONS = [
+        'type',
+        'gender',
+        'filterable',
+    ];
 
     public function setQueryParameter($name, $value)
     {
@@ -38,6 +67,28 @@ class QueryManager
         foreach ($taxonomy->getParams() as $name => $value) {
             $this->setQueryParameter($name, implode(',', $value));
         }
+    }
+
+    public function getMongoQuery()
+    {
+        $metaQuery = [];
+
+        foreach ($this->queryParams as $name => $value) {
+
+            if (in_array($name, self::ATTRIBUTES)) {
+                $metaQuery['attributes'][] = [
+                    $name => $value
+                ];
+            }
+            else {
+                $metaQuery['relations'][] = [
+                    $name => $value
+                ];
+            }
+
+        }
+
+        return $metaQuery;
     }
 
     public function getQueryArgs()
