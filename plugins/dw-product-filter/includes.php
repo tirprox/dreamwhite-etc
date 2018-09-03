@@ -1,4 +1,6 @@
 <?php
+namespace Dreamwhite\Plugins\ProductFilter;
+
 require_once "vendor/autoload.php";
 
 require_once "classes/FilterConfig.php";

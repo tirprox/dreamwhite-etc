@@ -16,7 +16,7 @@ class Renderer
 
     public static function header($content)
     {
-        echo "<h3 style=''>$content</h3>";
+        echo "<h4 style=''>$content</h4>";
     }
 
     public static function p($content)

@@ -19,7 +19,17 @@ class Tag {
 
    function fromGlobal($globalAttrs) {
        $this->name = "GLOBAL_TAG";
-       $this->realAttrs = $globalAttrs;
+
+       foreach ($globalAttrs as $name => $values) {
+
+           foreach ($values as $value) {
+               if ($value !== '') {
+                   $this->realAttrs[$name][] = $value;
+               }
+           }
+           //$this->realAttrs[$name] = array_filter($values);
+       }
+       //$this->realAttrs = $globalAttrs;
 
    }
 

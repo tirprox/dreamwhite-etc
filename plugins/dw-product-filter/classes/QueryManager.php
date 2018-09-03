@@ -76,14 +76,10 @@ class QueryManager
         foreach ($this->queryParams as $name => $value) {
 
             if (in_array($name, self::ATTRIBUTES)) {
-                $metaQuery['attributes'][] = [
-                    $name => $value
-                ];
+                $metaQuery['attributes'][$name] =  $value;
             }
             else {
-                $metaQuery['relations'][] = [
-                    $name => $value
-                ];
+                $metaQuery['relations'][$name] = $value;
             }
 
         }

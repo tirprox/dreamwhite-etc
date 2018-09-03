@@ -40,14 +40,14 @@ class TagFactory
                 foreach ($tag->attributes['color'] as $color) {
                     $colors[] = $color->attribute;
                 }
-                $tag->attributes['colorGroup'] = array_intersect($colors, $globalAttrs['color']);
+                //$tag->attributes['colorGroup'] = array_intersect($colors, $globalAttrs['color']);
             }
 
             if (isset($tag->attributes['size'])) {
                 foreach ($tag->attributes['size'] as $size) {
                     $sizes[] = $size->attribute;
                 }
-                $tag->attributes['size'] = array_intersect($colors, $globalAttrs['size']);
+                //$tag->attributes['size'] = array_intersect($colors, $globalAttrs['size']);
             }
 
             XMLTaxonomyListGenerator::addTag($tag);
@@ -56,7 +56,10 @@ class TagFactory
         $globalTag = new Tag();
         $globalTag->fromGlobal($globalAttrs);
 
-        $json = json_encode($this->tags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $toEncode = $this->tags;
+        $toEncode[] = $globalTag;
+
+        $json = json_encode($toEncode, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents("tags.json", $json);
 
         XMLTaxonomyListGenerator::addTag($globalTag);
@@ -83,13 +86,14 @@ class TagFactory
         $tag->seo = $tagRow['seo'];
 
         foreach ($tagRow['attrs'] as $name => $value) {
-            $splitted = $this->splitAttr($value);
-            if (!empty($splitted)) {
-                $tag->attributes[$name] = $splitted;
+
+            if ($value !== '') {
+                $splitted = $this->splitAttr($value);
+                if (!empty($splitted)) {
+                    $tag->attributes[$name] = $splitted;
+                }
             }
-
         }
-
 
         return $tag;
     }
@@ -166,6 +170,10 @@ class TagFactory
 
             //if (!$this->compareAttrs($tag->relations['group'], $product->productFolderName)) continue;
 
+            if (!isset($tag->relations['group'])) {
+                continue;
+            }
+
             if ($tag->relations['group'] !== $product->productFolderName) continue;
 
             $result = true;
@@ -178,7 +186,15 @@ class TagFactory
                     }
 
                     else if ($name === 'size') {
-                        $tagSizes = [];
+
+                        $sizes = [];
+                        foreach ($value as $invAttr) {
+                            $sizes[] = $invAttr->attribute;
+                        }
+
+                        $tag->addRealAttribute('size', implode($sizes));
+
+                        /*$tagSizes = [];
                         $productSizes = $product->size;
 
                         foreach ($value as $size) {
@@ -188,7 +204,7 @@ class TagFactory
                         if (!empty(array_intersect($tagSizes, $productSizes))) {
                             $result = true;
                             $tag->addRealAttribute('size', implode(',', $tagSizes));
-                        }
+                        }*/
                     }
 
                     else {

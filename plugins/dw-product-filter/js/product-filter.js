@@ -1,4 +1,4 @@
-jQuery( document ).on( 'click', '.dw-color-button', function() {
+jQuery( document ).on( 'click', '.dw-filterable', function() {
     let term_id = jQuery('.dw-product-filter-wrapper').data('term-id');
 
     let attr_type = jQuery(this).data('attr-type');

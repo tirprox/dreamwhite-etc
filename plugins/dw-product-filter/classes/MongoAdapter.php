@@ -6,11 +6,15 @@
  * Time: 5:35 PM
  */
 
-//namespace Dreamwhite\Plugins\ProductFilter;
+namespace Dreamwhite\Plugins\ProductFilter;
 
-//require_once dirname(__DIR__) . "/includes.php";
 
-require_once dirname(__DIR__) . "/vendor/autoload.php";
+use MongoDB\Client;
+
+
+require_once dirname(__DIR__) . "/includes.php";
+
+//require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 class MongoAdapter
 {
@@ -23,7 +27,7 @@ class MongoAdapter
 
     public function __construct()
     {
-        $this->client = new \MongoDB\Client(self::URI);
+        $this->client = new Client(self::URI);
 
         $this->setCollection();
 
@@ -42,6 +46,10 @@ class MongoAdapter
             $this->collection = $this->db->selectCollection($collection);
         }
 
+    }
+
+    public function findOne($query) {
+        return $this->collection->find($query);
     }
 
     // Takes map of attribute name => value
