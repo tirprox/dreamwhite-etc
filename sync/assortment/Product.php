@@ -225,7 +225,13 @@ class Product
             . '/' . $this->article
             . '/' . $this->color . '/';
 
-        $primary = $this->article . '-' . $this->color . '-1.jpg';
+         if ($this->article !== '' && $this->color !== '') {
+            $primary = $this->article . '-' . $this->color . '-1.jpg';
+         }
+         else {
+            $primary = '';
+         }
+        
 
 
         $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color] ?? [$primary];
