@@ -272,8 +272,6 @@ class AssortmentManager
 
 
 
-
-
         Timers::stop('tags');
     }
 

@@ -130,7 +130,7 @@ add_action('create_product_tag', 'save_taxonomy_custom_meta', 10, 2);
 // Rewrite rules for tags.
 // The most important part. Here we get all the colors from our products and creating the rewrite rules for the tags that use colors for filtering
 
-include("/var/www/vhosts/dreamwhite.ru/sync.dreamwhite.ru/tags/TagRewriteRules.php");
+/*include("/var/www/vhosts/dreamwhite.ru/sync.dreamwhite.ru/tags/TagRewriteRules.php");
 
 function custom_rewrite_rules()
 {
@@ -140,7 +140,7 @@ function custom_rewrite_rules()
     }
 }
 
-add_action('init', 'custom_rewrite_rules', 10, 0);
+add_action('init', 'custom_rewrite_rules', 10, 0);*/
 
 
 // Pagination fixes for SEO
@@ -189,7 +189,10 @@ class RedirectMap
     const PREFIX = '/catalog';
     const REDIRECT_MAP = [
         'zhenskie-palto' => self:: PREFIX . '/zhenskie-palto/',
-        'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
+
+        //'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
+        'zhenskie-plashhi' => '/product-category/zhenskie-plashhi/',
+
         'zhilety' => self:: PREFIX . '/zhilety/',
         'muzhskie-palto' => self:: PREFIX . '/muzhskie-palto/',
         'zhenskie-puhoviki' => self:: PREFIX . '/kurtki/zhenskie-kurtki/zhenskie-puhoviki/',
