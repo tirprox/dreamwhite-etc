@@ -85,7 +85,7 @@ function set_query_parameter($term_id, $attr, $value)
     $queryManager->setQueryParameter('filterable', 1);
 
     $query = $queryManager->getMongoQuery();
-    //var_dump($query);
+    //var_dump($params );
 
     $mongo = new MongoAdapter();
 

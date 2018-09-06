@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Метки товаров
+Plugin Name: DreamWhite Метки товаров и редиректы
 Plugin URI:
 Description: Дополнительные описания к меткам и категориям товаров, rewrite на правильные фильтры
 Version:     1.0
@@ -190,8 +190,8 @@ class RedirectMap
     const REDIRECT_MAP = [
         'zhenskie-palto' => self:: PREFIX . '/zhenskie-palto/',
 
-        //'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
-        'zhenskie-plashhi' => '/product-category/zhenskie-plashhi/',
+        'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
+        //'zhenskie-plashhi' => '/product-category/zhenskie-plashhi/',
 
         'zhilety' => self:: PREFIX . '/zhilety/',
         'muzhskie-palto' => self:: PREFIX . '/muzhskie-palto/',
@@ -217,4 +217,19 @@ function redirect_if_empty_shop_loop() {
         //echo $tag->slug;
     }
 
+}
+
+add_action('woocommerce_after_shop_loop', 'seo_taxonomy_add_description');
+
+function seo_taxonomy_add_description()
+{
+    $paged = get_query_var('paged', 1);
+
+    $term = get_queried_object();
+    $term_description = $term->description;
+    if ($term_description != '' && $paged < 2) {
+        echo '<div class="woo-sc-box normal rounded full">';
+        echo apply_filters('the_content', $term_description);
+        echo '</div>';
+    }
 }

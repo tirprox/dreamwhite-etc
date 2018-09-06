@@ -52,6 +52,7 @@ class CsvTagParser
 
     public static function fromFile($path)
     {
+
         $csvFile = file($path);
         $data = [];
 
