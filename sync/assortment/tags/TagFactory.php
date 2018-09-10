@@ -26,7 +26,6 @@ class TagFactory
         });
 
 
-
     }
 
     function getTagList($globalAttrs)
@@ -98,43 +97,6 @@ class TagFactory
         return $tag;
     }
 
-    /* Creating a tag from a csv row, where row is represented as an array. */
-    /*function createTag($row)
-    {
-        $tag = new Tag();
-        $tag->name = $row[0];
-        $tag->group = $this->splitAttr($row[1]);
-
-        $tag->color = $this->splitAttr($row[2]);
-
-        if (!empty($tag->color)) {
-            $tag->hasColors = true;
-        }
-
-        $tag->size = $this->splitAttr($row[3]);
-
-        $tag->material = $this->splitAttr($row[4]);
-        $tag->uteplitel = $this->splitAttr($row[5]);
-        $tag->podkladka = $this->splitAttr($row[6]);
-        $tag->siluet = $this->splitAttr($row[7]);
-        $tag->dlina = $this->splitAttr($row[8]);
-        $tag->rukav = $this->splitAttr($row[9]);
-        $tag->dlina_rukava = $this->splitAttr($row[10]);
-        $tag->zastezhka = $this->splitAttr($row[11]);
-        $tag->kapushon = $this->splitAttr($row[12]);
-        $tag->vorotnik = $this->splitAttr($row[13]);
-        $tag->poyas = $this->splitAttr($row[14]);
-        $tag->karmany = $this->splitAttr($row[15]);
-        $tag->koketka = $this->splitAttr($row[16]);
-        $tag->uhod = $this->splitAttr($row[17]);
-
-
-        $tag->filterAttrs = $tag->getFilterAttrs();
-
-        //var_dump($tag->name, $tag->filterAttrs);
-        $this->tags[] = $tag;
-    }*/
-
     /* Determine whether attribute should be included or excluded.
     If prepended with -, attribute is excluded from a tag (is inverted) */
     private function splitAttr($atrrString)
@@ -178,21 +140,30 @@ class TagFactory
 
             $result = true;
 
+            if ($product->stock === 0) {
+                continue;
+            }
+
             if (!empty($tag->attributes)) {
                 foreach ($tag->attributes as $name => $value) {
 
                     if ($name === 'article') {
                         $result = $this->compareAttrs($tag->attributes[$name], $product->article);
-                    }
-
-                    else if ($name === 'size') {
+                    } else if ($name === 'size') {
 
                         $sizes = [];
                         foreach ($value as $invAttr) {
                             $sizes[] = $invAttr->attribute;
                         }
 
-                        $tag->addRealAttribute('size', implode($sizes));
+                        $size = implode($sizes);
+                        $tag->addRealAttribute('size', $size);
+
+                        foreach ($product->variants as $variant) {
+                            if (($variant->size === $size && $variant->stock === 0)  || !in_array($size, $product->attrs['size'])) {
+                                $result = false;
+                            }
+                        }
 
                         /*$tagSizes = [];
                         $productSizes = $product->size;
@@ -205,9 +176,7 @@ class TagFactory
                             $result = true;
                             $tag->addRealAttribute('size', implode(',', $tagSizes));
                         }*/
-                    }
-
-                    else {
+                    } else {
                         if (isset($product->attrs[$name])) {
                             $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
                         }
@@ -219,6 +188,8 @@ class TagFactory
             }
 
             if ($result === false) continue;
+
+            $tag->relations['hasRecords'] = 1;
 
             $product->tags .= $tag->name . ',';
 

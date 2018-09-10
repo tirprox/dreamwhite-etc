@@ -70,6 +70,7 @@ class CsvTagParser
             $tagRow['name'] = self::getName($row)['name'];
             $tagRow['relations']['filterable'] = $row[self::FILTERABLE_OFFSET] == 1 ? 1 : 0;
             $tagRow['relations']['level'] = self::getName($row)['level'];
+            $tagRow['relations']['hasRecords'] = 0;
 
 
             foreach (self::RELATION_MAP as $key => $value) {

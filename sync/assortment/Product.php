@@ -63,12 +63,17 @@ class Product
     var $gender;
 
 
+    private $stockForSize = [];
+
     var $attrs = [];
 
 
     function __construct($product, $stock, $folderName)
     {
         $this->product = $product;
+
+
+
         $this->productFolderName = $folderName;
         $this->categories = $folderName;
         $this->id = $product->id;
@@ -110,6 +115,7 @@ class Product
 
         $this->getPrices();
         $this->setAttributes();
+        $this->attrs['size'] = [];
         $this->gender = Tools::match($this->productFolderName, 'женские') ? 'Женские' : 'Мужские';
 
         if (Tools::match($this->uteplitel, 'пух')) {
@@ -118,6 +124,8 @@ class Product
         }
 
         $this->images = $this->getImageUrls();
+
+
 
         Log::d($this->name, 'product', 'p', 'products');
     }
@@ -137,8 +145,18 @@ class Product
         return $value;
     }
 
-    private function addSize($size)
+    public function setStockForSize($size, $stock) {
+        $this->stockForSize[$size] = $stock;
+    }
+
+    public function getStockForSize($size) {
+        return $this->stockForSize[$size];
+    }
+
+    private function addSize($size, $stock)
     {
+
+        //$this->setStockForSize($size, $stock);
 
         if (!in_array($size, $this->size)) {
             $this->attrs['size'][] = $size;
@@ -160,8 +178,9 @@ class Product
         $this->variants[] = $variant;
         $this->stock += $variant->stock;
 
+
         if ($variant->stock > 0) {
-            $this->addSize($variant->size);
+            $this->addSize($variant->size, $variant->stock);
         }
 
         /*if (!Tools::match($this->sizes, $variant->size)) {

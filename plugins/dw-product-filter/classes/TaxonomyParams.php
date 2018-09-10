@@ -9,6 +9,10 @@ class TaxonomyParams
         return $this->params;
     }
 
+    public function getParameter($name) {
+        return $this->params[$name];
+    }
+
     public function __construct($taxonomy)
     {
         $meta = get_term_meta($taxonomy->term_id);

@@ -48,6 +48,10 @@ class MongoAdapter
 
     }
 
+    public function distinct($query, $filter) {
+        return $this->collection->distinct($query, $filter);
+    }
+
     public function findOne($query) {
         return $this->collection->find($query);
     }

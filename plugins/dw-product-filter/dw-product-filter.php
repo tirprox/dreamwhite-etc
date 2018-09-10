@@ -12,7 +12,6 @@ Text Domain: dw-product-filter
 Domain Path: /languages
 */
 
-use Dreamwhite\Plugins\ProductFilter\TaxonomyDataHolder;
 use Dreamwhite\Plugins\ProductFilter\TaxonomyParams;
 use Dreamwhite\Plugins\ProductFilter\QueryManager;
 use Dreamwhite\Plugins\ProductFilter\Renderer;
@@ -93,13 +92,11 @@ function set_query_parameter($term_id, $attr, $value)
 
     $attrCount = count($query['attributes']);
 
+
     foreach ($results as $result) {
         if (count($result->attributes) === $attrCount) {
-            Renderer::a($result->name, 'https://new.dreamwhite.ru/catalog/' . $result->slug . '/');
+            Renderer::a($result->name, '/catalog/' . $result->slug . '/');
         }
-
-//        Renderer::a($result->name, 'https://new.dreamwhite.ru/catalog/' . $result->slug . '/');
-
 
     }
 
@@ -142,11 +139,21 @@ function dw_filter_tags_shortcode()
         $glob = $result;
     }
 
-
-
-
-
     $params = new TaxonomyParams($tax);
+
+    $type = implode($params->getParameter('type'));
+    $gender = implode($params->getParameter('gender'));
+
+    $colors = $mongo->distinct('attributes.colorGroup',
+        [
+            'relations.filterable' => 1,
+            'relations.hasRecords' => 1,
+            'relations.type' => $type,
+            'relations.gender' => $gender,
+        ]);
+
+    var_dump($colors);
+
 
     $queryManager = new QueryManager();
     $queryManager->fromTaxonomyParams($params);
@@ -172,7 +179,7 @@ function dw_filter_tags_shortcode()
 
     Renderer::header('Цвет');
 
-    foreach ($glob->attributes->colorGroup as $color) {
+    foreach ($colors as $color) {
         echo '<a style="background: ' . Colors::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
     }
 
@@ -198,9 +205,6 @@ function dw_filter_tags_shortcode()
     }
 
 
-
-
-
     echo '</div>';
 }
 
@@ -208,21 +212,21 @@ class Colors
 {
     public const COLORMAP = [
         'Синий' => '#1c4e8a',
-        'Желтый'=> '#ecc13c',
-        'Серый'=> '#6e6e6e',
-        'Коричневый'=> '#894517',
-        'Бежевый'=> '#e9b281',
-        'Красный'=> '#ff2126',
-        'Марсала'=> '#952b3b',
-        'Хаки'=> '#52682d',
-        'Розовый'=> '#ffb3b9',
-        'Зеленый'=> '#1d6b3e',
-        'Персиковый'=> '#d49600',
-        'Черный'=> '#1f1f1f',
-        'Фиолетовый'=> '#73387c',
-        'Белый'=> '#f1f1f1',
-        'Сиреневый'=> '#fca2cf',
-        'Голубой'=> '#45d5ff',
+        'Желтый' => '#ecc13c',
+        'Серый' => '#6e6e6e',
+        'Коричневый' => '#894517',
+        'Бежевый' => '#e9b281',
+        'Красный' => '#ff2126',
+        'Марсала' => '#952b3b',
+        'Хаки' => '#52682d',
+        'Розовый' => '#ffb3b9',
+        'Зеленый' => '#1d6b3e',
+        'Персиковый' => '#d49600',
+        'Черный' => '#1f1f1f',
+        'Фиолетовый' => '#73387c',
+        'Белый' => '#f1f1f1',
+        'Сиреневый' => '#fca2cf',
+        'Голубой' => '#45d5ff',
         'Бордовый' => '#720000',
     ];
 
