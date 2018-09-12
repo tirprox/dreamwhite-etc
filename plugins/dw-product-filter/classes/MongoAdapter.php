@@ -33,6 +33,10 @@ class MongoAdapter
 
     }
 
+    public function getCollection() {
+        return $this->collection;
+    }
+
     public function setDB($db = 'tags') {
         $this->db = $this->client->selectDatabase($db);
     }
@@ -70,6 +74,7 @@ class MongoAdapter
         foreach ($relations as $name => $value) {
             $query[$this->getRelationName($name)] = $value;
         }
+
 
         return $this->collection->find($query);
 

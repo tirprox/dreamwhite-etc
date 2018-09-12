@@ -54,50 +54,85 @@ function post_filter_var()
 {
 
     $attr = $_POST['attr_type'];
-    $value = $_POST['attr_value'];
+    $value = strval($_POST['attr_value']);
     $term_id = $_POST['term_id'];
+
+    $params = $_POST['params'];
 
     ob_get_clean();
 
     ob_start();
-    set_query_parameter($term_id, $attr, $value);
+    set_query_parameter($term_id, $attr, $value, $params);
 
     ob_get_flush();
     die();
 
 }
 
-function set_query_parameter($term_id, $attr, $value)
+function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 {
 
-//    $tax = get_queried_object();
+    //var_dump($getQueryParams);
     $tax = get_term($term_id, 'attr');
-
-
     $params = new TaxonomyParams($tax);
-    //var_dump($params);
 
+    $type = implode($params->getParameter('type'));
+    $gender = implode($params->getParameter('gender'));
 
     $queryManager = new QueryManager();
+
+
     $queryManager->fromTaxonomyParams($params);
+
+    if (!empty($getQueryParams)) {
+        $queryManager->fromArrayWithWCKeys($getQueryParams);
+    }
+
+    /*if (empty($getQueryParams)) {
+        $queryManager->fromTaxonomyParams($params);
+    }
+    else {
+        $queryManager->fromArrayWithWCKeys($getQueryParams);
+    }*/
+
     $queryManager->setQueryParameter($attr, $value);
     $queryManager->setQueryParameter('filterable', 1);
+    $queryManager->setQueryParameter('hasRecords', 1);
+    //$queryManager->setQueryParameter('gender', $gender);
+    //$queryManager->setQueryParameter('type', $type);
 
-    $query = $queryManager->getMongoQuery();
-    //var_dump($params );
+
+    $mongoQuery = $queryManager->getMongoQuery();
+    //var_dump($mongoQuery );
 
     $mongo = new MongoAdapter();
 
-    $results = $mongo->find($query['attributes'], $query['relations']);
+    $mongo->setCollection('tag-test');
 
-    $attrCount = count($query['attributes']);
+    $results = $mongo->find($mongoQuery['attributes'], $mongoQuery['relations']);
 
+    $attrCount = count($mongoQuery['attributes']);
+
+
+    $resultCount = 0;
 
     foreach ($results as $result) {
+        $resultCount++;
         if (count($result->attributes) === $attrCount) {
-            Renderer::a($result->name, '/catalog/' . $result->slug . '/');
+            $url = '/catalog/' . $result->slug . '/';
+            echo json_encode(['url' => $url], JSON_UNESCAPED_UNICODE);
         }
+        break;
+    }
 
+    if ($resultCount === 0) {
+
+
+        $queryParams = $queryManager->getWooCommerceQuery();
+        $url = '/catalog' . QueryManager::GENDER_TYPE_MAP[$gender][$type] . '?' . http_build_query($queryParams);
+        //var_dump($url);
+        //$url = '/catalog/' . 'zhenskie-palto/?' . http_build_query($queryParams);
+        echo json_encode(['url' => $url], JSON_UNESCAPED_UNICODE);
     }
 
 
@@ -128,6 +163,7 @@ function dw_filter_tags_shortcode()
 
     //$taxDataHolder = new TaxonomyDataHolder();
     $mongo = new MongoAdapter();
+    $mongo->setCollection('tag-test');
 
 
     $mongoQuery = ['name' => 'GLOBAL_TAG'];
@@ -152,11 +188,26 @@ function dw_filter_tags_shortcode()
             'relations.gender' => $gender,
         ]);
 
-    var_dump($colors);
+    $sizes = $mongo->distinct('attributes.size',
+        [
+            'relations.filterable' => 1,
+            'relations.hasRecords' => 1,
+            'relations.type' => $type,
+            'relations.gender' => $gender,
+        ]);
 
+    //var_dump($sizes);
 
     $queryManager = new QueryManager();
-    $queryManager->fromTaxonomyParams($params);
+
+    $getParams = $queryManager->getParamsFromGetQuery();
+
+    if (empty($getParams)) {
+        $queryManager->fromTaxonomyParams($params);
+    }
+    else {
+        $queryManager->fromGetQuery();
+    }
 
     $data = function ($attr, $value) {
         return 'data-attr-type="' . $attr . '" data-attr-value="' . $value . '"';

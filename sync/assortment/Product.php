@@ -64,6 +64,7 @@ class Product
 
 
     private $stockForSize = [];
+    public $type;
 
     var $attrs = [];
 
@@ -117,6 +118,7 @@ class Product
         $this->setAttributes();
         $this->attrs['size'] = [];
         $this->gender = Tools::match($this->productFolderName, 'женские') ? 'Женские' : 'Мужские';
+        $this->type = $this->getType($this->productFolderName);
 
         if (Tools::match($this->uteplitel, 'пух')) {
             $this->categories .= ',' . $this->gender . ' пуховики';
@@ -128,6 +130,22 @@ class Product
 
 
         Log::d($this->name, 'product', 'p', 'products');
+    }
+
+    private const TYPES = [
+        'Пальто',
+        'Плащ',
+        'Пуховик',
+        'Жилет'
+    ];
+    function getType($productFolderName) {
+
+        $type = null;
+        foreach (self::TYPES as $type) {
+            $type = Tools::match($this->productFolderName, $type) ? $type : null;
+        }
+
+        return $type;
     }
 
     function getAttributeValue($attr)

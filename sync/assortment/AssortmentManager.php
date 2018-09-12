@@ -281,6 +281,8 @@ class AssortmentManager
         XMLReportGenerator::createDocument();
         XMLReportGenerator::stock($this->stock);
 
+        file_put_contents('products-'.$groups->groupArray[0]->city.'.json', json_encode($groups->groupArray, JSON_UNESCAPED_UNICODE));
+
         foreach ($groups->groupArray as $group) {
             foreach ($group->products as $product) {
                 $xmlProductNode = XMLReportGenerator::addProduct($product);
