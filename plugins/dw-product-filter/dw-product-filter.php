@@ -72,7 +72,6 @@ function post_filter_var()
 function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 {
 
-    //var_dump($getQueryParams);
     $tax = get_term($term_id, 'attr');
     $params = new TaxonomyParams($tax);
 
@@ -81,29 +80,17 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 
     $queryManager = new QueryManager();
 
-
     $queryManager->fromTaxonomyParams($params);
 
     if (!empty($getQueryParams)) {
         $queryManager->fromArrayWithWCKeys($getQueryParams);
     }
 
-    /*if (empty($getQueryParams)) {
-        $queryManager->fromTaxonomyParams($params);
-    }
-    else {
-        $queryManager->fromArrayWithWCKeys($getQueryParams);
-    }*/
-
     $queryManager->setQueryParameter($attr, $value);
     $queryManager->setQueryParameter('filterable', 1);
     $queryManager->setQueryParameter('hasRecords', 1);
-    //$queryManager->setQueryParameter('gender', $gender);
-    //$queryManager->setQueryParameter('type', $type);
-
 
     $mongoQuery = $queryManager->getMongoQuery();
-    //var_dump($mongoQuery );
 
     $mongo = new MongoAdapter();
 
@@ -112,7 +99,6 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
     $results = $mongo->find($mongoQuery['attributes'], $mongoQuery['relations']);
 
     $attrCount = count($mongoQuery['attributes']);
-
 
     $resultCount = 0;
 
@@ -127,31 +113,11 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 
     if ($resultCount === 0) {
 
-
         $queryParams = $queryManager->getWooCommerceQuery();
         $url = '/catalog' . QueryManager::GENDER_TYPE_MAP[$gender][$type] . '?' . http_build_query($queryParams);
-        //var_dump($url);
-        //$url = '/catalog/' . 'zhenskie-palto/?' . http_build_query($queryParams);
         echo json_encode(['url' => $url], JSON_UNESCAPED_UNICODE);
     }
 
-
-    //mock_meta_query_args($queryManager);
-    //var_dump($queryManager->getQueryArgs());
-    //$terms = get_terms($queryManager->getQueryArgs());
-
-
-    /*foreach ($terms as $term) {
-        //var_dump(get_term_link($term));
-        Renderer::a($term->name, get_term_link($term));
-    }*/
-}
-
-function mock_meta_query_args(&$queryManager)
-{
-    $queryManager->setQueryParameter('gender', 'Женский');
-    $queryManager->setQueryParameter('type', 'Пальто');
-    $queryManager->setQueryParameter('filterable', '1');
 }
 
 function dw_filter_tags_shortcode()
@@ -160,43 +126,39 @@ function dw_filter_tags_shortcode()
 
     echo '<div class="dw-product-filter-wrapper" style="padding: 8px 16px" data-term-id="' . $tax->term_id . '">';
 
-
-    //$taxDataHolder = new TaxonomyDataHolder();
     $mongo = new MongoAdapter();
     $mongo->setCollection('tag-test');
 
-
-    $mongoQuery = ['name' => 'GLOBAL_TAG'];
+    /*$mongoQuery = ['name' => 'GLOBAL_TAG'];
     $globalAttrs = $mongo->findOne($mongoQuery);
 
     $glob = [];
 
     foreach ($globalAttrs as $result) {
         $glob = $result;
-    }
+    }*/
 
     $params = new TaxonomyParams($tax);
 
     $type = implode($params->getParameter('type'));
     $gender = implode($params->getParameter('gender'));
 
-    $colors = $mongo->distinct('attributes.colorGroup',
-        [
-            'relations.filterable' => 1,
-            'relations.hasRecords' => 1,
-            'relations.type' => $type,
-            'relations.gender' => $gender,
-        ]);
+    $colors = $mongo->getDistinct('colorGroup', $gender, $type);
 
-    $sizes = $mongo->distinct('attributes.size',
-        [
-            'relations.filterable' => 1,
-            'relations.hasRecords' => 1,
-            'relations.type' => $type,
-            'relations.gender' => $gender,
-        ]);
+    $textures = $mongo->getDistinct('texture', $gender, $type);
 
-    //var_dump($sizes);
+    $lengths = $mongo->getDistinct('lengthGroup', $gender, $type);
+    //$lengths = $mongo->getDistinct('dlina', $gender, $type);
+    $seasons = $mongo->getDistinct('season', $gender, $type);
+
+    $siluets = $mongo->getDistinct('siluet', $gender, $type);
+    $kapushons = $mongo->getDistinct('kapushon', $gender, $type);
+    $poyasa = $mongo->getDistinct('poyas', $gender, $type);
+    $rukava = $mongo->getDistinct('rukav', $gender, $type);
+    $materials = $mongo->getDistinct('material', $gender, $type);
+    $zastezhki = $mongo->getDistinct('zastezhka', $gender, $type);
+    $podkladki = $mongo->getDistinct('podkladka', $gender, $type);
+
 
     $queryManager = new QueryManager();
 
@@ -204,8 +166,7 @@ function dw_filter_tags_shortcode()
 
     if (empty($getParams)) {
         $queryManager->fromTaxonomyParams($params);
-    }
-    else {
+    } else {
         $queryManager->fromGetQuery();
     }
 
@@ -223,43 +184,52 @@ function dw_filter_tags_shortcode()
         return $isActive ? 'class="dw-filterable dw-color-button dw-filterable-color-active"' : 'class="dw-filterable dw-color-button"';
     };
 
-    Renderer::header('Matching Taxonomies:');
-    echo '<div class="matching-taxonomies">';
-    echo '</div>';
-
-
+    echo "<div class='dw-filter-attr-block'>";
     Renderer::header('Цвет');
-
     foreach ($colors as $color) {
-        echo '<a style="background: ' . Colors::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
+        echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
     }
+    echo "</div>";
 
+    echo "<div class='dw-filter-attr-block'>";
     Renderer::header('Размер');
-    foreach ($glob->attributes->size as $size) {
+    foreach (AttributeHelper::SIZES as $size) {
         echo '<a style="background: #757575"' . $colorClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
     }
+    echo "</div>";
 
-    Renderer::header('Капюшон');
-    foreach ($glob->attributes->kapushon as $kapushon) {
-        echo '<a ' . $class('kapushon', $kapushon) . $data('kapushon', $kapushon) . '><span class="dw-filter-button-text">' . $kapushon . ' </span></a>';
-    }
-    //echo '<a ' . $class('kapushon', 'Есть') . $data('kapushon', 'Есть') . '><span class="dw-filter-button-text">Есть</span></a>';
+    Renderer::attribute('Текстура', 'texture', $textures, $class);
 
-    Renderer::header('Сезон');
-    foreach ($glob->attributes->season as $season) {
-        echo '<a ' . $class('season', $season) . $data('season', $season) . '><span class="dw-filter-button-text">' . $season . ' </span></a>';
-    }
 
-    Renderer::header('Текстура');
-    foreach ($glob->attributes->texture as $texture) {
-        echo '<a ' . $class('texture', $texture) . $data('texture', $texture) . '><span class="dw-filter-button-text">' . $texture . ' </span></a>';
-    }
 
+
+    /*if (!empty($lengths)) {
+        echo "<div class='dw-filter-attr-block'>";
+
+        $lengthArray = AttributeHelper::getLengthArray($lengths);
+        Renderer::header('Длина');
+        echo '<a ' . $class('dlina', $lengthArray['short']) . $data('dlina', $lengthArray['short']) . '><span class="dw-filter-button-text">' . 'Короткие' . ' </span></a>';
+        echo '<a ' . $class('dlina', $lengthArray['long']) . $data('dlina', $lengthArray['long']) . '><span class="dw-filter-button-text">' . 'Длинные' . ' </span></a>';
+
+        echo "</div>";
+    }*/
+
+    Renderer::attribute('Длина', 'lengthGroup', $lengths, $class);
+    Renderer::attribute('Сезон', 'season', $seasons, $class);
+
+    Renderer::attribute('Силуэт', 'siluet', $siluets, $class);
+    Renderer::attribute('Капюшон', 'kapushon', $kapushons, $class);
+
+    Renderer::attribute('Пояс', 'poyas', $poyasa, $class);
+    Renderer::attribute('Рукав', 'rukav', $rukava, $class);
+    Renderer::attribute('Материал', 'material', $materials, $class);
+    Renderer::attribute('Застежка', 'zastezhka', $zastezhki, $class);
+    Renderer::attribute('Подкладка', 'podkladka', $podkladki, $class);
 
     echo '</div>';
 }
 
-class Colors
+class AttributeHelper
 {
     public const COLORMAP = [
         'Синий' => '#1c4e8a',
@@ -281,6 +251,37 @@ class Colors
         'Бордовый' => '#720000',
     ];
 
+    public const SIZES = ['38', '40', '42', '44', '46', '48', '50', '52'];
+
+    public const DLINA = [ 'short' => '90см', 'long' => '110см,115см,120см,135см' ];
+
+    public static function getLengthArray($lengthArray) {
+        $short = [];
+        $long = [];
+
+        $intLength = [];
+
+        foreach ($lengthArray as $length) {
+
+            $val = intval(str_replace('см', '', $length));
+
+
+            if ($val >= 110) {
+                $long[] = $length;
+            }
+            else {
+                $short[] = $length;
+            }
+            //$intLength[$val] = $length;
+        }
+        var_dump($long);
+
+        return [
+            'short' => implode(',', $short),
+            'long' => implode(',', $long)
+        ];
+
+    }
 
 }
 

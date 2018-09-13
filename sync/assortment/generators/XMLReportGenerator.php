@@ -79,6 +79,10 @@ class XMLReportGenerator {
       
       $attrs = self::addChild('attributes', $xmlProduct);
 
+      /*foreach ($product->attrs as $name => $value) {
+          self::addNode($name, $value, $attrs);
+      }*/
+
        self::addNode('color', $product->color, $attrs);
        self::addNode('colorGroup', $product->colorGroup, $attrs);
        self::addNode('texture', $product->texture, $attrs);
@@ -90,6 +94,7 @@ class XMLReportGenerator {
       self::addNode('podkladka', $product->podkladka, $attrs);
       self::addNode('siluet', $product->siluet, $attrs);
       self::addNode('dlina', $product->dlina, $attrs);
+       self::addNode('lengthGroup', $product->attrs['lengthGroup'], $attrs);
       self::addNode('rukav', $product->rukav, $attrs);
       self::addNode('dlina_rukava', $product->dlina_rukava, $attrs);
       self::addNode('zastezhka', $product->zastezhka, $attrs);

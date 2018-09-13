@@ -30,9 +30,14 @@ class Renderer
         echo "<a class='dw-tag-block-item' href='$href'>$content</a>";
     }
 
-    public static function tag_block_parent($content, $href)
+    public static function tag_block_parent($content, $href, $position)
     {
-        echo "<a class='dw-tag-block-parent-item' href='$href'>$content</a>";
+        echo '<li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">';
+        echo "<a itemprop=\"item\" class='dw-tag-block-parent-item' href='$href'><span itemprop=\"name\">$content</span>";
+        echo '<meta itemprop="position" content="' . $position . '" /></a>';
+        echo '</li>';
     }
+
+
 
 }

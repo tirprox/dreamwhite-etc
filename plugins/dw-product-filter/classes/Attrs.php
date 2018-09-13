@@ -32,5 +32,7 @@ class Attrs
         'poyas',
         'karmany',
         'koketka',
-        'uhod',];
+        'uhod',
+        'lengthGroup'
+        ];
 }

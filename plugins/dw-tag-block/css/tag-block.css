@@ -1,3 +1,11 @@
+ul.dw-breadcrumb-list {
+  margin-left: 0;
+}
+
+li.breadcrumb__item {
+  display: inline;
+}
+
 .dw-tag-block {
   max-height: 25px;
 }

@@ -163,6 +163,18 @@ class Product
         return $value;
     }
 
+    private function getLengthGroup($length) {
+        $val = intval(str_replace('см', '', $length));
+
+
+        if ($val >= 110) {
+            return 'Длинные';
+        }
+        else {
+            return 'Короткие';
+        }
+    }
+
     public function setStockForSize($size, $stock) {
         $this->stockForSize[$size] = $stock;
     }
@@ -246,6 +258,7 @@ class Product
                 if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
 
                 $this->attrs = $this->getAttrs();
+                $this->attrs['lengthGroup'] = $this->getLengthGroup($this->attrs['dlina']);
             }
         }
     }

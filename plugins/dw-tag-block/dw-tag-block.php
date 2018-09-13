@@ -11,6 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: dw-tag-block
 Domain Path: /languages
 */
+
 use Dreamwhite\Plugins\TagBlock\QueryManager;
 use Dreamwhite\Plugins\TagBlock\Renderer;
 use Dreamwhite\Plugins\TagBlock\Config;
@@ -24,26 +25,28 @@ function dw_tag_block_init()
     add_shortcode('dw_tag_block', 'dw_tag_block_shortcode');
 
 
-    add_action( 'wp_enqueue_scripts', 'dw_tag_block_enqueue_scripts' );
-    add_action( 'wp_enqueue_scripts', 'dw_tag_block_enqueue_styles' );
+    add_action('wp_enqueue_scripts', 'dw_tag_block_enqueue_scripts');
+    add_action('wp_enqueue_scripts', 'dw_tag_block_enqueue_styles');
 
-    add_action( 'wp_ajax_nopriv_post_filter_var', 'post_filter_var' );
-    add_action( 'wp_ajax_post_filter_var', 'post_filter_var' );
+    add_action('wp_ajax_nopriv_post_filter_var', 'post_filter_var');
+    add_action('wp_ajax_post_filter_var', 'post_filter_var');
 
-    add_action( 'woocommerce_before_shop_loop', 'dw_tag_block_shortcode', 15 );
+    add_action('woocommerce_before_shop_loop', 'dw_tag_block_shortcode', 15);
 
 }
 
-function dw_tag_block_enqueue_scripts() {
-    wp_enqueue_script( 'dw-tag_block', plugins_url( '/js/tag-block.js', __FILE__ ), array('jquery'), '1.0', true );
-    wp_localize_script( 'dw-tag_block', 'dwf', array(
-        'ajax_url' => admin_url( 'admin-ajax.php' )
+function dw_tag_block_enqueue_scripts()
+{
+    wp_enqueue_script('dw-tag_block', plugins_url('/js/tag-block.js', __FILE__), array('jquery'), '1.0', true);
+    wp_localize_script('dw-tag_block', 'dwf', array(
+        'ajax_url' => admin_url('admin-ajax.php')
     ));
 }
 
 
-function dw_tag_block_enqueue_styles() {
-    wp_enqueue_style( 'dw-tag_block-style', plugins_url( '/css/tag-block.css', __FILE__ ) );
+function dw_tag_block_enqueue_styles()
+{
+    wp_enqueue_style('dw-tag_block-style', plugins_url('/css/tag-block.css', __FILE__));
 }
 
 
@@ -54,6 +57,7 @@ function dw_tag_block_shortcode()
     if ($current_term->taxonomy === Config::TAX_NAME) {
 
         echo '<div style="padding: 8px 16px">';
+
 
         $childrenQueryManager = new QueryManager();
         $childrenQueryManager->setQueryParameter('parent', $current_term->name);
@@ -71,18 +75,20 @@ function dw_tag_block_shortcode()
             $terms = get_terms($args);
         }
 
-        if  ($parent !== '') {
-            $parentTerm = get_term_by( 'name', $parent, Config::TAX_NAME);
+        if ($parent !== '') {
+            $parentTerm = get_term_by('name', $parent, Config::TAX_NAME);
 
             $parents = [];
             $parents[] = $parentTerm;
 
             while ($parent !== '' && isset($parentTerm)) {
                 $parent = get_term_meta($parentTerm->term_id, 'parent', true);
-                $parentTerm = get_term_by( 'name', $parent, Config::TAX_NAME);
+                $parentTerm = get_term_by('name', $parent, Config::TAX_NAME);
                 $parents[] = $parentTerm;
             }
 
+            echo '<ul class="dw-breadcrumb-list" itemscope itemtype="http://schema.org/BreadcrumbList">';
+            $position = 1;
             foreach (array_reverse($parents) as $parentTerm) {
                 if (isset($parentTerm) && $parentTerm->name != '') {
                     $level = get_term_meta($parentTerm->term_id, 'level', true);
@@ -91,25 +97,32 @@ function dw_tag_block_shortcode()
                     if ($level > 1) {
 
                         $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
-                        Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/');
-                    }
-                    else {
-                        Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/');
+                        Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/', $position);
+                    } else {
+                        if ($level > 0) {
+                            Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/', $position);
+
+                        } else {
+                            Renderer::tag_block_parent('Главная', '/', $position);
+
+                        }
                     }
 
+                    $position++;
                     echo '<span style="font-size: 12px"> / </span>';
                 }
 
             }
 
+
             $current_level = get_term_meta($current_term->term_id, 'level', true);
-            if ($current_level > 1 ) {
+            if ($current_level > 1) {
                 $short_name = get_term_meta($current_term->term_id, 'short_name', true);
-                Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug . '/');
+                Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug . '/', $position);
+            } else {
+                Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug . '/', $position);
             }
-            else {
-                Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug . '/');
-            }
+            echo '</ul>';
         }
 
 
@@ -117,7 +130,11 @@ function dw_tag_block_shortcode()
 
         echo '<div class="dw-tag-block dw-tag-block-collapsed">';
         foreach ($terms as $term) {
-            if ($term->term_id !== $current_term->term_id) {
+            $filterable = get_term_meta($term->term_id, 'filterable', true);
+
+
+
+            if ($term->term_id !== $current_term->term_id && $filterable == 0) {
                 Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
             }
         }
@@ -125,7 +142,6 @@ function dw_tag_block_shortcode()
         echo '</div>';
 
     }
-
 
 
 }

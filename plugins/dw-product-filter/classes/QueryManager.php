@@ -54,6 +54,7 @@ class QueryManager
         'karmany'=> self::WC_PREFIX . 'karmany',
         'koketka'=> self::WC_PREFIX . 'koketka',
         'uhod'=> self::WC_PREFIX . 'uhod',
+        'lengthGroup' => self::WC_PREFIX . 'tip-dliny'
     ];
 
     private $WC_ATTR_ALIAS_FLIP;
@@ -85,6 +86,7 @@ class QueryManager
         'karmany',
         'koketka',
         'uhod',
+        'lengthGroup'
         ],
 
         RELATIONS = [
@@ -98,12 +100,12 @@ class QueryManager
     public function setQueryParameter($name, $value)
     {
         if ($value !== '' && in_array($name, Attrs::VALUES)) {
-            if (isset($this->queryParams[$name]) && $this->queryParams[$name]=== $value) {
+            if (isset($this->queryParams[$name]) && $this->match($this->queryParams[$name], $value)) {
                 unset($this->queryParams[$name] );
             }
             else {
                 $this->queryParams[$name] = $value;
-                set_query_var($name, $value);
+                //set_query_var($name, $value);
             }
 
         }
@@ -215,5 +217,14 @@ class QueryManager
 
 
         return $args;
+    }
+
+    function match($haystack, $needle) {
+        if (mb_stripos($haystack, $needle, 0, 'UTF-8') !== false) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

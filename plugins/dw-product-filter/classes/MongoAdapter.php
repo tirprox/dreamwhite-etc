@@ -20,15 +20,18 @@ class MongoAdapter
 {
     private const LOGIN = 'admin', PASSWORD = '6h8s4ksoq';
     private const URI = 'mongodb://' . self::LOGIN . ':' . self::PASSWORD . '@localhost:27017';
-
+    private const URI2 = 'mongodb://@localhost:27017';
     private $client;
 
     private $db, $collection;
 
     public function __construct()
     {
-        $this->client = new Client(self::URI);
-
+        //$this->client = new Client(self::URI);
+        $this->client = new Client(self::URI2, [
+            "username" => self::LOGIN,
+            "password" => self::PASSWORD
+        ]);
         $this->setCollection();
 
     }
@@ -54,6 +57,17 @@ class MongoAdapter
 
     public function distinct($query, $filter) {
         return $this->collection->distinct($query, $filter);
+    }
+
+    public function getDistinct($attr, $gender, $type) {
+
+        return $this->distinct('attributes.' . $attr,
+            [
+                'relations.filterable' => 1,
+                'relations.hasRecords' => 1,
+                'relations.type' => $type,
+                'relations.gender' => $gender,
+            ]);
     }
 
     public function findOne($query) {

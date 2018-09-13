@@ -36,9 +36,10 @@ class CsvTagParser
         'koketka' => self::ATTR_OFFSET+17,
         'uhod' => self::ATTR_OFFSET+18,
         'size' => self::ATTR_OFFSET+19,
+        'lengthGroup' => self::ATTR_OFFSET+20,
     ];
 
-    private const SEO_OFFSET = 35;
+    private const SEO_OFFSET = 36;
     private const SEO_MAP = [
         'h1' => self::SEO_OFFSET,
         'short_name' => self::SEO_OFFSET+1,

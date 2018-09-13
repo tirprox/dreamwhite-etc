@@ -281,18 +281,21 @@ class AssortmentManager
         XMLReportGenerator::createDocument();
         XMLReportGenerator::stock($this->stock);
 
-        file_put_contents('products-'.$groups->groupArray[0]->city.'.json', json_encode($groups->groupArray, JSON_UNESCAPED_UNICODE));
+
+        $products = [];
 
         foreach ($groups->groupArray as $group) {
             foreach ($group->products as $product) {
                 $xmlProductNode = XMLReportGenerator::addProduct($product);
                 JSONShortReportGenerator::addProduct($product);
+                $products[] = $product;
             }
         }
         XMLReportGenerator::city($groups->groupArray[0]->city);
         XMLReportGenerator::writeXmlToFile();
 
         JSONShortReportGenerator::writeJsonToFile();
+        file_put_contents('products-'.$groups->groupArray[0]->city.'.json', json_encode($products, JSON_UNESCAPED_UNICODE));
     }
 
 }
