@@ -18,7 +18,7 @@ class Renderer
 
     public static function header($content)
     {
-        echo "<h4 class='dw-filter-attribute-header' style=''>$content</h4>";
+        echo "<div class='dw-filter-attribute-header' style=''><span class='title'>$content</span><span class='collapse-icon'></span></div>";
     }
 
     public static function p($content)

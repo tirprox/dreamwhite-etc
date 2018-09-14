@@ -87,8 +87,8 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
     }
 
     $queryManager->setQueryParameter($attr, $value);
-    $queryManager->setQueryParameter('filterable', 1);
-    $queryManager->setQueryParameter('hasRecords', 1);
+    //$queryManager->setQueryParameter('filterable', 1);
+//    $queryManager->setQueryParameter('hasRecords', 1);
 
     $mongoQuery = $queryManager->getMongoQuery();
 
@@ -102,21 +102,42 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 
     $resultCount = 0;
 
-    foreach ($results as $result) {
-        $resultCount++;
-        if (count($result->attributes) === $attrCount) {
-            $url = '/catalog/' . $result->slug . '/';
-            echo json_encode(['url' => $url], JSON_UNESCAPED_UNICODE);
+    $isFilterable = get_term_meta($term_id, 'filterable', true);
+
+
+    if ($isFilterable != 0) {
+        foreach ($results as $result) {
+            $resultCount++;
+            if (count($result->attributes) === $attrCount) {
+                $url = '/catalog/' . $result->slug . '/';
+                echo json_encode(['url' => $url, 'query' => $mongoQuery], JSON_UNESCAPED_UNICODE);
+            }
+            break;
         }
-        break;
+
+        if ($resultCount === 0) {
+
+            $queryParams = $queryManager->getWooCommerceQuery();
+            $url = '/catalog' . QueryManager::GENDER_TYPE_MAP[$gender][$type] . '?' . http_build_query($queryParams);
+            echo json_encode(['url' => $url, 'query' => $mongoQuery], JSON_UNESCAPED_UNICODE);
+        }
     }
 
-    if ($resultCount === 0) {
-
+    else {
         $queryParams = $queryManager->getWooCommerceQuery();
-        $url = '/catalog' . QueryManager::GENDER_TYPE_MAP[$gender][$type] . '?' . http_build_query($queryParams);
-        echo json_encode(['url' => $url], JSON_UNESCAPED_UNICODE);
+
+        $query = http_build_query($queryParams);
+
+        $postfix = $query !== '' ? '?' . $query : '';
+
+        $url = get_term_link($tax) . $postfix;
+        //$url = '/catalog' . QueryManager::GENDER_TYPE_MAP[$gender][$type] . '?' . http_build_query($queryParams);
+        echo json_encode(['url' => $url, 'query' => $mongoQuery], JSON_UNESCAPED_UNICODE);
+
     }
+
+
+
 
 }
 
@@ -126,8 +147,10 @@ function dw_filter_tags_shortcode()
 
     echo '<div class="dw-product-filter-wrapper" style="padding: 8px 16px" data-term-id="' . $tax->term_id . '">';
 
+
+
     $mongo = new MongoAdapter();
-    $mongo->setCollection('tag-test');
+    $mongo->setCollection('tags');
 
     /*$mongoQuery = ['name' => 'GLOBAL_TAG'];
     $globalAttrs = $mongo->findOne($mongoQuery);
@@ -159,16 +182,24 @@ function dw_filter_tags_shortcode()
     $zastezhki = $mongo->getDistinct('zastezhka', $gender, $type);
     $podkladki = $mongo->getDistinct('podkladka', $gender, $type);
 
+    $vorotniki = $mongo->getDistinct('vorotnik', $gender, $type);
+    $koketki = $mongo->getDistinct('koketka', $gender, $type);
+    $karmany= $mongo->getDistinct('karmany', $gender, $type);
 
     $queryManager = new QueryManager();
 
     $getParams = $queryManager->getParamsFromGetQuery();
+    $queryManager->fromTaxonomyParams($params);
 
-    if (empty($getParams)) {
+    if (!empty($getParams)) {
+        $queryManager->fromGetQuery();
+    }
+
+    /*if (empty($getParams)) {
         $queryManager->fromTaxonomyParams($params);
     } else {
         $queryManager->fromGetQuery();
-    }
+    }*/
 
     $data = function ($attr, $value) {
         return 'data-attr-type="' . $attr . '" data-attr-value="' . $value . '"';
@@ -184,35 +215,46 @@ function dw_filter_tags_shortcode()
         return $isActive ? 'class="dw-filterable dw-color-button dw-filterable-color-active"' : 'class="dw-filterable dw-color-button"';
     };
 
+    $sizeClass = function ($attr, $value) use ($queryManager) {
+        $isActive = mb_strpos($queryManager->getQueryParameter($attr), $value) !== false;
+        return $isActive ? 'class="dw-filterable dw-size-button dw-filterable-size-active"' : 'class="dw-filterable dw-size-button"';
+    };
+
     echo "<div class='dw-filter-attr-block'>";
     Renderer::header('Цвет');
-    foreach ($colors as $color) {
-        echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
+
+    foreach (AttributeHelper::DARK_COLORS as $color => $value) {
+        if (in_array($color, $colors)) {
+            echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . "title='$color'" . '></a>';
+        }
     }
+
+    foreach (AttributeHelper::BRIGHT_COLORS as $color => $value) {
+        if (in_array($color, $colors)) {
+            echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . "title='$color'" . '></a>';
+        }
+    }
+
+    /*foreach (AttributeHelper::COLORMAP as $color => $value) {
+        if (in_array($color, $colors)) {
+            echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
+
+        }
+    }*/
+    /*foreach ($colors as $color) {
+        echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
+    }*/
     echo "</div>";
 
     echo "<div class='dw-filter-attr-block'>";
     Renderer::header('Размер');
     foreach (AttributeHelper::SIZES as $size) {
-        echo '<a style="background: #757575"' . $colorClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
+        echo '<a ' . $sizeClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
     }
     echo "</div>";
 
     Renderer::attribute('Текстура', 'texture', $textures, $class);
 
-
-
-
-    /*if (!empty($lengths)) {
-        echo "<div class='dw-filter-attr-block'>";
-
-        $lengthArray = AttributeHelper::getLengthArray($lengths);
-        Renderer::header('Длина');
-        echo '<a ' . $class('dlina', $lengthArray['short']) . $data('dlina', $lengthArray['short']) . '><span class="dw-filter-button-text">' . 'Короткие' . ' </span></a>';
-        echo '<a ' . $class('dlina', $lengthArray['long']) . $data('dlina', $lengthArray['long']) . '><span class="dw-filter-button-text">' . 'Длинные' . ' </span></a>';
-
-        echo "</div>";
-    }*/
 
     Renderer::attribute('Длина', 'lengthGroup', $lengths, $class);
     Renderer::attribute('Сезон', 'season', $seasons, $class);
@@ -226,87 +268,91 @@ function dw_filter_tags_shortcode()
     Renderer::attribute('Застежка', 'zastezhka', $zastezhki, $class);
     Renderer::attribute('Подкладка', 'podkladka', $podkladki, $class);
 
+    Renderer::attribute('Воротник', 'vorotnik', $vorotniki, $class);
+    Renderer::attribute('Кокетка', 'koketka', $koketki, $class);
+    Renderer::attribute('Карманы', 'karmany', $karmany, $class);
+
     echo '</div>';
 }
 
 class AttributeHelper
 {
-    public const COLORMAP = [
-        'Синий' => '#1c4e8a',
-        'Желтый' => '#ecc13c',
-        'Серый' => '#6e6e6e',
-        'Коричневый' => '#894517',
-        'Бежевый' => '#e9b281',
-        'Красный' => '#ff2126',
-        'Марсала' => '#952b3b',
-        'Хаки' => '#52682d',
-        'Розовый' => '#ffb3b9',
-        'Зеленый' => '#1d6b3e',
-        'Персиковый' => '#d49600',
+    public const DARK_COLORS = [
         'Черный' => '#1f1f1f',
-        'Фиолетовый' => '#73387c',
-        'Белый' => '#f1f1f1',
-        'Сиреневый' => '#fca2cf',
-        'Голубой' => '#45d5ff',
+        'Коричневый' => '#894517',
         'Бордовый' => '#720000',
+        'Марсала' => '#952b3b',
+        'Фиолетовый' => '#73387c',
+        'Синий' => '#1c4e8a',
+        'Хаки' => '#565044',
+        'Серый' => '#6e6e6e',
     ];
+
+    public const BRIGHT_COLORS = [
+        'Зеленый' => '#1d6b3e',
+        'Красный' => '#ff2126',
+        'Голубой' => '#45d5ff',
+        'Желтый' => '#ecc13c',
+        'Персиковый' => '#d49600',
+        'Бежевый' => '#e9b281',
+        'Сиреневый' => '#d6acdb',
+        'Розовый' => '#ffb3b9',
+        'Белый' => '#eeeeee',
+    ];
+
+    public const COLORMAP = [
+        'Черный' => '#1f1f1f',
+        'Коричневый' => '#894517',
+
+        'Бордовый' => '#720000',
+        'Марсала' => '#952b3b',
+        'Фиолетовый' => '#73387c',
+        'Синий' => '#1c4e8a',
+        'Хаки' => '#565044',
+
+
+        'Красный' => '#ff2126',
+        'Розовый' => '#ffb3b9',
+        'Желтый' => '#ecc13c',
+        'Персиковый' => '#d49600',
+        'Бежевый' => '#e9b281',
+
+        'Сиреневый' => '#d6acdb',
+
+        'Голубой' => '#45d5ff',
+
+        'Зеленый' => '#1d6b3e',
+
+        'Серый' => '#6e6e6e',
+        'Белый' => '#eeeeee',
+
+    ];
+
+    /*public const COLORMAP = [
+        'Бордовый' => '#720000',
+        'Марсала' => '#952b3b',
+        'Красный' => '#ff2126',
+        'Розовый' => '#ffb3b9',
+        'Коричневый' => '#894517',
+        'Желтый' => '#ecc13c',
+        'Персиковый' => '#d49600',
+        'Бежевый' => '#e9b281',
+
+        'Фиолетовый' => '#73387c',
+        'Сиреневый' => '#d6acdb',
+
+        'Синий' => '#1c4e8a',
+        'Голубой' => '#45d5ff',
+
+        'Хаки' => '#565044',
+        'Зеленый' => '#1d6b3e',
+
+        'Черный' => '#1f1f1f',
+        'Серый' => '#6e6e6e',
+        'Белый' => '#eeeeee',
+
+    ];*/
 
     public const SIZES = ['38', '40', '42', '44', '46', '48', '50', '52'];
 
-    public const DLINA = [ 'short' => '90см', 'long' => '110см,115см,120см,135см' ];
-
-    public static function getLengthArray($lengthArray) {
-        $short = [];
-        $long = [];
-
-        $intLength = [];
-
-        foreach ($lengthArray as $length) {
-
-            $val = intval(str_replace('см', '', $length));
-
-
-            if ($val >= 110) {
-                $long[] = $length;
-            }
-            else {
-                $short[] = $length;
-            }
-            //$intLength[$val] = $length;
-        }
-        var_dump($long);
-
-        return [
-            'short' => implode(',', $short),
-            'long' => implode(',', $long)
-        ];
-
-    }
-
 }
-
-class FilterView
-{
-    private $sections = [];
-
-    function render()
-    {
-        echo '<div style="padding: 8px 16px">';
-
-        foreach ($this->sections as $section) {
-            Renderer::header($section['title']);
-            foreach ($section['Attrs'] as $attr) {
-            }
-        }
-        echo '</div>';
-    }
-
-    function addSection($title, $attrs)
-    {
-        $sections[] = [
-            'title' => $title,
-            'Attrs' => $attrs
-        ];
-    }
-}
-

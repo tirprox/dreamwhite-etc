@@ -102,10 +102,11 @@ class QueryManager
         if ($value !== '' && in_array($name, Attrs::VALUES)) {
             if (isset($this->queryParams[$name]) && $this->match($this->queryParams[$name], $value)) {
                 unset($this->queryParams[$name] );
+                //$this->deleteQueryParameter($name);
             }
             else {
                 $this->queryParams[$name] = $value;
-                //set_query_var($name, $value);
+                set_query_var($name, $value);
             }
 
         }
@@ -191,6 +192,9 @@ class QueryManager
             else {
                 $metaQuery['relations'][$name] = $value;
             }
+
+            $metaQuery['relations']['filterable'] = 1;
+            $metaQuery['relations']['hasRecords'] = 1;
 
         }
 
