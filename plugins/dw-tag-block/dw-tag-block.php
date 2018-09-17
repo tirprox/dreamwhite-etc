@@ -90,27 +90,30 @@ function dw_tag_block_shortcode()
             echo '<ul class="dw-breadcrumb-list" itemscope itemtype="http://schema.org/BreadcrumbList">';
             $position = 1;
             foreach (array_reverse($parents) as $parentTerm) {
-                if (isset($parentTerm) && $parentTerm->name != '') {
-                    $level = get_term_meta($parentTerm->term_id, 'level', true);
-                    //echo $level;
+                if (isset($parentTerm->name)) {
+                    if ($parentTerm->name != '') {
+                        $level = get_term_meta($parentTerm->term_id, 'level', true);
+                        //echo $level;
 
-                    if ($level > 1) {
+                        if ($level > 1) {
 
-                        $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
-                        Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/', $position);
-                    } else {
-                        if ($level > 0) {
-                            Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/', $position);
-
+                            $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
+                            Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/', $position);
                         } else {
-                            Renderer::tag_block_parent('Главная', '/', $position);
+                            if ($level > 0) {
+                                Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/', $position);
 
+                            } else {
+                                Renderer::tag_block_parent('Главная', '/', $position);
+
+                            }
                         }
-                    }
 
-                    $position++;
-                    echo '<span style="font-size: 12px"> / </span>';
+                        $position++;
+                        echo '<span style="font-size: 12px"> / </span>';
+                    }
                 }
+
 
             }
 
@@ -131,7 +134,6 @@ function dw_tag_block_shortcode()
         echo '<div class="dw-tag-block dw-tag-block-collapsed">';
         foreach ($terms as $term) {
             $filterable = get_term_meta($term->term_id, 'filterable', true);
-
 
 
             if ($term->term_id !== $current_term->term_id && $filterable == 0) {
