@@ -189,7 +189,10 @@ class TagFactory
 
             if ($result === false) continue;
 
-            $tag->relations['hasRecords'] = 1;
+            if ($product->hasImages && $product->stock > 0) {
+                $tag->relations['hasRecords'] = 1;
+            }
+
 
             $product->tags .= $tag->name . ',';
 

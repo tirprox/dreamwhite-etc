@@ -12,6 +12,10 @@ Text Domain: dw-tag-block
 Domain Path: /languages
 */
 
+require_once(dirname(__DIR__) . "/dw-common/vendor/autoload.php");
+
+use MongoDB\Client;
+
 use Dreamwhite\Plugins\TagBlock\QueryManager;
 use Dreamwhite\Plugins\TagBlock\Renderer;
 use Dreamwhite\Plugins\TagBlock\Config;
@@ -54,9 +58,140 @@ function dw_tag_block_shortcode()
 {
     $current_term = get_queried_object();
 
+
     if ($current_term->taxonomy === Config::TAX_NAME) {
 
+
+        $LOGIN = 'admin';
+        $PASSWORD = '6h8s4ksoq';
+        $URI = 'mongodb://@localhost:27017';
+
+        $client = new Client($URI, [
+            "username" => $LOGIN,
+            "password" => $PASSWORD
+        ]);
+
+        $db = $client->selectDatabase('tags');
+        $collection = $db->selectCollection('tags');
+
+        $mongo = new TagBlockMongoHelper($collection);
+
+        $term = $collection->findOne([
+            'name' => $current_term->name
+        ]);
+
+        $parent = $collection->findOne([
+            'name' => $term->relations->parent
+        ]);
+
+
+        $childrenCount = $collection->countDocuments(
+            [
+                'relations.parent' => $current_term->name,
+                'relations.filterable' => 0,
+                'relations.hasRecords' => 1,
+            ]
+        );
+        if ($childrenCount > 0) {
+            $children = $collection->find(
+                [
+                    'relations.parent' => $current_term->name,
+                    'relations.filterable' => 0,
+                    'relations.hasRecords' => 1,
+                ]
+            );
+        }
+        else {
+            $children = $collection->find(
+                [
+                    'relations.parent' => $parent->name,
+                    'relations.filterable' => 0,
+                    'relations.hasRecords' => 1,
+                ]
+            );
+        }
+
+
+
+
+
+
+        $parents = [];
+        $parents[] = $parent;
+
+        while ($parent->relations->level >= 1) {
+            $parent = $collection->findOne([
+                'name' => $parent->relations->parent
+            ]);
+            $parents[] = $parent;
+        }
+
+        /*foreach ($parents as $item) {
+            echo "$item->name<br>";
+        }*/
+
+        /*foreach ($children as $item) {
+            echo "$item->name<br>";
+        }*/
+
+
         echo '<div style="padding: 8px 16px">';
+
+        echo '<ul class="dw-breadcrumb-list" itemscope itemtype="http://schema.org/BreadcrumbList">';
+        $position = 1;
+        foreach (array_reverse($parents) as $parentTerm) {
+                    $level = $parentTerm->relations->level;
+
+                    if ($level > 1) {
+
+                        $short_name = $parentTerm->seo->short_name;
+                        Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/', $position);
+                    } else {
+                        if ($level > 0) {
+                            Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/', $position);
+
+                        } else {
+                            Renderer::tag_block_parent('Главная', '/', $position);
+
+                        }
+                    }
+
+                    $position++;
+                    echo '<span style="font-size: 12px"> / </span>';
+        }
+
+        $current_level = $term->relations->level;
+        if ($current_level > 1) {
+            $short_name = $term->seo->short_name;
+            Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug . '/', $position);
+        } else {
+            Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug . '/', $position);
+        }
+        echo '</ul>';
+
+
+        echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
+
+        echo '<div class="dw-tag-block dw-tag-block-collapsed">';
+
+        foreach ($children as $item) {
+            $filterable = $item->relations->filterable;
+
+
+            if ($item->slug !== $term->slug && $filterable == 0) {
+                Renderer::a($item->seo->short_name, TagLinkHelper::a($item));
+
+//                Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
+            }
+        }
+        echo '</div>';
+
+
+
+        echo '</div>';
+
+
+        /*echo '<div style="padding: 8px 16px">';
 
 
         $childrenQueryManager = new QueryManager();
@@ -141,9 +276,40 @@ function dw_tag_block_shortcode()
             }
         }
         echo '</div>';
-        echo '</div>';
+
+
+        echo '</div>';*/
 
     }
 
 
+}
+
+class TagBlockMongoHelper
+{
+    private $collection;
+
+    function __construct($collection)
+    {
+        $this->collection = $collection;
+    }
+
+    function getChildren($name)
+    {
+        return $this->collection->find(
+            [
+                'relations.parent' => $name,
+                'relations.hasRecords' => 1,
+                'relations.filterable' => 0
+            ]
+        );
+    }
+}
+
+class TagLinkHelper
+{
+    public static function a($item)
+    {
+        return "/catalog/$item->slug/";
+    }
 }

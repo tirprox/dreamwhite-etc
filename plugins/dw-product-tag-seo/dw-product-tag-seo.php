@@ -195,7 +195,7 @@ class RedirectMap
 
         'zhilety' => self:: PREFIX . '/zhilety/',
         'muzhskie-palto' => self:: PREFIX . '/muzhskie-palto/',
-        'zhenskie-puhoviki' => self:: PREFIX . '/kurtki/zhenskie-kurtki/zhenskie-puhoviki/',
+        'zhenskie-puhoviki' => self:: PREFIX . '/zhenskie-puhoviki/',
     ];
 }
 

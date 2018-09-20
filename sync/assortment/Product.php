@@ -54,6 +54,7 @@ class Product
     var $galleryUrls = '';
 
     public $images = [];
+    public $hasImages = false;
 
     var $colors = [], $sizes = '';
 
@@ -276,16 +277,19 @@ class Product
             . '/' . $this->color . '/';
 
          if ($this->article !== '' && $this->color !== '') {
-            $primary = $this->article . '-' . $this->color . '-1.jpg';
+            $primaryPhotoName = $this->article . '-' . $this->color . '-1.jpg';
          }
          else {
-            $primary = '';
+            $primaryPhotoName = '';
          }
-        
 
 
-        $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color] ?? [$primary];
-        $gallery = array_diff($articlePhotoFolder, [$primary]);
+        $articlePhotoFolder = Tools::$imageTree[$this->productFolderName][$this->article][$this->color] ?? [];
+
+        $articlePhotoFolder = array_filter($articlePhotoFolder, 'strlen');
+
+        $gallery = array_diff($articlePhotoFolder, [$primaryPhotoName]);
+        $primary = implode(array_intersect($articlePhotoFolder, [$primaryPhotoName]));
 
         $galleryUrls = [];
 
@@ -293,8 +297,11 @@ class Product
             $galleryUrls[] = Tools::encodeWhitespace($path . $fileName);
         }
 
+        $this->hasImages = !empty($articlePhotoFolder);
+
         $images = [];
-        $images['primary'] = Tools::encodeWhitespace($path . $primary);
+        $images['primary'] = $primary !== '' ? Tools::encodeWhitespace($path . $primary) : '';
+        //$images['primary'] = $primaryPhotoName !== '' ? Tools::encodeWhitespace($path . $primaryPhotoName) : '';
         $images['gallery'] = $galleryUrls;
 
         return $images;
