@@ -16,7 +16,6 @@ require_once(dirname(__DIR__) . "/dw-common/vendor/autoload.php");
 
 use MongoDB\Client;
 
-use Dreamwhite\Plugins\TagBlock\QueryManager;
 use Dreamwhite\Plugins\TagBlock\Renderer;
 use Dreamwhite\Plugins\TagBlock\Config;
 
@@ -87,34 +86,24 @@ function dw_tag_block_shortcode()
 
         $childrenCount = $collection->countDocuments(
             [
-                'relations.parent' => $current_term->name,
+                'relations.parent' => $term->name,
                 'relations.filterable' => 0,
                 'relations.hasRecords' => 1,
             ]
         );
         if ($childrenCount > 0) {
-            $children = $collection->find(
-                [
-                    'relations.parent' => $current_term->name,
-                    'relations.filterable' => 0,
-                    'relations.hasRecords' => 1,
-                ]
-            );
+            $children = $mongo->getChildren($term->name);
         }
         else {
-            $children = $collection->find(
+            $childrenCount = $collection->countDocuments(
                 [
-                    'relations.parent' => $parent->name,
+                    'relations.parent' => $term->relations->parent,
                     'relations.filterable' => 0,
                     'relations.hasRecords' => 1,
                 ]
             );
+            $children = $mongo->getChildren($term->relations->parent);
         }
-
-
-
-
-
 
         $parents = [];
         $parents[] = $parent;
@@ -125,15 +114,6 @@ function dw_tag_block_shortcode()
             ]);
             $parents[] = $parent;
         }
-
-        /*foreach ($parents as $item) {
-            echo "$item->name<br>";
-        }*/
-
-        /*foreach ($children as $item) {
-            echo "$item->name<br>";
-        }*/
-
 
         echo '<div style="padding: 8px 16px">';
 
@@ -170,115 +150,25 @@ function dw_tag_block_shortcode()
         echo '</ul>';
 
 
-        echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
+        if ($childrenCount > 0) {
+            echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
 
-        echo '<div class="dw-tag-block dw-tag-block-collapsed">';
+            echo '<div class="dw-tag-block">';
 
-        foreach ($children as $item) {
-            $filterable = $item->relations->filterable;
+            foreach ($children as $item) {
 
+                if ($item->slug !== $term->slug) {
+                    Renderer::a($item->seo->short_name, TagLinkHelper::a($item));
 
-            if ($item->slug !== $term->slug && $filterable == 0) {
-                Renderer::a($item->seo->short_name, TagLinkHelper::a($item));
-
-//                Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
-            }
-        }
-        echo '</div>';
-
-
-
-        echo '</div>';
-
-
-        /*echo '<div style="padding: 8px 16px">';
-
-
-        $childrenQueryManager = new QueryManager();
-        $childrenQueryManager->setQueryParameter('parent', $current_term->name);
-
-        $args = $childrenQueryManager->getQueryArgs();
-        $terms = get_terms($args);
-
-        $parent = get_term_meta($current_term->term_id, 'parent', true);
-        $topParent = $parent;
-
-
-        if (empty($terms)) {
-            $childrenQueryManager->setQueryParameter('parent', $topParent);
-            $args = $childrenQueryManager->getQueryArgs();
-            $terms = get_terms($args);
-        }
-
-        if ($parent !== '') {
-            $parentTerm = get_term_by('name', $parent, Config::TAX_NAME);
-
-            $parents = [];
-            $parents[] = $parentTerm;
-
-            while ($parent !== '' && isset($parentTerm)) {
-                $parent = get_term_meta($parentTerm->term_id, 'parent', true);
-                $parentTerm = get_term_by('name', $parent, Config::TAX_NAME);
-                $parents[] = $parentTerm;
-            }
-
-            echo '<ul class="dw-breadcrumb-list" itemscope itemtype="http://schema.org/BreadcrumbList">';
-            $position = 1;
-            foreach (array_reverse($parents) as $parentTerm) {
-                if (isset($parentTerm->name)) {
-                    if ($parentTerm->name != '') {
-                        $level = get_term_meta($parentTerm->term_id, 'level', true);
-                        //echo $level;
-
-                        if ($level > 1) {
-
-                            $short_name = get_term_meta($parentTerm->term_id, 'short_name', true);
-                            Renderer::tag_block_parent($short_name, '/catalog/' . $parentTerm->slug . '/', $position);
-                        } else {
-                            if ($level > 0) {
-                                Renderer::tag_block_parent($parentTerm->name, '/catalog/' . $parentTerm->slug . '/', $position);
-
-                            } else {
-                                Renderer::tag_block_parent('Главная', '/', $position);
-
-                            }
-                        }
-
-                        $position++;
-                        echo '<span style="font-size: 12px"> / </span>';
-                    }
                 }
-
-
             }
+            echo '</div>';
 
-
-            $current_level = get_term_meta($current_term->term_id, 'level', true);
-            if ($current_level > 1) {
-                $short_name = get_term_meta($current_term->term_id, 'short_name', true);
-                Renderer::tag_block_parent($short_name, '/catalog/' . $current_term->slug . '/', $position);
-            } else {
-                Renderer::tag_block_parent($current_term->name, '/catalog/' . $current_term->slug . '/', $position);
-            }
-            echo '</ul>';
         }
 
 
-        echo '<span class="dw-tag-block-expand-button dw-tag-block-expand">Больше меток ▾</span>';
 
-        echo '<div class="dw-tag-block dw-tag-block-collapsed">';
-        foreach ($terms as $term) {
-            $filterable = get_term_meta($term->term_id, 'filterable', true);
-
-
-            if ($term->term_id !== $current_term->term_id && $filterable == 0) {
-                Renderer::a(get_term_meta($term->term_id, 'short_name', true), get_term_link($term));
-            }
-        }
         echo '</div>';
-
-
-        echo '</div>';*/
 
     }
 

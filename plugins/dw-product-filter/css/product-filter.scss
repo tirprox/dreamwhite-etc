@@ -1,3 +1,6 @@
+$bg: #eee;
+$accent: mediumseagreen;
+
 .dw-filter-attr-block {
   padding-bottom: 8px;
 }
@@ -12,9 +15,10 @@
   min-width: 40px;
   min-height: 40px;
   color: white;
-}
-.dw-color-button:hover {
-  box-shadow: inset 0 0 0 2px white;
+
+  &:hover {
+    box-shadow: inset 0 0 0 2px white;
+  }
 }
 
 .dw-size-button {
@@ -26,36 +30,41 @@
   padding: 3px 10px;
   background: #eee;
   font-size: 13px;
-}
-.dw-size-button:hover {
-  background: #f3f3f3;
-  color: mediumseagreen !important;
+
+  &:hover {
+    background: lighten(#eee, 2%);
+    color: $accent !important;
+  }
 }
 
 .dw-filterable-color-active {
-  box-shadow: inset 0 0 0 3px mediumseagreen;
+  box-shadow: inset 0 0 0 3px $accent;
+
+
 }
 
 .dw-filterable-size-active {
-  background: mediumseagreen !important;
+  background: $accent !important;
   color: white !important;
-}
-.dw-filterable-size-active:hover {
-  background: #3fbb76;
-  color: white !important;
+
+  &:hover {
+    background: lighten($accent, 2%);
+    color: white !important;
+  }
 }
 
 .dw-filterable-active {
-  background: mediumseagreen !important;
+  background: $accent !important;
   color: white !important;
   font-weight: 700;
-}
-.dw-filterable-active:hover {
-  background: #3fbb76 !important;
-  color: white !important;
+
+  &:hover {
+    background: lighten($accent, 2%) !important;
+    color: white !important;
+  }
 }
 
-.dw-color-button:hover {
+.dw-color-button:hover{
   color: greenyellow;
 }
 
@@ -66,10 +75,11 @@
   margin-bottom: 4px;
   background: #eee;
   color: #212121;
-}
-.dw-filter-button:hover {
-  background: #f3f3f3;
-  color: mediumseagreen;
+
+  &:hover {
+    background: lighten(#eee, 2%);
+    color: $accent;
+  }
 }
 
 .dw-filter-button-text {
@@ -82,16 +92,17 @@
   font-size: 12px;
   padding-left: 6px;
   padding-right: 2px;
-  color: rgba(255, 255, 255, 0.7);
-  content: "x";
+  color: rgba(255,255,255,0.7);
+  content: 'x';
   font-weight: 700;
 }
+
 
 .dw-filter-attribute-header {
   padding: 6px 0px;
   margin-bottom: 4px;
-}
 
+}
 .dw-filter-show-more-wrapper {
   text-align: left;
 }
@@ -101,9 +112,9 @@
   font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
-}
-.dw-filter-show-more:hover {
-  color: mediumseagreen;
+
+  &:hover {
+    color: $accent;
+  }
 }
 
-/*# sourceMappingURL=product-filter.css.map */

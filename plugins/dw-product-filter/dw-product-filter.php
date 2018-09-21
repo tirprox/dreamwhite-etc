@@ -235,15 +235,6 @@ function dw_filter_tags_shortcode()
         }
     }
 
-    /*foreach (AttributeHelper::COLORMAP as $color => $value) {
-        if (in_array($color, $colors)) {
-            echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
-
-        }
-    }*/
-    /*foreach ($colors as $color) {
-        echo '<a style="background: ' . AttributeHelper::COLORMAP[$color] . '"' . $colorClass('colorGroup', $color) . $data('colorGroup', $color) . '></a>';
-    }*/
     echo "</div>";
 
     echo "<div class='dw-filter-attr-block'>";
@@ -259,6 +250,14 @@ function dw_filter_tags_shortcode()
     Renderer::attribute('Длина', 'lengthGroup', $lengths, $class);
     Renderer::attribute('Сезон', 'season', $seasons, $class);
 
+    // Collapsible segment
+
+    echo "<div class='dw-filter-show-more-wrapper'>";
+        echo "<span class='dw-filter-show-more'>Показать все параметры</span>";
+    echo "</div>";
+
+
+    echo "<div class='dw-product-filter__collapsible'>";
     Renderer::attribute('Силуэт', 'siluet', $siluets, $class);
     Renderer::attribute('Капюшон', 'kapushon', $kapushons, $class);
 
@@ -271,6 +270,7 @@ function dw_filter_tags_shortcode()
     Renderer::attribute('Воротник', 'vorotnik', $vorotniki, $class);
     Renderer::attribute('Кокетка', 'koketka', $koketki, $class);
     Renderer::attribute('Карманы', 'karmany', $karmany, $class);
+    echo '</div>';
 
     echo '</div>';
 }
@@ -303,55 +303,22 @@ class AttributeHelper
     public const COLORMAP = [
         'Черный' => '#1f1f1f',
         'Коричневый' => '#894517',
-
         'Бордовый' => '#720000',
         'Марсала' => '#952b3b',
         'Фиолетовый' => '#73387c',
         'Синий' => '#1c4e8a',
         'Хаки' => '#565044',
-
-
         'Красный' => '#ff2126',
         'Розовый' => '#ffb3b9',
         'Желтый' => '#ecc13c',
         'Персиковый' => '#d49600',
         'Бежевый' => '#e9b281',
-
         'Сиреневый' => '#d6acdb',
-
         'Голубой' => '#45d5ff',
-
         'Зеленый' => '#1d6b3e',
-
         'Серый' => '#6e6e6e',
         'Белый' => '#eeeeee',
-
     ];
-
-    /*public const COLORMAP = [
-        'Бордовый' => '#720000',
-        'Марсала' => '#952b3b',
-        'Красный' => '#ff2126',
-        'Розовый' => '#ffb3b9',
-        'Коричневый' => '#894517',
-        'Желтый' => '#ecc13c',
-        'Персиковый' => '#d49600',
-        'Бежевый' => '#e9b281',
-
-        'Фиолетовый' => '#73387c',
-        'Сиреневый' => '#d6acdb',
-
-        'Синий' => '#1c4e8a',
-        'Голубой' => '#45d5ff',
-
-        'Хаки' => '#565044',
-        'Зеленый' => '#1d6b3e',
-
-        'Черный' => '#1f1f1f',
-        'Серый' => '#6e6e6e',
-        'Белый' => '#eeeeee',
-
-    ];*/
 
     public const SIZES = ['38', '40', '42', '44', '46', '48', '50', '52'];
 

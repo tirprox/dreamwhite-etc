@@ -105,9 +105,9 @@ function dw_html_sitemap_shortcode()
 
     }
 
-    echo "<h3>";
+    /*echo "<h3>";
     echo "<a href='/catalog/rasprodazha/'>Распродажа</a>";
-    echo "</h3>";
+    echo "</h3>";*/
     echo '<br>';
 
 

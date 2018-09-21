@@ -26,7 +26,37 @@ jQuery( document ).on( 'click', '.dw-filterable', function() {
             //jQuery('.matching-taxonomies').html(response);
         }
     });
-})
+});
+
+jQuery( document ).on( 'click', '.dw-filter-show-more-wrapper', function() {
+
+    collapsible = jQuery('.dw-product-filter__collapsible');
+
+
+
+    collapsible.toggle();
+    showMore = collapsible.css('display') !== 'none';
+    localStorage.setItem('showMore', showMore);
+});
+
+
+jQuery(function () {
+    showMore = localStorage.getItem('showMore');
+        console.log(showMore);
+   collapsible = jQuery('.dw-product-filter__collapsible');
+
+   if(showMore !== 'false') {
+       //collapsible.show()
+   }
+   else {
+       collapsible.hide()
+   }
+
+
+});
+
+
+
 
 function getQueryParams(qs) {
     qs = qs.split('+').join(' ');

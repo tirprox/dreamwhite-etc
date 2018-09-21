@@ -1,3 +1,6 @@
+$bg: #eee;
+$accent: mediumseagreen;
+
 ul.dw-breadcrumb-list {
   margin-left: 0;
 }
@@ -9,19 +12,22 @@ li.breadcrumb__item {
 /*.dw-tag-block {
   max-height: 25px;
 }*/
+
 .dw-tag-block-item {
   display: inline-block;
   text-align: center;
   vertical-align: center;
   /*color: white;*/
-  background: #eee;
+  background: $bg;
   padding: 0px 8px;
   margin-left: 4px;
   margin-bottom: 4px;
   font-size: 12px;
-}
-.dw-tag-block-item:hover {
-  background: #f3f3f3;
+
+  &:hover {
+    background: lighten($bg, 2%);
+    //color: $accent;
+  }
 }
 
 .dw-tag-block-parent-item {
@@ -32,9 +38,10 @@ li.breadcrumb__item {
   margin-left: 4px;
   margin-bottom: 4px;
   font-size: 12px;
-}
-.dw-tag-block-parent-item:hover {
-  color: mediumseagreen;
+
+  &:hover {
+    color: $accent;
+  }
 }
 
 .dw-tag-block-expand-button {
@@ -54,6 +61,7 @@ li.breadcrumb__item {
 .dw-tag-block-expand-button:visited {
   color: white;
 }*/
+
 .dw-tag-block-collapsed {
   max-height: 32px;
   overflow: hidden;
@@ -62,5 +70,3 @@ li.breadcrumb__item {
 .dw-tag-block-expanded {
   max-height: 100%;
 }
-
-/*# sourceMappingURL=tag-block.css.map */

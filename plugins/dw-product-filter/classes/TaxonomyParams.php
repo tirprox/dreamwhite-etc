@@ -10,7 +10,7 @@ class TaxonomyParams
     }
 
     public function getParameter($name) {
-        return $this->params[$name];
+        return isset($this->params[$name]) ? $this->params[$name] : [];
     }
 
     public function __construct($taxonomy)
