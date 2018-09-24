@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="new.dreamwhite.ru">
+  <component name="PublishConfigData" serverName="new.dreamwhite.ru PLUGINS">
     <serverData>
+      <paths name="dreamwhite.ru PLUGINS">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/wp-content/plugins" local="$PROJECT_DIR$/plugins" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="dreamwhite.ru sync">
         <serverdata>
           <mappings>
@@ -13,12 +20,11 @@
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-            <mapping deploy="/wp-content/plugins/product-tag-seo" local="$PROJECT_DIR$/product-tag-seo" web="/" />
             <mapping deploy="/wp-content/themes/merchandiser-child" local="$PROJECT_DIR$/merchandiser-child" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="new.dreamwhite.ru">
+      <paths name="new.dreamwhite.ru PLUGINS">
         <serverdata>
           <mappings>
             <mapping deploy="/wp-content/plugins" local="$PROJECT_DIR$/plugins" web="/" />

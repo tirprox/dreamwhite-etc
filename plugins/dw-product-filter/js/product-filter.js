@@ -15,48 +15,36 @@ jQuery( document ).on( 'click', '.dw-filterable', function() {
             params: getQueryParams(document.location.search)
         },
         success : function( response ) {
-            console.log(response);
+            //console.log(response);
 
             response= JSON.parse(response);
             if (response.url !== undefined) {
                 window.location.href = response.url;
             }
-            //console.log(response);
-
-            //jQuery('.matching-taxonomies').html(response);
         }
     });
 });
 
 jQuery( document ).on( 'click', '.dw-filter-show-more-wrapper', function() {
-
     collapsible = jQuery('.dw-product-filter__collapsible');
-
-
-
     collapsible.toggle();
     showMore = collapsible.css('display') !== 'none';
     localStorage.setItem('showMore', showMore);
 });
 
-
 jQuery(function () {
     showMore = localStorage.getItem('showMore');
-        console.log(showMore);
    collapsible = jQuery('.dw-product-filter__collapsible');
 
-   if(showMore !== 'false') {
-       //collapsible.show()
+   if(showMore === 'false') {
+       collapsible.hide()
    }
-   else {
+   else if (showMore !== 'true'){
+       localStorage.setItem('showMore', 'false');
        collapsible.hide()
    }
 
-
 });
-
-
-
 
 function getQueryParams(qs) {
     qs = qs.split('+').join(' ');
