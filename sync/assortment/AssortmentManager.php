@@ -275,12 +275,22 @@ class AssortmentManager
 
     function createReportsForGroups($groups)
     {
+        $mongoClient = MongoHelper::makeClient();
+        $db = $mongoClient->selectDatabase('dreamwhite');
+        $productCollection = $db->selectCollection('products');
+        $options = ['upsert' => true];
+
 
         XMLReportGenerator::createDocument();
         XMLReportGenerator::stock($this->stock);
 
         foreach ($groups->groupArray as $group) {
             foreach ($group->products as $product) {
+
+                $filter = ['id' => $product->id];
+
+                $productCollection->updateOne($filter, ['$set' => ProductManager::encode($product)], $options);
+
                 $xmlProductNode = XMLReportGenerator::addProduct($product);
                 JSONShortReportGenerator::addProduct($product);
             }
@@ -289,6 +299,15 @@ class AssortmentManager
         XMLReportGenerator::writeXmlToFile();
 
         JSONShortReportGenerator::writeJsonToFile();
+
+
+
+
+
+
+
+
+
     }
 
 }

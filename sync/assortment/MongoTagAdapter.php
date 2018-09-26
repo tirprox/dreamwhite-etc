@@ -25,6 +25,8 @@ class MongoTagAdapter
 
 
 
+
+
     public function __construct($login = self::LOGIN, $password = self::PASSWORD)
     {
         $this->client = new \MongoDB\Client($this->constructUri($login, $password));

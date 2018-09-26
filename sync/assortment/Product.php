@@ -118,8 +118,8 @@ class Product
         $this->getPrices();
         $this->setAttributes();
         $this->attrs['size'] = [];
-        $this->gender = Tools::match($this->productFolderName, 'женские') ? 'Женские' : 'Мужские';
-        $this->type = $this->getType($this->productFolderName);
+        $this->gender = Tools::match($this->productFolderName, 'Мужские') ? 'Мужские' : 'Женские';
+        $this->type = $this->getType($this->name);
 
         if (Tools::match($this->uteplitel, 'пух')) {
             $this->categories .= ',' . $this->gender . ' пуховики';
@@ -139,14 +139,16 @@ class Product
         'Пуховик',
         'Жилет'
     ];
-    function getType($productFolderName) {
+    function getType($productName) {
 
-        $type = null;
+        $currentType = null;
         foreach (self::TYPES as $type) {
-            $type = Tools::match($this->productFolderName, $type) ? $type : null;
+            if (Tools::match(mb_strtolower($productName), mb_strtolower($type))) {
+                $currentType = $type;
+            }
         }
 
-        return $type;
+        return $currentType;
     }
 
     function getAttributeValue($attr)

@@ -21,12 +21,14 @@ require_once "tags/CsvTagParser.php";
 
 require_once "Product.php";
 require_once "ProductVariant.php";
+require_once "ProductManager.php";
 require_once "Group.php";
 require_once "Groups.php";
 
 require_once "tools/Log.php";
 require_once "tools/Tools.php";
 require_once "tools/Timers.php";
+require_once "tools/MongoHelper.php";
 
 require_once "config/Auth.php";
 require_once "config/Settings.php";

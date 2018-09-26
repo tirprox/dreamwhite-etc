@@ -14,6 +14,19 @@ Domain Path: /languages
 
 add_filter('woocommerce_get_availability', 'revised_woocommerce_get_availability', 10, 2);
 
+class DreamWhiteStock {
+    public const NAMES = [
+        'spb' => [
+            'name' => 'Санкт-Петербург',
+            'stock_name' => 'В Санкт-Петербурге: '
+        ],
+        'msk' => [
+            'name' => 'Москва',
+            'stock_name' => 'В Москве: '
+        ]
+    ];
+}
+
 function revised_woocommerce_get_availability($available_array, $product) {
    
    $stock = [];
@@ -29,7 +42,7 @@ function revised_woocommerce_get_availability($available_array, $product) {
    $otherCity = CITY === 'spb' ? 'msk' : 'spb';
    
    if ($stock[CITY] > 0) {
-      $avText = $stock[CITY] . ' в наличии';
+      $avText = DreamWhiteStock::NAMES[CITY]['stock_name'] . $stock[CITY] ;
    }
    else if ($stock[$otherCity] > 0) {
       $avText = $spbTitle . $stock[ 'spb' ]
