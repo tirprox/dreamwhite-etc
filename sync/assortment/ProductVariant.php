@@ -31,16 +31,18 @@ class ProductVariant {
 	var $variantPhotoUrl = '';
 	
 	var $isOnSale = false;
+
+	public $stockForCity = [];
 	
-	public static $attributeString = "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"";
-	
-	function __construct( $variant, $stock, $parentProduct ) {
+
+	function __construct( $variant, $stock, $parentProduct, $city ) {
 		$this->variant       = $variant;
 		$this->parentProduct = $parentProduct;
 		
 		$this->id                   = $variant->id;
 		$this->name                 = $variant->name;
 		$this->stock                = $stock;
+		$this->stockForCity[$city] = $stock;
 		//$this->parentProduct->stock += $this->stock;
 		
 		$this->parentProductCode = $parentProduct->code;
@@ -147,6 +149,14 @@ class ProductVariant {
             
          }
       }
+   }
+
+   function getStockForCity($city) {
+	    return $this->stockForCity[$city];
+   }
+
+   function getStockSum() {
+        return array_sum($this->stockForCity);
    }
 	
 }

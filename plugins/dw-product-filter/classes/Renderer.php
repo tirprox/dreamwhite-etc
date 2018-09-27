@@ -35,17 +35,19 @@ class Renderer
 
 
     public static function attribute($header, $attr, $data, $class) {
-
-        if (!empty($data)) {
-            echo "<div class='dw-filter-attr-block'>";
-            self::header($header);
+            $headerRendered = false;
 
             foreach ($data as $item) {
-                echo '<a ' . $class($attr, $item) . self::data($attr, $item) . '><span class="dw-filter-button-text">' . $item . ' </span></a>';
+                if (!$headerRendered && $item !== '') {
+                    echo "<div class='dw-filter-attr-block'>";
+                    self::header($header);
+                    $headerRendered = true;
+                }
+                if ($item !== '') {
+                    echo '<a ' . $class($attr, $item) . self::data($attr, $item) . '><span class="dw-filter-button-text">' . $item . ' </span></a>';
+                }
             }
-
-            echo "</div>";
-        }
+            if ($headerRendered) echo "</div>";
 
     }
 

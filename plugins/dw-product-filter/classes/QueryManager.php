@@ -20,8 +20,8 @@ class QueryManager
         'Женские' => [
             'Пальто' => '/zhenskie-palto/',
             'Плащ' => '/zhenskie-plashhi/',
-            'Жилет' => '/zhilety/',
-            'Пуховик' => '/kurtki/zhenskie-kurtki/zhenskie-puhoviki/'
+            'Жилет' => '/zhenskie-zhilety/',
+            'Пуховик' => '/zhenskie-puhoviki/'
         ]
     ];
 

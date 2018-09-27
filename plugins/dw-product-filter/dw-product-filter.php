@@ -87,14 +87,12 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
     }
 
     $queryManager->setQueryParameter($attr, $value);
-    //$queryManager->setQueryParameter('filterable', 1);
-//    $queryManager->setQueryParameter('hasRecords', 1);
 
     $mongoQuery = $queryManager->getMongoQuery();
 
     $mongo = new MongoAdapter();
 
-    $mongo->setCollection('tag-test');
+    $mongo->setCollection('tags');
 
     $results = $mongo->find($mongoQuery['attributes'], $mongoQuery['relations']);
 
@@ -152,40 +150,43 @@ function dw_filter_tags_shortcode()
     $mongo = new MongoAdapter();
     $mongo->setCollection('tags');
 
-    /*$mongoQuery = ['name' => 'GLOBAL_TAG'];
-    $globalAttrs = $mongo->findOne($mongoQuery);
+    $productCollection = MongoAdapter::selectCollection('dreamwhite', 'products');
 
-    $glob = [];
-
-    foreach ($globalAttrs as $result) {
-        $glob = $result;
-    }*/
 
     $params = new TaxonomyParams($tax);
 
     $type = implode($params->getParameter('type'));
     $gender = implode($params->getParameter('gender'));
 
-    $colors = $mongo->getDistinct('colorGroup', $gender, $type);
+    //$colors = $mongo->getDistinct('colorGroup', $gender, $type);
 
-    $textures = $mongo->getDistinct('texture', $gender, $type);
+    $filter = [
+        'hasImage' => true,
+       // 'inStock' => true,
+        'type' => $type,
+        'gender' => $gender
+    ];
 
-    $lengths = $mongo->getDistinct('lengthGroup', $gender, $type);
-    //$lengths = $mongo->getDistinct('dlina', $gender, $type);
-    $seasons = $mongo->getDistinct('season', $gender, $type);
+    $colors = $productCollection->distinct('attributes.colorGroup', $filter);
+    $sizes = $productCollection->distinct('attributes.size', $filter);
 
-    $siluets = $mongo->getDistinct('siluet', $gender, $type);
-    $kapushons = $mongo->getDistinct('kapushon', $gender, $type);
-    $poyasa = $mongo->getDistinct('poyas', $gender, $type);
-    $rukava = $mongo->getDistinct('rukav', $gender, $type);
-    $materials = $mongo->getDistinct('material', $gender, $type);
-    $zastezhki = $mongo->getDistinct('zastezhka', $gender, $type);
-    $podkladki = $mongo->getDistinct('podkladka', $gender, $type);
+    $textures = $productCollection->distinct('attributes.texture', $filter);
 
-    $vorotniki = $mongo->getDistinct('vorotnik', $gender, $type);
-    $koketki = $mongo->getDistinct('koketka', $gender, $type);
-    $karmany= $mongo->getDistinct('karmany', $gender, $type);
+    $lengths = $productCollection->distinct('attributes.lengthGroup', $filter);
+    $seasons = $productCollection->distinct('attributes.season', $filter);
 
+    $siluets = $productCollection->distinct('attributes.siluet', $filter);
+    $kapushons = $productCollection->distinct('attributes.kapushon', $filter);
+    $poyasa = $productCollection->distinct('attributes.poyas', $filter);
+    $rukava = $productCollection->distinct('attributes.rukav', $filter);
+    $materials = $productCollection->distinct('attributes.material', $filter);
+    $zastezhki = $productCollection->distinct('attributes.zastezhka', $filter);
+    $podkladki = $productCollection->distinct('attributes.podkladka', $filter);
+
+    $vorotniki = $productCollection->distinct('attributes.vorotnik', $filter);
+    $koketki = $productCollection->distinct('attributes.koketka', $filter);
+    $karmany= $productCollection->distinct('attributes.karmany', $filter);
+    
     $queryManager = new QueryManager();
 
     $getParams = $queryManager->getParamsFromGetQuery();
@@ -194,12 +195,6 @@ function dw_filter_tags_shortcode()
     if (!empty($getParams)) {
         $queryManager->fromGetQuery();
     }
-
-    /*if (empty($getParams)) {
-        $queryManager->fromTaxonomyParams($params);
-    } else {
-        $queryManager->fromGetQuery();
-    }*/
 
     $data = function ($attr, $value) {
         return 'data-attr-type="' . $attr . '" data-attr-value="' . $value . '"';
@@ -240,8 +235,14 @@ function dw_filter_tags_shortcode()
     echo "<div class='dw-filter-attr-block'>";
     Renderer::header('Размер');
     foreach (AttributeHelper::SIZES as $size) {
-        echo '<a ' . $sizeClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
+        if(in_array($size, $sizes)) {
+            echo '<a ' . $sizeClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
+
+        }
     }
+    /*foreach (AttributeHelper::SIZES as $size) {
+        echo '<a ' . $sizeClass('size', $size) . $data('size', $size) . '>' . $size . '</a>';
+    }*/
     echo "</div>";
 
     Renderer::attribute('Текстура', 'texture', $textures, $class);

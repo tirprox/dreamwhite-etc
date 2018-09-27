@@ -67,10 +67,12 @@ class Product
     private $stockForSize = [];
     public $type;
 
+    public $stockForCity = [];
+
     var $attrs = [];
 
 
-    function __construct($product, $stock, $folderName)
+    function __construct($product, $stock, $folderName, $city)
     {
         $this->product = $product;
 
@@ -81,6 +83,7 @@ class Product
         $this->id = $product->id;
         $this->name = $product->name;
         $this->stock = $stock;
+        $this->stockForCity[$city] = $stock;
 
         //$this->color = 'Серый DR 67 GREY';
 
@@ -203,6 +206,10 @@ class Product
         } else {
             $this->attrs['size'][] = $size;
         }
+
+    }
+
+    function getStockSum() {
 
     }
 

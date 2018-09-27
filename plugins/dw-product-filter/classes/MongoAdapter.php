@@ -25,6 +25,18 @@ class MongoAdapter
 
     private $db, $collection;
 
+    public static function makeClient() {
+        return new Client(self::URI2, [
+            "username" => self::LOGIN,
+            "password" => self::PASSWORD
+        ]);
+    }
+
+    public static function selectCollection($database, $collection) {
+        $client = self::makeClient();
+        return $client->selectCollection($database, $collection);
+    }
+
     public function __construct()
     {
         //$this->client = new Client(self::URI);
@@ -68,6 +80,7 @@ class MongoAdapter
                 'relations.type' => $type,
                 'relations.gender' => $gender,
             ]);
+
     }
 
     public function findOne($query) {

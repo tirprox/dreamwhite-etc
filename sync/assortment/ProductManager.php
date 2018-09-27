@@ -13,13 +13,18 @@ class ProductManager
 {
 
 
-    public static function encode($product) {
+    public static function encode($product, $stock) {
         $json = [];
 
         $json['id'] = $product->id;
         $json['name'] = $product->name;
         $json['gender'] = $product->gender;
         $json['type'] = $product->type;
+
+
+        $json['stock'] = intval(array_sum($stock[$product->code]));
+        $json['inStock'] = $stock  > 0;
+        $json['hasImage'] = $product->hasImages;
         $json['sku'] = $product->code;
         $json['attributes'] = $product->attrs;
         $json['variants'] = [];
@@ -31,7 +36,7 @@ class ProductManager
             $varJson['sku'] = $variant->code;
             $varJson['size'] = $variant->size;
 
-            $varJson['stock'] = intval($variant->stock);
+            $varJson['stock'] = intval(array_sum($stock[$variant->code]));
 
             $json['variants'][] = $varJson;
         }

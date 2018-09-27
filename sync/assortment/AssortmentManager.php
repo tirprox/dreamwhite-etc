@@ -185,7 +185,7 @@ class AssortmentManager
         foreach ($assortment->rows as $row) {
             if ($row->meta->type === 'product') {
 
-                $newProduct = new Product($row, $row->stock, $group->name);
+                $newProduct = new Product($row, $row->stock, $group->name, $group->city);
                 $newProduct->pathName = $row->pathName;
 
 
@@ -197,7 +197,7 @@ class AssortmentManager
         }
         foreach ($assortment->rows as $row) {
             if ($row->meta->type === 'variant') {
-                $newVariant = new ProductVariant($row, $row->stock, $productHashMap[$row->product->meta->href]);
+                $newVariant = new ProductVariant($row, $row->stock, $productHashMap[$row->product->meta->href], $group->city);
 
                 $this->stock[$newVariant->code][$group->city] = $newVariant->stock;
                 $this->msidToSku[$newVariant->code] = $newVariant->id;
@@ -289,9 +289,8 @@ class AssortmentManager
 
                 $filter = ['id' => $product->id];
 
-                $productCollection->updateOne($filter, ['$set' => ProductManager::encode($product)], $options);
+                $productCollection->updateOne($filter, ['$set' => ProductManager::encode($product, $this->stock)], $options);
 
-                $xmlProductNode = XMLReportGenerator::addProduct($product);
                 JSONShortReportGenerator::addProduct($product);
             }
         }

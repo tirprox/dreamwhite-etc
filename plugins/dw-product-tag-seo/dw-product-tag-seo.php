@@ -193,7 +193,7 @@ class RedirectMap
         'zhenskie-plashhi' => self:: PREFIX . '/zhenskie-plashhi/',
         //'zhenskie-plashhi' => '/product-category/zhenskie-plashhi/',
 
-        'zhilety' => self:: PREFIX . '/zhilety/',
+        'zhilety' => self:: PREFIX . '/zhenskie-zhilety/',
         'muzhskie-palto' => self:: PREFIX . '/muzhskie-palto/',
         'zhenskie-puhoviki' => self:: PREFIX . '/zhenskie-puhoviki/',
     ];
