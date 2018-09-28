@@ -291,6 +291,8 @@ class AssortmentManager
 
                 $productCollection->updateOne($filter, ['$set' => ProductManager::encode($product, $this->stock)], $options);
 
+                $xmlProductNode = XMLReportGenerator::addProduct($product);
+
                 JSONShortReportGenerator::addProduct($product);
             }
         }
@@ -298,15 +300,6 @@ class AssortmentManager
         XMLReportGenerator::writeXmlToFile();
 
         JSONShortReportGenerator::writeJsonToFile();
-
-
-
-
-
-
-
-
-
     }
 
 }
