@@ -142,6 +142,11 @@ class XMLReportGenerator {
                 self::addNode('availability',
                     $varStockSum > 0 ? 'instock' : 'outofstock',
                     $xmlVariant);
+                self::addNode('enabled',
+                    $varStockSum > 0 ? 'yes' : 'no',
+                    $xmlVariant);
+
+
 
                 /*self::addNode('availability',
                    $variant->stock > 0 ? 'instock' : 'outofstock',

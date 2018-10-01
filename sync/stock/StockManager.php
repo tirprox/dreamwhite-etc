@@ -108,8 +108,6 @@ class StockManager {
                 $this->queriesNotExecuted++;
             }
 
-
-
         }
         else {
             $this->skuMiss++;

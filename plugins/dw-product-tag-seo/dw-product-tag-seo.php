@@ -157,7 +157,26 @@ function no_yoast_add_page_number_to_title($title_parts)
 
 add_filter('document_title_parts', 'no_yoast_add_page_number_to_title', 101, 2);
 
-function yoast_add_page_number_to_title_and_meta($s)
+function yoast_add_page_number_to_title($s)
+{
+    global $page;
+    $paged = get_query_var('paged', 1);
+    $term = get_queried_object();
+
+    $term_name = $term->name;
+
+    if ($paged >= 2) {
+        $s = $term_name . ' - ' . sprintf(__('Page %s'), $paged);
+    }
+
+    /*!empty ($page) && 1 < $page && $paged = $page;
+    $paged > 1 && $s .= ' - ' . sprintf(__('Page %s'), $paged);*/
+
+
+    return $s;
+}
+
+function yoast_add_page_number_to_meta($s)
 {
     global $page;
     $paged = get_query_var('paged', 1);
@@ -166,8 +185,8 @@ function yoast_add_page_number_to_title_and_meta($s)
     return $s;
 }
 
-add_filter('wpseo_metadesc', 'yoast_add_page_number_to_title_and_meta', 100, 1);
-add_filter('wpseo_title', 'yoast_add_page_number_to_title_and_meta', 100, 1);
+add_filter('wpseo_metadesc', 'yoast_add_page_number_to_meta', 100, 1);
+add_filter('wpseo_title', 'yoast_add_page_number_to_title', 100, 1);
 
 function filter_woocommerce_page_title($title)
 {
