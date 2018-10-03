@@ -641,9 +641,9 @@ prdctfltr_regular_title{
     padding: 0 0!important;
 }
 
-.woocommerce .checkout .checkout-col-aside .payment_methods, .woocommerce #order_review .checkout-col-aside .payment_methods{
-		display: none!important;
-	}
+/*.woocommerce .checkout .checkout-col-aside .payment_methods, .woocommerce #order_review .checkout-col-aside .payment_methods{*/
+		/*display: none!important;*/
+	/*}*/
 
 .categories_layout_default .woocommerce .shortcode_products li.category_item .category_name
 span.count{
