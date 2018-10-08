@@ -71,7 +71,7 @@ function dw_tag_block_shortcode()
         ]);
 
         $db = $client->selectDatabase('tags');
-        $collection = $db->selectCollection('tags');
+        $collection = $db->selectCollection('tag-test');
 
         $mongo = new TagBlockMongoHelper($collection);
 

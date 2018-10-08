@@ -16,7 +16,7 @@ use Dreamwhite\Plugins\ProductFilter\TaxonomyParams;
 use Dreamwhite\Plugins\ProductFilter\QueryManager;
 use Dreamwhite\Plugins\ProductFilter\Renderer;
 use Dreamwhite\Plugins\ProductFilter\MongoAdapter;
-
+use Dreamwhite\Plugins\ProductFilter\FilterConfig;
 
 require_once "includes.php";
 
@@ -57,7 +57,7 @@ function post_filter_var()
     $value = strval($_POST['attr_value']);
     $term_id = $_POST['term_id'];
 
-    $params = $_POST['params'];
+    $params = !empty($_POST['params']) ? $_POST['params'] : [];
 
     ob_get_clean();
 
@@ -75,8 +75,10 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
     $tax = get_term($term_id, 'attr');
     $params = new TaxonomyParams($tax);
 
+
     $type = implode($params->getParameter('type'));
     $gender = implode($params->getParameter('gender'));
+
 
     $queryManager = new QueryManager();
 
@@ -90,9 +92,12 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 
     $mongoQuery = $queryManager->getMongoQuery();
 
+    //var_dump($mongoQuery);
+
+
     $mongo = new MongoAdapter();
 
-    $mongo->setCollection('tags');
+    $mongo->setCollection(FilterConfig::TAG_COLLECTION);
 
     $results = $mongo->find($mongoQuery['attributes'], $mongoQuery['relations']);
 
@@ -105,8 +110,9 @@ function set_query_parameter($term_id, $attr, $value, $getQueryParams)
 
     if ($isFilterable != 0) {
         foreach ($results as $result) {
-            $resultCount++;
             if (count($result->attributes) === $attrCount) {
+                $resultCount++;
+
                 $url = '/catalog/' . $result->slug . '/';
                 echo json_encode(['url' => $url, 'query' => $mongoQuery], JSON_UNESCAPED_UNICODE);
             }
@@ -145,13 +151,10 @@ function dw_filter_tags_shortcode()
 
     echo '<div class="dw-product-filter-wrapper" style="padding: 8px 16px" data-term-id="' . $tax->term_id . '">';
 
-
-
     $mongo = new MongoAdapter();
-    $mongo->setCollection('tags');
+    $mongo->setCollection(FilterConfig::TAG_COLLECTION);
 
     $productCollection = MongoAdapter::selectCollection('dreamwhite', 'products');
-
 
     $params = new TaxonomyParams($tax);
 

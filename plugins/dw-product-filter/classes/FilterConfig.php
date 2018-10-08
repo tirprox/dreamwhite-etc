@@ -9,4 +9,5 @@ namespace Dreamwhite\Plugins\ProductFilter;
 class FilterConfig
 {
     const TAX_NAME = 'attr';
+    const TAG_COLLECTION = 'tag-test';
 }

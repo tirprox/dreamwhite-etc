@@ -15,10 +15,11 @@ jQuery( document ).on( 'click', '.dw-filterable', function() {
             params: getQueryParams(document.location.search)
         },
         success : function( response ) {
-            //console.log(response);
+            console.log(response);
 
             response= JSON.parse(response);
             if (response.url !== undefined) {
+                //console.log(response.url);
                 window.location.href = response.url;
             }
         }

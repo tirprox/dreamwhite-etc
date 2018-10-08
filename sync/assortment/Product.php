@@ -140,7 +140,8 @@ class Product
         'Пальто',
         'Плащ',
         'Пуховик',
-        'Жилет'
+        'Жилет',
+        'Парка'
     ];
     function getType($productName) {
 
