@@ -49,7 +49,7 @@ class QueryManager
         'dlina_rukava'=> self::WC_PREFIX . 'dlina-rukava',
         'zastezhka'=> self::WC_PREFIX . 'zastezhka',
         'kapushon'=> self::WC_PREFIX . 'kapyushon',
-        'vorotnik'=> self::WC_PREFIX . 'tsvet',
+        'vorotnik'=> self::WC_PREFIX . 'vorotnik',
         'poyas'=> self::WC_PREFIX . 'poyas',
         'karmany'=> self::WC_PREFIX . 'karmany',
         'koketka'=> self::WC_PREFIX . 'koketka',
