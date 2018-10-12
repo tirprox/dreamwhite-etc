@@ -156,26 +156,30 @@ class TagFactory
                             $sizes[] = $invAttr->attribute;
                         }
 
-                        $size = implode($sizes);
-                        $tag->addRealAttribute('size', $size);
+                        /*$size = implode($sizes);
+                        $tag->addRealAttribute('size', $size);*/
 
+                        foreach ($sizes as $size ) {
+                            $tag->addRealAttribute('size', $size);
+                        }
+
+                        $variantCount = count($product->variants);
+                        $skips = 0;
                         foreach ($product->variants as $variant) {
-                            if (($variant->size === $size && $variant->stock === 0)  || !in_array($size, $product->attrs['size'])) {
-                                $result = false;
+                            if (!in_array($variant->size, $sizes) || $variant->stock === 0) {
+                                $skips++;
+                                //$result = false;
                             }
+
+//                            if (($variant->size === $size && $variant->stock === 0)  || !in_array($size, $product->attrs['size'])) {
+//                                $result = false;
+//                            }
                         }
 
-                        /*$tagSizes = [];
-                        $productSizes = $product->size;
-
-                        foreach ($value as $size) {
-                            $tagSizes[] = $size->attribute;
+                        if ($variantCount === $skips) {
+                            $result = false;
                         }
 
-                        if (!empty(array_intersect($tagSizes, $productSizes))) {
-                            $result = true;
-                            $tag->addRealAttribute('size', implode(',', $tagSizes));
-                        }*/
                     } else {
                         if (isset($product->attrs[$name])) {
                             $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
