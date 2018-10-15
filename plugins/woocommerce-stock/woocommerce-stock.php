@@ -48,8 +48,6 @@ function revised_woocommerce_get_availability($available_array, $product) {
       $avText = $spbTitle . $stock[ 'spb' ]
          . '<br>'
          . $mskTitle . $stock[ 'msk' ]
-         . '<br>'
-         . 'Свяжитесь с нами для уточнения условий предзаказа'
       ;
    }
    
