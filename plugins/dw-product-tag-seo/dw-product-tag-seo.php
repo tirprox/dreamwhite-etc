@@ -242,13 +242,16 @@ add_action('woocommerce_after_shop_loop', 'seo_taxonomy_add_description');
 
 function seo_taxonomy_add_description()
 {
-    $paged = get_query_var('paged', 1);
+    if (!is_search()) {
+        $paged = get_query_var('paged', 1);
 
-    $term = get_queried_object();
-    $term_description = $term->description;
-    if ($term_description != '' && $paged < 2) {
-        echo '<div class="woo-sc-box normal rounded full">';
-        echo apply_filters('the_content', $term_description);
-        echo '</div>';
+        $term = get_queried_object();
+        $term_description = $term->description;
+        if ($term_description != '' && $paged < 2) {
+            echo '<div class="woo-sc-box normal rounded full">';
+            echo apply_filters('the_content', $term_description);
+            echo '</div>';
+        }
     }
+
 }

@@ -20,12 +20,12 @@ class Groups
     ];
 
     const baseConfig = [
-                    "Свадебные пальто" => [
+                   /* "Свадебные пальто" => [
                         "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
                         "category" => "Свадебные пальто",
                         "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
-                    ],
+                    ],*/
                     "Женские пальто" => [
                         "pathName" => "Женские пальто",
                         "category" => "Женские пальто",
@@ -80,13 +80,13 @@ class Groups
         switch (Config::CITY) {
             case 'spb':
                 $config = [
-                    "Свадебные пальто" => [
+                   /* "Свадебные пальто" => [
                         "store" => $this->stores['В белом'],
                         "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
                         "category" => "Свадебные пальто",
                         "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
-                    ],
+                    ],*/
                     "Женские пальто" => [
                         "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские пальто",
@@ -142,13 +142,13 @@ class Groups
                 break;
             case 'msk':
                 $config = [
-                    "Свадебные пальто" => [
+                    /*"Свадебные пальто" => [
                         "store" => $this->stores['В белом'],
                         "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
                         "category" => "Свадебные пальто",
                         "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
-                    ],
+                    ],*/
                     "Женские пальто" => [
                         "store" => $this->stores['АРМА'],
                         "pathName" => "Женские пальто",

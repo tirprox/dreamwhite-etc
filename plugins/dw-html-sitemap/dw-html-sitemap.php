@@ -32,7 +32,7 @@ function dw_html_sitemap_shortcode()
     ]);
 
     $db = $client->selectDatabase('tags');
-    $collection = $db->selectCollection('tag-test');
+    $collection = $db->selectCollection('tags');
 
     $mongo = new MongoHelper($collection);
 
