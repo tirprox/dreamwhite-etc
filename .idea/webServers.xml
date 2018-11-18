@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="462234aa-d2ae-42fe-8708-bf33a21b4b75" name="sync" url="http://dreamwhite.ru">
+        <fileTransfer host="dreamwhite.ru" port="22" rootFolder="/var/www/vhosts/dreamwhite.ru/sync.dreamwhite.ru" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

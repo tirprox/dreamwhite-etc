@@ -103,9 +103,13 @@ class XMLReportGenerator
             self::addNode('photo', $product->images['primary'], $xmlProduct);
             self::addNode('photoGallery', implode(',', $product->images['gallery']), $xmlProduct);
             self::addNode('tags', $product->tags, $xmlProduct);
+           self::addNode('visibility', "visible", $xmlProduct);
+           
         }
         else {
             self::addNode('tags', "Без фото", $xmlProduct);
+           self::addNode('visibility', "hidden", $xmlProduct);
+   
         }
 
 
