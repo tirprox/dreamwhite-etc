@@ -226,7 +226,7 @@ function redirect_if_empty_shop_loop() {
         $slug = $tag->slug;
 
         foreach (RedirectMap::REDIRECT_MAP as $slugPart => $url) {
-            if (mb_strpos($slug, $slugPart) !== false) {
+            if (mb_strpos($slug, $slugPart) !== false && $slug !== $slugPart) {
                 wp_redirect($url, 302);
                 break;
             }
