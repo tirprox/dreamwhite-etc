@@ -20,7 +20,7 @@ class ProductManager
         $json['name'] = $product->name;
         $json['gender'] = $product->gender;
         $json['type'] = $product->type;
-
+        $json['article'] = $product->article;
 
         $json['stock'] = intval(array_sum($stock[$product->code]));
         $json['inStock'] = $stock  > 0;
