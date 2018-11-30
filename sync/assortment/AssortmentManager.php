@@ -282,10 +282,6 @@ class AssortmentManager
         $dreamwhiteDB = $mongoClient->selectDatabase('dreamwhite');
         $dwProductCollection = $dreamwhiteDB->selectCollection('products');
 
-        $descriptionsDB = $mongoClient->selectDatabase('descriptions');
-        $descProductCollection = $descriptionsDB->selectCollection('product');
-        $descArticleCollection = $descriptionsDB->selectCollection('article');
-
         XMLReportGenerator::createDocument();
         XMLReportGenerator::stock($this->stock);
 
@@ -295,71 +291,6 @@ class AssortmentManager
                 $dwProductCollection->updateOne($filter, ['$set' => ProductManager::encode($product, $this->stock)], $options);
                 $xmlProductNode = XMLReportGenerator::addProduct($product);
                 JSONShortReportGenerator::addProduct($product);
-            }
-        }
-
-
-        $descProducts = $descProductCollection->find();
-        $dwProducts = $dwProductCollection->find();
-
-        $msidToArticleMap = [];
-        foreach ($descProducts as $descProduct) {
-            $msidToArticleMap[$descProduct["msid"]] = $descProduct["article"];
-        }
-
-        foreach ($dwProducts as $product) {
-            //Check if article in a map already
-
-            if (isset($product['article']) && $product['article']!=="" && $product['article'] !== null) {
-                if (isset($msidToArticleMap[$product["id"]] )) {
-
-                    //Update article name and import product to article from map
-                    $filter = ['id' => $msidToArticleMap[$product["id"]]];
-                    $update = [
-                        '$set' => [
-                            'name' => $product['article']
-                        ]
-                    ];
-
-                    $descArticleCollection->updateOne($filter, $update);
-
-                    //Import product
-                    $filter = ['msid' => $product["id"]];
-                    $update = [
-                        '$set' => [
-                            'name' => $product['name'],
-                            'msid' => $product['id'],
-                            'article' => new ObjectId($msidToArticleMap[$product["id"]]),
-                        ]
-                    ];
-                    $descProductCollection->updateOne($filter, $update, $options);
-
-                }
-                else {
-                    //If not exists, create new article and store its _id
-                    $newArticle = [
-                        'name' => $product['article'],
-                        'description' => $product['description'] ?? '',
-                        '__v' => 0
-                    ];
-
-                    $result = $descArticleCollection->insertOne($newArticle);
-                    $msidToArticleMap[$product['id']] = $result->getInsertedId();
-
-                    $filter = ['msid' => $product["id"]];
-                    $update = [
-                        '$set' => [
-                            'name' => $product['name'],
-                            'msid' => $product['id'],
-                            'article' => new ObjectId($result->getInsertedId()),
-                        ]
-                    ];
-                    //Insert product to stored _id
-
-                    $descProductCollection->updateOne($filter, $update, $options);
-
-
-                }
             }
         }
 

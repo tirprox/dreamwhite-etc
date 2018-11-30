@@ -21,6 +21,9 @@ class ProductManager
         $json['gender'] = $product->gender;
         $json['type'] = $product->type;
         $json['article'] = $product->article;
+        $json['description'] = $product->description;
+        $json['primaryPhoto'] = $product->images['primary'] ?? '';
+        $json['gallery'] = $product->images['gallery'] ?? [];
 
         $json['stock'] = intval(array_sum($stock[$product->code]));
         $json['inStock'] = $stock  > 0;
