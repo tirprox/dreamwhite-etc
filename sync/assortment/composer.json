@@ -1,6 +1,8 @@
 {
     "require": {
         "guzzlehttp/guzzle": "~6.0",
-        "mongodb/mongodb": "^1.4"
+        "mongodb/mongodb": "^1.4",
+        "webonyx/graphql-php": "^0.13.0",
+        "softonic/graphql-client": "^1.2"
     }
 }

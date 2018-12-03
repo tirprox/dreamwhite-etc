@@ -50,15 +50,10 @@ foreach ($dwProducts as $product) {
 
             $update = ['name' => $product['article'], '__v' => 0 ];
 
-
-
-
-
-
             $article = $articleIdToArticleMap[$msIdToArticleIdMap[$product["id"]]] ?? null;
 
             if ($article !== null && $article['description'] === '') {
-                $update['description'] = $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : $product['article'];
+                $update['description'] = $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : '';
             }
 
             $set = ['$set' => $update];
@@ -86,7 +81,7 @@ foreach ($dwProducts as $product) {
             $update = [
                 '$set' => [
                     //'name' => $product['article'],
-                    'description' => $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : $product['article'],
+                    'description' => $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : '',
                     '__v' => 0
                 ]
             ];
@@ -116,7 +111,7 @@ foreach ($dwProducts as $product) {
             //If not exists, create new article and store its _id
             $newArticle = [
                 'name' => $product['article'],
-                'description' => $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : $product['article'],
+                'description' => $product['description'] !== '' ? $product['name'] . PHP_EOL .$product['description'] : '',
                 '__v' => 0
             ];
 
