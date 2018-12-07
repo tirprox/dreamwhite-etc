@@ -30,8 +30,9 @@ class AssortmentManager
 
     public $productRequestUrl;
     public $imageDirPath = 'http://static.dreamwhite.ru/photo/dir.php';
-
-    public $imageTreePath = 'http://static.dreamwhite.ru/photo/new/dir.php';
+    //public $imageTreePath = 'http://static.dreamwhite.ru/photo/new/dir.php';
+   
+   public $imageTreePath = 'https://files.dreamwhite.ru/files/dir.php';
 
     var $fromServer = true;
 
@@ -42,7 +43,8 @@ class AssortmentManager
         Settings::load();
 
         Log::d(Settings::get('fromServer') ? 'Using Server Config' : 'Using Local Config', 'config', 'p');
-        $imgPromise = Connector::requestAsync($this->imageDirPath);
+       //var_dump(openssl_get_cert_locations());
+       /* $imgPromise = Connector::requestAsync($this->imageDirPath);
         $imgPromise->then(
             function (ResponseInterface $res) {
                 Tools::$imageDirList = json_decode($res->getBody());
@@ -57,7 +59,7 @@ class AssortmentManager
             }
         );
         Connector::addPromise($imgPromise);
-        Connector::completeRequests();
+        Connector::completeRequests();*/
 
 
         $imageTreePromise = Connector::requestAsync($this->imageTreePath);

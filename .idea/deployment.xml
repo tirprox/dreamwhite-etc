@@ -13,7 +13,7 @@
       <paths name="sync">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/sync" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$/sync/assortment" web="/" />
           </mappings>
         </serverdata>
       </paths>

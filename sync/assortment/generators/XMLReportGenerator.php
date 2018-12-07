@@ -104,11 +104,14 @@ class XMLReportGenerator
             self::addNode('photoGallery', implode(',', $product->images['gallery']), $xmlProduct);
             self::addNode('tags', $product->tags, $xmlProduct);
            self::addNode('visibility', "visible", $xmlProduct);
+           self::addNode('fb_visibility', "1", $xmlProduct);
            
         }
         else {
             self::addNode('tags', "Без фото", $xmlProduct);
            self::addNode('visibility', "hidden", $xmlProduct);
+           self::addNode('fb_visibility', "0", $xmlProduct);
+   
    
         }
 
