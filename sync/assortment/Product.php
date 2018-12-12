@@ -48,7 +48,9 @@ class Product
 
     var $video = '';
 
-    const BASE_URL = 'http://static.dreamwhite.ru/photo/';
+    //const BASE_URL = 'http://static.dreamwhite.ru/photo/';
+   
+   const BASE_URL = 'https://files.dreamwhite.ru/files/';
 
     var $productPhotoUrl = '';
     var $galleryUrls = '';
@@ -281,7 +283,10 @@ class Product
 
     function getImageUrls()
     {
-        $base = 'https://static.dreamwhite.ru/photo/new/';
+        //$base = 'https://static.dreamwhite.ru/photo/new/';
+   
+       
+         $base = 'https://files.dreamwhite.ru/files/';
         $path = $base . $this->productFolderName
             . '/' . $this->article
             . '/' . $this->color . '/';
