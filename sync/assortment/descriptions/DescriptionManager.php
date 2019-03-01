@@ -43,18 +43,25 @@ class DescriptionManager {
 
         //Populating maps
         foreach ($descProducts as $descProduct) {
-            $msIdToArticleIdMap[$descProduct["msid"]] = (string)$descProduct["article"];
+            $msIdToArticleIdMap[$descProduct["msid"]] = (string)$descProduct["article"]; // "ef91f518-fad3-11e8-9ff4-34e800022ac8" => "5c050ef976d68962807de6ca"
+
+
         }
+        //file_put_contents("msIdToArticleIdMap.json", json_encode($msIdToArticleIdMap), JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
         foreach ($descArticles as $descArticle) {
-            $articleNameToIdMap[$descArticle["name"]] = (string)$descArticle["_id"];
-            $articleIdToArticleMap[(string)$descArticle["_id"]] = $descArticle;
+            $articleNameToIdMap[$descArticle["name"]] = (string)$descArticle["_id"]; // "К612-11-41" => "5c050ef976d68962807de6ca"
+            $articleIdToArticleMap[(string)$descArticle["_id"]] = $descArticle; // "5c050ef976d68962807de6ca" => $article
         }
+        //file_put_contents("articleNameToIdMap.json", json_encode($articleNameToIdMap), JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+       // file_put_contents("articleIdToArticleMap.json", json_encode($articleIdToArticleMap), JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+
 
 
 
         // Looping dreamwhite product map
         foreach ($dwProducts as $product) {
+
             //Check if article is in a map already
 
             if (isset($product['article']) && $product['article'] !== "") {

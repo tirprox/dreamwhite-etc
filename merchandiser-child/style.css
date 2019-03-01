@@ -102,6 +102,18 @@ border-bottom: 1px solid rgba(255,255,255,0.1);
     margin-right: 16px;
 }
 
+.header-social {
+
+}
+
+.header-social i {
+    padding: 6px;
+}
+
+.header-social i:hover {
+    color: #00AA5B;
+    cursor: pointer;
+}
 
 .white-transparent-links a {
     color: rgba(255,255,255,0.7) !important;
