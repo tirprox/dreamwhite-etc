@@ -297,7 +297,7 @@ class AssortmentManager
         }
 
 
-        DescriptionManager::import();
+        //DescriptionManager::import();
         XMLReportGenerator::city($groups->groupArray[0]->city);
         XMLReportGenerator::writeXmlToFile();
 
