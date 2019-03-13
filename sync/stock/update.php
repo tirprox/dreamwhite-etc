@@ -13,6 +13,9 @@ foreach ($stocks as $sku => $city) {
 }
 
 foreach ($ids as $sku => $id) {
+    if ($id === "377d0926-3696-11e9-9ff4-31500010def6") {
+        var_dump($stockManager->skuPostIdMap[$sku], $id);
+    }
     $stockManager->update_ms_id($stockManager->skuPostIdMap[$sku], $id);
 }
 
