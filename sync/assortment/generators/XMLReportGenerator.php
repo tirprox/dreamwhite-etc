@@ -49,6 +49,7 @@ class XMLReportGenerator
         $stock = self::$stock[$product->code];
         self::addNode('id', $product->id, $xmlProduct);
         self::addNode('name', $product->name, $xmlProduct);
+        self::addNode('slug', $product->slug, $xmlProduct);
         self::addNode('group', $product->categories, $xmlProduct);
         //self::addNode('group', $product->categories, $xmlProduct);
         self::addNode('sku', $product->code, $xmlProduct);
@@ -126,6 +127,7 @@ class XMLReportGenerator
             $xmlVariant = self::addChild('variation', $variants);
             self::addNode('id', $variant->id, $xmlVariant);
             self::addNode('name', $variant->name, $xmlVariant);
+            self::addNode('slug', $variant->slug, $xmlVariant);
             self::addNode('sku', $variant->code, $xmlVariant);
             self::addNode('barcode', $variant->barcode, $xmlVariant);
 

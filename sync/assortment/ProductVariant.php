@@ -11,6 +11,7 @@ class ProductVariant {
 	var $url;
 	var $name;
 	var $stock;
+	var $slug;
 	
 	var $price = '';
 	var $code = '';
@@ -41,6 +42,7 @@ class ProductVariant {
 		
 		$this->id                   = $variant->id;
 		$this->name                 = $variant->name;
+        $this->slug = strtolower(Tools::transliterate($this->name));
 		$this->stock                = $stock;
 		$this->stockForCity[$city] = $stock;
 		//$this->parentProduct->stock += $this->stock;

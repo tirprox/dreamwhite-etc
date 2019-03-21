@@ -11,6 +11,7 @@ class Product
     var $categories;
     var $name;
     var $id;
+    var $slig;
     var $wc_id;
     var $url;
     var $variants = [];
@@ -84,6 +85,7 @@ class Product
         $this->categories = $folderName;
         $this->id = $product->id;
         $this->name = $product->name;
+        $this->slug = strtolower(Tools::transliterate($this->name));
         $this->stock = $stock;
         $this->stockForCity[$city] = $stock;
 

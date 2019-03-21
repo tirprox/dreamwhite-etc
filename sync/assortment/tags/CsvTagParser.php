@@ -107,7 +107,7 @@ class CsvTagParser
         }
 
         return [
-            'name' => $name,
+            'name' => trim($name),
             'level' => $level
         ];
     }
