@@ -15,7 +15,7 @@ $cursor = $collection->find([
     '$or' => [
         ["agent.tags" => "anketa-site"],
         ["agent.tags" => "anketa-vk"]
-    ]
+    ],
 ]
     ,['typeMap' => ['array' => 'array', 'obj' => 'array']]
 );

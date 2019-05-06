@@ -1,7 +1,7 @@
 <?php
+
 namespace Dreamwhite\Assortment;
-class Groups
-{
+class Groups {
     var $remoteGroups;
     var $groupsInConfig;
     var $groupArray = [];
@@ -20,73 +20,84 @@ class Groups
     ];
 
     const baseConfig = [
-                   /* "Свадебные пальто" => [
-                        "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
-                        "category" => "Свадебные пальто",
-                        "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
-                    ],*/
-                    "Женские пальто" => [
-                        "pathName" => "Женские пальто",
-                        "category" => "Женские пальто",
-                        "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
-                    ],
-                    "Женские плащи" => [
-                        "pathName" => "Женские плащи",
-                        "category" => "Женские плащи",
-                        "id" => "2e7b7745-246a-11e7-7a31-d0fd00184b78",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/2e7b7745-246a-11e7-7a31-d0fd00184b78"
-                    ],
-                    "Мужские пальто" => [
-                        "pathName" => "Мужские пальто",
-                        "category" => "Мужские пальто",
-                        "id" => "3c1129d6-925a-11e7-7a69-971100078524",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3c1129d6-925a-11e7-7a69-971100078524"
-                    ],
-                    "Женские куртки" => [
-                        "pathName" => "Женские куртки",
-                        "category" => "Женские куртки",
-                        "id" => "c3e048e5-d358-11e7-7a6c-d2a900192646",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c3e048e5-d358-11e7-7a6c-d2a900192646"
-                    ],
-                    "Женские парки" => [
-                        "pathName" => "Женские куртки/Женские парки",
-                        "category" => "Женские парки",
-                        "id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccba5668-d359-11e7-7a31-d0fd00191b3a"
-                    ],
+        "Свадебные пальто" => [
+            "pathName" => "Женские пальто/Свадебные пальто",
+            "category" => "Свадебные пальто",
+            "id" => "ebd91e1b-514b-11e9-9107-50480007f1bb",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ebd91e1b-514b-11e9-9107-50480007f1bb"
+        ],
+        "Женские пальто" => [
+            "pathName" => "Женские пальто",
+            "category" => "Женские пальто",
+            "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
+        ],
+        "Женские плащи" => [
+            "pathName" => "Женские плащи",
+            "category" => "Женские плащи",
+            "id" => "2e7b7745-246a-11e7-7a31-d0fd00184b78",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/2e7b7745-246a-11e7-7a31-d0fd00184b78"
+        ],
+        "Мужские пальто" => [
+            "pathName" => "Мужские пальто",
+            "category" => "Мужские пальто",
+            "id" => "3c1129d6-925a-11e7-7a69-971100078524",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3c1129d6-925a-11e7-7a69-971100078524"
+        ],
+        "Женские куртки" => [
+            "pathName" => "Женские куртки",
+            "category" => "Женские куртки",
+            "id" => "c3e048e5-d358-11e7-7a6c-d2a900192646",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c3e048e5-d358-11e7-7a6c-d2a900192646"
+        ],
+        "Женские парки" => [
+            "pathName" => "Женские куртки/Женские парки",
+            "category" => "Женские парки",
+            "id" => "ccba5668-d359-11e7-7a31-d0fd00191b3a",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccba5668-d359-11e7-7a31-d0fd00191b3a"
+        ],
 
-                    "SS18" => [
-                        "pathName" => "Женские пальто/SS18",
-                        "category" => "SS18",
-                        "id" => "1ada01b0-30f5-11e8-9107-5048001661e8",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/1ada01b0-30f5-11e8-9107-5048001661e8"
-                    ],
+        "SS18" => [
+            "pathName" => "Женские пальто/SS18",
+            "category" => "SS18",
+            "id" => "1ada01b0-30f5-11e8-9107-5048001661e8",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/1ada01b0-30f5-11e8-9107-5048001661e8"
+        ],
 
-                    "Жилеты" => [
-                        "pathName" => "Женские пальто/Жилеты",
-                        "category" => "Жилеты",
-                        "id" => "90e5d7fc-3819-11e8-9107-504800189a1b",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/90e5d7fc-3819-11e8-9107-504800189a1b"
-                    ],
-                ];
+        "Жилеты" => [
+            "pathName" => "Женские пальто/Жилеты",
+            "category" => "Жилеты",
+            "id" => "90e5d7fc-3819-11e8-9107-504800189a1b",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/90e5d7fc-3819-11e8-9107-504800189a1b"
+        ],
+        "Мужские плащи" => [
+            "pathName" => "Мужские плащи",
+            "category" => "Мужские плащи",
+            "id" => "48d012af-6a84-11e9-9ff4-34e8002646e8",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/48d012af-6a84-11e9-9ff4-34e8002646e8"
+        ],
+        "Аксессуары" => [
+            "pathName" => "Аксессуары",
+            "category" => "Жилеты",
+            "id" => "36b82597-931e-11e7-7a69-971100072f28",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/36b82597-931e-11e7-7a69-971100072f28"
+        ],
+    ];
 
-    function getGroupsFromConfig()
-    {
+    function getGroupsFromConfig() {
 
         $config = [];
 
         switch (Config::CITY) {
             case 'spb':
                 $config = [
-                   /* "Свадебные пальто" => [
-                        "store" => $this->stores['В белом'],
-                        "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
-                        "category" => "Свадебные пальто",
-                        "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
-                        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
-                    ],*/
+                    /* "Свадебные пальто" => [
+                         "store" => $this->stores['В белом'],
+                         "pathName" => "Аксессуары для свадьбы/Свадебные пальто",
+                         "category" => "Свадебные пальто",
+                         "id" => "cca342fd-07e7-11e6-7a69-93a700454ad1",
+                         "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cca342fd-07e7-11e6-7a69-93a700454ad1"
+                     ],*/
                     "Женские пальто" => [
                         "store" => $this->stores['Флигель Спб'],
                         "pathName" => "Женские пальто",
@@ -208,8 +219,7 @@ class Groups
 
     }
 
-    function createGroups()
-    {
+    function createGroups() {
         foreach ($this->groupsInConfig as $groupName => $options) {
             Log::d($groupName, "groups");
             Log::d("URL: " . $options['href'], "groups");
@@ -221,14 +231,12 @@ class Groups
 
     }
 
-    function getGroupsFromServer($baseUrl, $context)
-    {
+    function getGroupsFromServer($baseUrl, $context) {
         $groupsUrl = $baseUrl . '/entity/productFolder?' . 'offset=0&limit=100';
         $this->remoteGroups = json_decode(file_get_contents($groupsUrl, false, $context));
     }
 
-    function getGroupArray()
-    {
+    function getGroupArray() {
         foreach ($this->remoteGroups->rows as $group) {
             foreach ($this->groupsInConfig as $configGroup => $options) {
                 if ($group->name === $configGroup) {
