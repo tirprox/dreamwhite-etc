@@ -23,8 +23,8 @@ class Groups {
         "Свадебные пальто" => [
             "pathName" => "Женские пальто/Свадебные пальто",
             "category" => "Свадебные пальто",
-            "id" => "ebd91e1b-514b-11e9-9107-50480007f1bb",
-            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ebd91e1b-514b-11e9-9107-50480007f1bb"
+            "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/cc91a970-07e7-11e6-7a69-93a700454ab8"
         ],
         "Женские пальто" => [
             "pathName" => "Женские пальто",
@@ -78,7 +78,7 @@ class Groups {
         ],
         "Аксессуары" => [
             "pathName" => "Аксессуары",
-            "category" => "Жилеты",
+            "category" => "Аксессуары",
             "id" => "36b82597-931e-11e7-7a69-971100072f28",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/36b82597-931e-11e7-7a69-971100072f28"
         ],
@@ -284,7 +284,9 @@ class Groups {
         ];
 
         foreach ($config as $name => &$values) {
-            $values['store'] = $name === 'Свадебные пальто' ? $this->stores['В белом'] : $cities[$city];
+            //$values['store'] = $name === 'Свадебные пальто' ? $this->stores['В белом'] : $cities[$city];
+
+            $values['store'] = $cities[$city];
         }
 
         return $config;
