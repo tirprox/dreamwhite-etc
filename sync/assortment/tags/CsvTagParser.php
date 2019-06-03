@@ -67,10 +67,11 @@ class CsvTagParser
         $tagRows = [];
 
         foreach ($data as $row) {
+            $r = self::getName($row);
             $tagRow = [];
-            $tagRow['name'] = self::getName($row)['name'];
+            $tagRow['name'] = $r['name'];
             $tagRow['relations']['filterable'] = $row[self::FILTERABLE_OFFSET] == 1 ? 1 : 0;
-            $tagRow['relations']['level'] = self::getName($row)['level'];
+            $tagRow['relations']['level'] = $r['level'];
             $tagRow['relations']['hasRecords'] = 0;
 
 
@@ -99,8 +100,9 @@ class CsvTagParser
         $level = 0;
 
         for ($i = self::NAME_START; $i <= self::NAME_END; $i++) {
-            if ($row[$i] !== '') {
-                $name = $row[$i];
+            $n =  trim($row[$i]);
+            if ($n !== '') {
+                $name = $n;
                 $level = $i;
                 break;
             }
