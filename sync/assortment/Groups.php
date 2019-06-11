@@ -76,12 +76,50 @@ class Groups {
             "id" => "48d012af-6a84-11e9-9ff4-34e8002646e8",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/48d012af-6a84-11e9-9ff4-34e8002646e8"
         ],
-        "Аксессуары" => [
+
+        "Панамы" => [
+            "pathName" => "Аксессуары/Панамы",
+            "category" => "Панамы",
+            "id" => "dc1031d1-8774-11e9-9ff4-34e8000f3e65",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/dc1031d1-8774-11e9-9ff4-34e8000f3e65"
+        ],
+        "Кепи" => [
+            "pathName" => "Аксессуары/Кепи",
+            "category" => "Кепи",
+            "id" => "d9874829-8774-11e9-9107-5048000f7be3",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/d9874829-8774-11e9-9107-5048000f7be3"
+        ],
+        "Поясные сумки" => [
+            "pathName" => "Аксессуары/Поясные сумки",
+            "category" => "Поясные сумки",
+            "id" => "d25ce883-8774-11e9-9ff4-3150000f0ae9",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/d25ce883-8774-11e9-9ff4-3150000f0ae9"
+        ],
+        "Пояса" => [
+            "pathName" => "Аксессуары/Пояса",
+            "category" => "Пояса",
+            "id" => "ef2ad64f-8774-11e9-9107-5048000f306f",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ef2ad64f-8774-11e9-9107-5048000f306f"
+        ],
+        "Сумки" => [
+            "pathName" => "Аксессуары/Сумки",
+            "category" => "Сумки",
+            "id" => "ccc669af-8774-11e9-912f-f3d4000e9d8c",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/ccc669af-8774-11e9-912f-f3d4000e9d8c"
+        ],
+        "Кейсы" => [
+            "pathName" => "Аксессуары/Кейсы",
+            "category" => "Кейсы",
+            "id" => "c659890c-8774-11e9-9107-5048000f7a43",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c659890c-8774-11e9-9107-5048000f7a43"
+        ],
+
+        /*"Аксессуары" => [
             "pathName" => "Аксессуары",
             "category" => "Аксессуары",
             "id" => "36b82597-931e-11e7-7a69-971100072f28",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/36b82597-931e-11e7-7a69-971100072f28"
-        ],
+        ],*/
     ];
 
     function getGroupsFromConfig() {
