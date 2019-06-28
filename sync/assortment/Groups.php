@@ -113,6 +113,18 @@ class Groups {
             "id" => "c659890c-8774-11e9-9107-5048000f7a43",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/c659890c-8774-11e9-9107-5048000f7a43"
         ],
+        "Пиджаки" => [
+            "pathName" => "Пиджаки",
+            "category" => "Пиджаки",
+            "id" => "a5e27ff3-9996-11e9-9107-504800077d1f",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/a5e27ff3-9996-11e9-9107-504800077d1f"
+        ],
+        "Брюки" => [
+            "pathName" => "Брюки",
+            "category" => "Брюки",
+            "id" => "7fa4d990-9996-11e9-9109-f8fc00059ed1",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/7fa4d990-9996-11e9-9109-f8fc00059ed1"
+        ],
 
         /*"Аксессуары" => [
             "pathName" => "Аксессуары",

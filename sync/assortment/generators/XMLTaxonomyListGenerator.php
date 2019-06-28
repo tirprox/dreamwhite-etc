@@ -75,7 +75,10 @@ class XMLTaxonomyListGenerator {
    }
    
    static function addTextNode($text, $parent) {
-      $textNode = self::$document->createTextNode($text);
+       if (is_array($text)) { $data = implode(',', $text); }
+       else { $data = $text; }
+
+      $textNode = self::$document->createTextNode($data);
       $textNode = $parent->appendChild($textNode);
       return $textNode;
    }

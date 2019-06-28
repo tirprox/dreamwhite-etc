@@ -1,14 +1,12 @@
 <?php
 
 namespace Dreamwhite\Assortment;
-class TagFactory
-{
+class TagFactory {
     var $tags = [];
 
     var $parsedTags = [];
 
-    function loadTagsFromFile()
-    {
+    function loadTagsFromFile() {
 
         $filePath = __DIR__ . '/tags.csv';
 
@@ -20,16 +18,13 @@ class TagFactory
             $this->tags[] = $tag;
         }
 
-
         usort($this->tags, function ($tag1, $tag2) {
             return $tag1->relations['level'] <=> $tag2->relations['level'];
         });
 
-
     }
 
-    function getTagList($globalAttrs)
-    {
+    function getTagList($globalAttrs) {
         XMLTaxonomyListGenerator::createDocument();
         foreach ($this->tags as $tag) {
 
@@ -73,13 +68,18 @@ class TagFactory
 
     }
 
-    private function createTag2($tagRow)
-    {
+    private function createTag2($tagRow) {
         $tag = new Tag();
 
         $tag->name = $tagRow['name'];
         $tag->slug = strtolower(Tools::transliterate($tag->name));
         $tag->relations = $tagRow['relations'];
+
+        $tag->relations['parent'] = trim($tag->relations['parent']);
+
+
+        $tag->relations['group'] = explode(',', $tag->relations['group']);
+        //$tag->relations['group'] = $this->splitAttr($tag->relations['group']);
 
         //$tag->relations['slug'] = strtolower(Tools::transliterate($tag->name));
         $tag->seo = $tagRow['seo'];
@@ -99,8 +99,7 @@ class TagFactory
 
     /* Determine whether attribute should be included or excluded.
     If prepended with -, attribute is excluded from a tag (is inverted) */
-    private function splitAttr($atrrString)
-    {
+    private function splitAttr($atrrString) {
         $data = str_getcsv($atrrString, ',');
         $attrs = [];
         foreach ($data as $item) {
@@ -110,7 +109,8 @@ class TagFactory
                 if (substr($item, 0, 1) === '-') {
                     $item = substr($item, 1);
                     $attrs[] = new InvertableAttribute($item, true);
-                } else {
+                }
+                else {
                     $attrs[] = new InvertableAttribute($item, false);
                 }
             }
@@ -119,9 +119,7 @@ class TagFactory
         return array_filter($attrs);
     }
 
-
-    public function setProductTag2($product)
-    {
+    public function setProductTag2($product) {
         // sale tag
         if ($product->isOnSale) {
             $product->tags .= 'Распродажа,';
@@ -129,14 +127,15 @@ class TagFactory
 
         foreach ($this->tags as $tag) {
 
-
             //if (!$this->compareAttrs($tag->relations['group'], $product->productFolderName)) continue;
 
-            if (!isset($tag->relations['group'])) {
+            /*if (!isset($tag->relations['group'])) {
                 continue;
-            }
+            }*/
 
-            if ($tag->relations['group'] !== $product->productFolderName) continue;
+            if (!in_array($product->productFolderName, $tag->relations['group'])) continue;
+
+            //if ($tag->relations['group'] !== $product->productFolderName) continue;
 
             $result = true;
 
@@ -149,43 +148,48 @@ class TagFactory
 
                     if ($name === 'article') {
                         $result = $this->compareAttrs($tag->attributes[$name], $product->article);
-                    } else if ($name === 'size') {
+                    }
 
-                        $sizes = [];
-                        foreach ($value as $invAttr) {
-                            $sizes[] = $invAttr->attribute;
-                        }
+                    else {
+                        if ($name === 'size') {
 
-                        /*$size = implode($sizes);
-                        $tag->addRealAttribute('size', $size);*/
-
-                        foreach ($sizes as $size ) {
-                            $tag->addRealAttribute('size', $size);
-                        }
-
-                        $variantCount = count($product->variants);
-                        $skips = 0;
-                        foreach ($product->variants as $variant) {
-                            if (!in_array($variant->size, $sizes) || $variant->stock === 0) {
-                                $skips++;
-                                //$result = false;
+                            $sizes = [];
+                            foreach ($value as $invAttr) {
+                                $sizes[] = $invAttr->attribute;
                             }
+
+                            /*$size = implode($sizes);
+                            $tag->addRealAttribute('size', $size);*/
+
+                            foreach ($sizes as $size) {
+                                $tag->addRealAttribute('size', $size);
+                            }
+
+                            $variantCount = count($product->variants);
+                            $skips = 0;
+                            foreach ($product->variants as $variant) {
+                                if (!in_array($variant->size, $sizes) || $variant->stock === 0) {
+                                    $skips++;
+                                    //$result = false;
+                                }
 
 //                            if (($variant->size === $size && $variant->stock === 0)  || !in_array($size, $product->attrs['size'])) {
 //                                $result = false;
 //                            }
-                        }
+                            }
 
-                        if ($variantCount === $skips) {
-                            $result = false;
-                        }
+                            if ($variantCount === $skips) {
+                                $result = false;
+                            }
 
-                    } else {
-                        if (isset($product->attrs[$name])) {
-                            $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
                         }
+                        else {
+                            if (isset($product->attrs[$name])) {
+                                $result = $this->compareAttrs($tag->attributes[$name], $product->attrs[$name]);
+                            }
 
-                        if ($result === false) break;
+                            if ($result === false) break;
+                        }
                     }
 
                 }
@@ -196,7 +200,6 @@ class TagFactory
             if ($product->hasImages && $product->stock > 0) {
                 $tag->relations['hasRecords'] = 1;
             }
-
 
             $product->tags .= $tag->name . ',';
 
@@ -212,8 +215,7 @@ class TagFactory
         }
     }
 
-    function setProductTag($product)
-    {
+    function setProductTag($product) {
         // sale tag
         if ($product->isOnSale) {
             $product->tags .= 'Распродажа,';
@@ -253,7 +255,6 @@ class TagFactory
             if (!$this->compareAttrs($tag->koketka, $product->koketka)) continue;
             if (!$this->compareAttrs($tag->uhod, $product->uhod)) continue;
 
-
             //echo $tag->name . PHP_EOL;
 
             $product->tags .= $tag->name . ',';
@@ -266,10 +267,8 @@ class TagFactory
                 }
             }
 
-
         }
     }
-
 
     /* The order is following:
     First, if attr is empty,  tag match is returned instantly.
@@ -278,8 +277,7 @@ class TagFactory
     If match not found, but attr is inverted, return match.
      */
 
-    private function compareAttrs($tagAttrArray, $productAttr)
-    {
+    private function compareAttrs($tagAttrArray, $productAttr) {
 
         if (empty($tagAttrArray)) return true;
 
@@ -292,8 +290,9 @@ class TagFactory
                 $match = $attr->isInverted ? false : true;
             } //string match not found
             else {
-                if ($attr->isInverted)
+                if ($attr->isInverted) {
                     $matchCount++;
+                }
             }
             if ($matchCount === count($tagAttrArray)) $match = true;
             //else $match =  $attr->isInverted ? true : false;
@@ -302,8 +301,7 @@ class TagFactory
         return $match;
     }
 
-    private function compareColors($tag, $productColor)
-    {
+    private function compareColors($tag, $productColor) {
         $tagColors = $tag->color;
         $match = false;
 
