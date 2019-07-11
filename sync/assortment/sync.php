@@ -22,16 +22,12 @@ function import() {
    Timers::start("overall");
    downloadTags();
 
-
    $generator = new AssortmentManager();
    $generator->generateObjects();
    //$generator->createCSVReport();
    //$generator->createXMLReport();
     updateDB();
    Timers::stop("overall");
-
-
-
 }
 
 function updateDB () {

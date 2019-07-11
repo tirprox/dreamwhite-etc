@@ -46,6 +46,7 @@ class Product
     var $karmany = '';
     var $koketka = '';
     var $uhod = '';
+    var $opt = '';
 
     var $video = '';
 
@@ -247,13 +248,10 @@ class Product
                     $attrSet[$attr->name] = $this->getAttributeValue($attr);
                 }
 
-
                 $this->color = $attrSet['Цвет'] ?? '';
                 $this->colorGroup = $attrSet['Цветовая группа'] ?? '';
                 $this->texture = $attrSet['Текстура'] ?? '';
-
                 $this->material = $attrSet['Материал'] ?? '';
-
                 $this->season = $attrSet['Сезон'] ?? '';
                 $this->uteplitel = $attrSet['Утеплитель'] ?? '';
                 $this->podkladka = $attrSet['Подкладка'] ?? '';
@@ -269,6 +267,7 @@ class Product
                 $this->karmany = $attrSet['Карманы'] ?? '';
                 $this->koketka = $attrSet['Кокетка'] ?? '';
                 $this->uhod = $attrSet['Уход'] ?? '';
+                $this->opt = $attrSet['Опт'] ?? 'Нет';
 
                 if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
 
@@ -374,6 +373,7 @@ class Product
             'karmany' => $this->karmany,
             'koketka' => $this->koketka,
             'uhod' => $this->uhod,
+            'opt' => $this->opt,
             //'size' => $this->sizes
         ];
 

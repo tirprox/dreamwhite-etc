@@ -37,9 +37,10 @@ class CsvTagParser
         'uhod' => self::ATTR_OFFSET+18,
         'size' => self::ATTR_OFFSET+19,
         'lengthGroup' => self::ATTR_OFFSET+20,
+        'opt' =>self::ATTR_OFFSET+21
     ];
 
-    private const SEO_OFFSET = 36;
+    private const SEO_OFFSET = 37;
     private const SEO_MAP = [
         'h1' => self::SEO_OFFSET,
         'short_name' => self::SEO_OFFSET+1,
