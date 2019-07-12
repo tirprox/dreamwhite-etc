@@ -99,7 +99,7 @@ class XMLReportGenerator
         self::addNode('karmany', $product->karmany, $attrs);
         self::addNode('koketka', $product->koketka, $attrs);
         self::addNode('uhod', $product->uhod, $attrs);
-        self::addNode('opt', $product->uhod, $attrs);
+        self::addNode('opt', $product->opt, $attrs);
 
         if ($product->hasImages) {
             self::addNode('photo', $product->images['primary'], $xmlProduct);
