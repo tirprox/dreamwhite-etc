@@ -126,12 +126,12 @@ class Groups {
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/7fa4d990-9996-11e9-9109-f8fc00059ed1"
         ],
 
-        /*"Аксессуары" => [
-            "pathName" => "Аксессуары",
-            "category" => "Аксессуары",
-            "id" => "36b82597-931e-11e7-7a69-971100072f28",
-            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/36b82597-931e-11e7-7a69-971100072f28"
-        ],*/
+        "Шубы" => [
+            "pathName" => "Шубы",
+            "category" => "Шубы",
+            "id" => "3bef7f64-9e7c-11e9-9107-5048000a6378",
+            "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3bef7f64-9e7c-11e9-9107-5048000a6378"
+        ],
     ];
 
     function getGroupsFromConfig() {
