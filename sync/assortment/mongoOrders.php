@@ -8,7 +8,7 @@ $pwd = '6h8s4ksoq';
 
 $client = new \MongoDB\Client("mongodb://${user}:${pwd}@dreamwhite.ru:27017");
 
-$collection = $client->dreamwhite->order;
+$collection = $client->dreamwhite->customerOrder;
 
 
 $cursor = $collection->find([
