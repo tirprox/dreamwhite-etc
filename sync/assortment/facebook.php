@@ -65,9 +65,13 @@ foreach ($cursor as $item) {
     $value . ';' .
     $currency . PHP_EOL;*/
 
-  echo $line;
+  //echo $line;
 
   $csv .= $line;
 }
 
-file_put_contents("facebook.csv", $csv);
+file_put_contents("facebook.txt", $csv);
+
+header('Content-type: text/plain');
+header('Content-Disposition: attachment; filename="facebook.txt"');
+readfile('facebook.txt');
