@@ -30,8 +30,6 @@ $cursor = $collection->find([
   ]
 );
 
-/*$cursor = $collection->find();*/
-
 $csv = "";
 
 $pattern = '/[^0-9]/m';
@@ -55,18 +53,7 @@ foreach ($cursor as $item) {
   $d = \DateTime::createFromFormat($format, $item['lastdemanddate']);
   $date = $d->format($format2);
   $value = $item['averagereceipt'] / 100;
-
   $line = implode(';', [$email, $phone, $gen, $event_name, $date, $value, $currency]) . PHP_EOL;
-  /*$line = $email . ";" .
-    $phone . ";" .
-    $gen . ";" .
-    $event_name . ";" .
-    $date . ";" .
-    $value . ';' .
-    $currency . PHP_EOL;*/
-
-  //echo $line;
-
   $csv .= $line;
 }
 
