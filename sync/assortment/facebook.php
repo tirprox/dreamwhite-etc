@@ -59,6 +59,8 @@ foreach ($cursor as $item) {
 
 file_put_contents("facebook.txt", $csv);
 
+header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate"); // HTTP/1.1
+header("Expires: Wed, 11 Jan 1984 05:00:00 GMT"); // Date in the past
 header('Content-type: text/plain');
 header('Content-Disposition: attachment; filename="facebook.txt"');
 readfile('facebook.txt');

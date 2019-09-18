@@ -71,6 +71,11 @@ class XMLReportGenerator {
       'type' => 'string',
       'struct' => 'list'
     ],
+    'lengthGroup' => [
+      'name' => 'Тип длины',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
     'rukav' => [
       'name' => 'Рукав',
       'type' => 'string',
@@ -209,7 +214,7 @@ class XMLReportGenerator {
     self::addAttributeNode('podkladka', $product->podkladka, $attrs);
     self::addAttributeNode('siluet', $product->siluet, $attrs);
     self::addAttributeNode('dlina', $product->dlina, $attrs);
-    if (isset($product->attrs['lengthGroup'])) self::addNode('lengthGroup', $product->attrs['lengthGroup'], $attrs);
+    if (isset($product->attrs['lengthGroup'])) self::addAttributeNode('lengthGroup', $product->attrs['lengthGroup'], $attrs);
     self::addAttributeNode('rukav', $product->rukav, $attrs);
     self::addAttributeNode('dlina_rukava', $product->dlina_rukava, $attrs);
     self::addAttributeNode('zastezhka', $product->zastezhka, $attrs);
