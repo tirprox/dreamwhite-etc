@@ -5,6 +5,125 @@ class XMLReportGenerator {
   private static $document;
   private static $root, $city = '', $stock;
 
+  private const ATTR_CONF = [
+    'type' => [
+      'name' => 'Тип изделия',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'gender' => [
+      'name' => 'Пол',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'opt' => [
+      'name' => 'Опт',
+      'type' => 'bool',
+      'struct' => 'single'
+    ],
+    'opt_stock' => [
+      'name' => 'Свободный склад',
+      'type' => 'bool',
+      'struct' => 'single'
+    ],
+    'color' => [
+      'name' => 'Цвет',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'colorGroup' => [
+      'name' => 'Цветовая группа',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'texture' => [
+      'name' => 'Текстура',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'season' => [
+      'name' => 'Сезон',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'material' => [
+      'name' => 'Материал',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'uteplitel' => [
+      'name' => 'Утеплитель',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'podkladka' => [
+      'name' => 'Подкладка',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'siluet' => [
+      'name' => 'Силуэт',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'dlina' => [
+      'name' => 'Длина изделия',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'rukav' => [
+      'name' => 'Рукав',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'dlina_rukava' => [
+      'name' => 'Длина рукава',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'zastezhka' => [
+      'name' => 'Застежка',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'kapushon' => [
+      'name' => 'Капюшон',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'vorotnik' => [
+      'name' => 'Воротник',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'koketka' => [
+      'name' => 'Кокетка',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'poyas' => [
+      'name' => 'Пояс',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'karmany' => [
+      'name' => 'Карманы',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'uhod' => [
+      'name' => 'Уход',
+      'type' => 'string',
+      'struct' => 'list'
+    ],
+    'video' => [
+      'name' => 'Видео',
+      'type' => 'string',
+      'struct' => 'single'
+    ],
+
+  ];
+
   static function getDocument() {
     if (self::$document == null) {
       self::createDocument();
@@ -70,32 +189,38 @@ class XMLReportGenerator {
 
     $attrs = self::addChild('attributes', $xmlProduct);
 
-    self::addNode('type', $product->type, $attrs);
-    self::addNode('gender', $product->gender, $attrs);
 
-    self::addNode('color', $product->color, $attrs);
-    self::addNode('colorGroup', $product->colorGroup, $attrs);
-    self::addNode('texture', $product->texture, $attrs);
+    // Tag attributes:
+    // name - Имя в кириллице
+    // type - string | bool | int | date
+    // struct = single | list
 
-    self::addNode('material', $product->material, $attrs);
-    self::addNode('uteplitel', $product->uteplitel, $attrs);
-    self::addNode('season', $product->season, $attrs);
+    self::addAttributeNode('type', $product->type, $attrs);
+    self::addAttributeNode('gender', $product->gender, $attrs);
 
-    self::addNode('podkladka', $product->podkladka, $attrs);
-    self::addNode('siluet', $product->siluet, $attrs);
-    self::addNode('dlina', $product->dlina, $attrs);
+    self::addAttributeNode('color', $product->color, $attrs);
+    self::addAttributeNode('colorGroup', $product->colorGroup, $attrs);
+    self::addAttributeNode('texture', $product->texture, $attrs);
+
+    self::addAttributeNode('material', $product->material, $attrs);
+    self::addAttributeNode('uteplitel', $product->uteplitel, $attrs);
+    self::addAttributeNode('season', $product->season, $attrs);
+
+    self::addAttributeNode('podkladka', $product->podkladka, $attrs);
+    self::addAttributeNode('siluet', $product->siluet, $attrs);
+    self::addAttributeNode('dlina', $product->dlina, $attrs);
     if (isset($product->attrs['lengthGroup'])) self::addNode('lengthGroup', $product->attrs['lengthGroup'], $attrs);
-    self::addNode('rukav', $product->rukav, $attrs);
-    self::addNode('dlina_rukava', $product->dlina_rukava, $attrs);
-    self::addNode('zastezhka', $product->zastezhka, $attrs);
-    self::addNode('kapushon', $product->kapushon, $attrs);
-    self::addNode('vorotnik', $product->vorotnik, $attrs);
-    self::addNode('poyas', $product->poyas, $attrs);
-    self::addNode('karmany', $product->karmany, $attrs);
-    self::addNode('koketka', $product->koketka, $attrs);
-    self::addNode('uhod', $product->uhod, $attrs);
-    self::addNode('opt', $product->opt, $attrs);
-    self::addNode('opt_stock', $product->opt_stock, $attrs);
+    self::addAttributeNode('rukav', $product->rukav, $attrs);
+    self::addAttributeNode('dlina_rukava', $product->dlina_rukava, $attrs);
+    self::addAttributeNode('zastezhka', $product->zastezhka, $attrs);
+    self::addAttributeNode('kapushon', $product->kapushon, $attrs);
+    self::addAttributeNode('vorotnik', $product->vorotnik, $attrs);
+    self::addAttributeNode('poyas', $product->poyas, $attrs);
+    self::addAttributeNode('karmany', $product->karmany, $attrs);
+    self::addAttributeNode('koketka', $product->koketka, $attrs);
+    self::addAttributeNode('uhod', $product->uhod, $attrs);
+    self::addAttributeNode('opt', $product->opt, $attrs);
+    self::addAttributeNode('opt_stock', $product->opt_stock, $attrs);
 
     if ($product->hasImages) {
       self::addNode('photo', $product->images['primary'], $xmlProduct);
@@ -112,7 +237,7 @@ class XMLReportGenerator {
 
     }
 
-    self::addNode('video', $product->video, $xmlProduct);
+    self::addAttributeNode('video', $product->video, $xmlProduct);
     self::addNode('video-youtube-part', Tools::removeYoutubeBase($product->video), $xmlProduct);
 
     //$xmlProduct = self::addChild('variants', $xmlProduct);
@@ -158,6 +283,21 @@ class XMLReportGenerator {
 
     return $xmlProduct;
 
+  }
+
+
+  static function addAttributeNode($name, $value, $parent) {
+    if ($value !== '') {
+      $node = self::addChild($name, $parent);
+
+      foreach (self::ATTR_CONF[$name] as $a => $val) {
+        $da = self::$document->createAttribute($a);
+        $da->value = $val;
+        $node->appendChild($da);
+      }
+
+      $nodeVal = self::addTextNode($value, $node);
+    }
   }
 
   static function addNode($name, $value, $parent) {
