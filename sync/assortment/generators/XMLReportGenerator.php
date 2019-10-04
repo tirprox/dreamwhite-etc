@@ -126,6 +126,11 @@ class XMLReportGenerator {
       'type' => 'string',
       'struct' => 'single'
     ],
+    'priority' => [
+      'name' => 'Приоритет',
+      'type' => 'int',
+      'struct' => 'single'
+    ],
 
   ];
 
@@ -226,6 +231,8 @@ class XMLReportGenerator {
     self::addAttributeNode('uhod', $product->uhod, $attrs);
     self::addAttributeNode('opt', $product->opt, $attrs);
     self::addAttributeNode('opt_stock', $product->opt_stock, $attrs);
+    self::addAttributeNode('priority', $product->priority, $attrs);
+
 
     if ($product->hasImages) {
       self::addNode('photo', $product->images['primary'], $xmlProduct);

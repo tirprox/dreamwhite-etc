@@ -46,6 +46,7 @@ class Product {
   var $uhod = '';
   var $opt = '';
   var $opt_stock = '';
+  var $priority = 3;
 
   var $video = '';
 
@@ -265,6 +266,8 @@ class Product {
         $this->uhod = $attrSet['Уход'] ?? '';
         $this->opt = $attrSet['Опт'] ?? 'Нет';
         $this->opt_stock = $attrSet['Свободный склад'] ?? 'Нет';
+        $this->priority = $attrSet['Приоритет'] ?? 3;
+
 
         if (isset($attrSet['Видео'])) $this->video = $attrSet['Видео'];
 
