@@ -160,6 +160,9 @@ class Product {
       if (is_bool($attr->value)) {
         $value = $attr->value ? 'Есть' : 'Нет';
       }
+      else if (is_integer($attr->value)) {
+        $value = $attr->value;
+      }
       else {
         if (is_object($attr->value)) {
           $value = $attr->value->name;
