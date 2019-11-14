@@ -158,29 +158,30 @@ class TagFactory {
                                 $sizes[] = $invAttr->attribute;
                             }
 
-                            /*$size = implode($sizes);
-                            $tag->addRealAttribute('size', $size);*/
 
                             foreach ($sizes as $size) {
                                 $tag->addRealAttribute('size', $size);
                             }
 
-                            $variantCount = count($product->variants);
+                            $sizesInStock = [];
+                          foreach ($product->variants as $variant) {
+                            if ($variant->stock > 0) $sizesInStock[] = $variant->size;
+                          }
+
+                          $intersect = array_intersect($sizes, $sizesInStock);
+                          $result = count($intersect) > 0;
+
+                            /*$variantCount = count($product->variants);
                             $skips = 0;
                             foreach ($product->variants as $variant) {
                                 if (!in_array($variant->size, $sizes) || $variant->stock === 0) {
                                     $skips++;
-                                    //$result = false;
                                 }
-
-//                            if (($variant->size === $size && $variant->stock === 0)  || !in_array($size, $product->attrs['size'])) {
-//                                $result = false;
-//                            }
                             }
 
                             if ($variantCount === $skips) {
                                 $result = false;
-                            }
+                            }*/
 
                         }
                         else {

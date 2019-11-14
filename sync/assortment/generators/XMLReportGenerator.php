@@ -287,7 +287,9 @@ class XMLReportGenerator {
       self::addNode('description', $variant->description, $xmlVariant);
 
       self::addNode('color', $variant->color, $xmlVariant);
+
       self::addNode('size', $variant->size, $xmlVariant);
+
       self::addNode('height', $variant->height, $xmlVariant);
 
       self::addNode('photo', $variant->variantPhotoUrl, $xmlVariant);
