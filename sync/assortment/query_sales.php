@@ -9,9 +9,9 @@ $pwd = '6h8s4ksoq';
 
 $client = new \MongoDB\Client("mongodb://${user}:${pwd}@dreamwhite.ru:27017");
 
-$collection = $client->dreamwhite->retaildemand;
+$collection = $client->dreamwhite->counterparty;
 
-$cursor = $collection->aggregate([
+/*$cursor = $collection->aggregate([
   [
     '$lookup' => [
       'from' => 'counterparty',
@@ -28,7 +28,7 @@ $cursor = $collection->aggregate([
   ],
   [
     '$match' => [
-      'counterparty.attributes.name' => 'ClientID Metrica',
+      'counterparty.attributes.name' => 'ClientID UTMSTAT',
     ],
   ],
   [
@@ -45,6 +45,44 @@ $cursor = $collection->aggregate([
 
   ],
 
+], []);*/
+
+$cursor = $collection->aggregate([
+
+  [
+    '$unwind' => '$attributes'
+  ],
+  [
+    '$match' => [
+      'attributes.name' => 'ClientID UTMSTAT',
+    ],
+  ],
+  [
+    '$lookup' => [
+      'from' => 'retaildemand',
+      'localField' => 'id',
+      'foreignField' => 'agent.id',
+      'as' => 'sale'
+    ]
+  ],
+  [
+    '$unwind' => '$sale'
+  ],
+
+  [
+    '$project' => [
+      'name' => '$sale.name',
+      'moment' => '$sale.moment',
+      'store' => '$sale.retailstore.meta.href',
+      'counterparty' => '$name',
+      'clientid' => '$attributes.value',
+      'cashsum' => '$sale.cashsum',
+      'nocashsum' => '$sale.nocashsum',
+      '_id' => 0
+    ]
+
+  ],
+
 ], []);
 
 $csv = "";
@@ -54,16 +92,16 @@ $csv .= $header;
 
 $stores = [
   'https://online.moysklad.ru/api/remap/1.1/entity/retailstore/ba03c6d8-7161-11e8-9ff4-34e80003eb04' => 'Арма',
- 'https://online.moysklad.ru/api/remap/1.1/entity/retailstore/735616d5-e309-11e6-7a34-5acf000ffe76' => 'Флигель',
+  'https://online.moysklad.ru/api/remap/1.1/entity/retailstore/735616d5-e309-11e6-7a34-5acf000ffe76' => 'Флигель',
 ];
 
 foreach ($cursor as $item) {
   $item = json_decode(json_encode($item), true);
-  $item['store'] = $stores[$item['store'] ];
+  $item['store'] = $stores[$item['store']];
 
   $total = $item['cashsum'] + $item['nocashsum'];
 
-  $line = implode(';', [$item['name'], $item['moment'], $item['store'], $item['counterparty'], $item['clientid'], $total ]) . PHP_EOL;
+  $line = implode(';', [$item['name'], $item['moment'], $item['store'], $item['counterparty'], $item['clientid'], $total]) . PHP_EOL;
   $csv .= $line;
 }
 
