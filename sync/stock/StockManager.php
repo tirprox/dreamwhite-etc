@@ -50,17 +50,27 @@ class StockManager {
 	   }
    }
 
+/*
+select * FROM `spb_postmeta` t join (select post_id from `spb_postmeta` where meta_key = "_stock" and meta_value != "0") t1 on t.post_id = t1.post_id where meta_key = "_stock_status"
+
+*/
+
+
    function update_stock_status(){
       $sql1 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
-         " WHERE meta_key = '_stock' AND meta_value < 1 ) id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
+         " WHERE meta_key = '_stock' AND meta_value = '0 ') id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
       $sql2 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
-         " WHERE meta_key = '_stock' AND meta_value > 0 ) id SET stock.meta_value = 'instock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
+         " WHERE meta_key = '_stock' AND meta_value != '0' ) id SET stock.meta_value = 'instock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
       $sql3 = "UPDATE " . $this->wpdb->postmeta . " SET " . $this->wpdb->postmeta . ".meta_value = 'yes' WHERE " . $this->wpdb->postmeta . ".meta_key = '_manage_stock';";
+
+     $sql4 = "UPDATE " . $this->wpdb->postmeta . " SET " . $this->wpdb->postmeta . ".meta_value = 'outofstock' WHERE " . $this->wpdb->postmeta . ".meta_value = 'onbackorder';";
 
       $this->wpdb->query( $sql1 );
       $this->wpdb->query( $sql2 );
       $this->wpdb->query( $sql3 );
-       wp_cache_flush();
+     $this->wpdb->query( $sql4 );
+
+     wp_cache_flush();
    }
 
     function update_ms_id($post_id, $id){
