@@ -189,9 +189,10 @@ class XMLReportGenerator {
     }
 
     self::addNode('stock', $stockSum, $xmlProduct);
-    self::addNode('availability',
-      $stockSum > 0 ? 'instock' : 'outofstock',
-      $xmlProduct);
+    self::addNode('availability',$stockSum > 0 ? 'instock' : 'outofstock', $xmlProduct);
+    self::addNode('backorders','no', $xmlProduct);
+
+
 
     self::addNode('price', $product->regularPrice, $xmlProduct);
     self::addNode('salePrice', $product->salePrice, $xmlProduct);
