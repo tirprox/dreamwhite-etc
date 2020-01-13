@@ -16,7 +16,7 @@ class AssortmentManager
 
     public $storeId = 'baedb9ed-de2a-11e6-7a34-5acf00087a3f'; // Садовая
     public $testUrl = 'https://online.moysklad.ru/api/remap/1.1/report/stock/all?store.id=baedb9ed-de2a-11e6-7a34-5acf00087a3f&productFolder.id=cc91a970-07e7-11e6-7a69-93a700454ab8&stockMode=all';
-    public $assortmentUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/assortment?limit=100&filter=productFolder=';
+    public $assortmentUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/assortment?limit=100&expand=uom,supplier&filter=productFolder=';
     public $productsUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/product/?limit=100&expand=uom,supplier&filter=pathName=';
     public $variantsUrl = 'https://online.moysklad.ru/api/remap/1.1/entity/variant?limit=100&expand=product.uom,product.supplier&filter=productid=';
     public $stocksUrl = 'https://online.moysklad.ru/api/remap/1.1/report/stock/all?stockMode=all&limit=1000&store.id=';
