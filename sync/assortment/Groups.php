@@ -22,7 +22,7 @@ class Groups {
     ];
 
     const baseConfig = [
-        "Свадебные пальто" => [
+        /*"Свадебные пальто" => [
             "pathName" => "Женские пальто/Свадебные пальто",
             "category" => "Свадебные пальто",
             "id" => "cc91a970-07e7-11e6-7a69-93a700454ab8",
@@ -133,7 +133,14 @@ class Groups {
             "category" => "Шубы",
             "id" => "3bef7f64-9e7c-11e9-9107-5048000a6378",
             "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/3bef7f64-9e7c-11e9-9107-5048000a6378"
-        ],
+        ],*/
+
+      "Материалы" => [
+        "pathName" => "Материалы",
+        "category" => "Материалы",
+        "id" => "d62e2263-fa00-11e8-9107-5048000358f7",
+        "href" => "https://online.moysklad.ru/api/remap/1.1/entity/productfolder/d62e2263-fa00-11e8-9107-5048000358f7"
+      ],
     ];
 
     function getGroupsFromConfig() {

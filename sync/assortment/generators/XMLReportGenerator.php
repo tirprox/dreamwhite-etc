@@ -175,7 +175,7 @@ class XMLReportGenerator {
     //self::addNode('group', $product->categories, $xmlProduct);
     self::addNode('sku', $product->code, $xmlProduct);
     self::addNode('barcode', $product->barcode, $xmlProduct);
-
+    self::addNode('supplier', $product->supplier, $xmlProduct);
     self::addNode('article', $product->article, $xmlProduct);
     self::addNode('uom', $product->uom, $xmlProduct);
     //self::addNode('stock', $product->stock, $xmlProduct);
