@@ -11,11 +11,11 @@ $ids = json_decode(file_get_contents("https://service.dreamwhite.ru/output/ids.j
 
 $stockManager = new StockManager();
 
-$cities = [];
+//$cities = [];
 
 foreach ($stocks as $sku => $city) {
     $stockManager->updateStockFromCities($sku, $city);
-    $cities[$city] = $city;
+//    $cities[$city] = $city;
 }
 
 foreach ($ids as $sku => $id) {
