@@ -109,7 +109,17 @@ select * FROM `spb_postmeta` t join (select post_id from `spb_postmeta` where me
 
             foreach ($cityStockValues as $city => $value) {
                 update_post_meta($this->skuPostIdMap[$sku], "stock_" . $city, $value);
-                $this->queriesExecuted++;
+
+                if ($stock == 0) {
+                $terms = array( 'outofstock' );
+                } else {
+                  $terms = array(  );
+                }
+
+              wp_set_post_terms( $this->skuPostIdMap[$sku], $terms, 'product_visibility', false );
+
+
+              $this->queriesExecuted++;
                 $stock+=$value;
             }
 
@@ -117,6 +127,10 @@ select * FROM `spb_postmeta` t join (select post_id from `spb_postmeta` where me
                 $sql = "UPDATE " . $this->postmeta .
                     " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->skuPostIdMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
                 $this->wpdb->query( $sql );
+
+
+
+
                 $this->queriesExecuted++;
             }
             else {
