@@ -13,6 +13,7 @@ $stockManager = new StockManager();
 
 //$cities = [];
 
+
 foreach ($stocks as $sku => $city) {
     $stockManager->updateStockFromCities($sku, $city);
 //    $cities[$city] = $city;

@@ -28,6 +28,11 @@ class StockManager {
 
    }
 
+   function resetStock() {
+    $sql1 = "UPDATE " . $this->wpdb->postmeta . " stock SET stock.meta_value = '0' WHERE stock.meta_key = '_stock';";
+    $this->wpdb->query( $sql1 );
+   }
+
    function getSkuPostIdMap() {
       $query = "SELECT meta_value, post_id FROM " . $this->wpdb->postmeta . " WHERE meta_key = '_sku'";
       //Log::d($query);
