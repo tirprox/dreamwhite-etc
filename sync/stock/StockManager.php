@@ -108,6 +108,9 @@ class StockManager {
       $stock = 0;
 
       foreach ($cityStockValues as $city => $value) {
+
+        if ($value < 0 ) $value = 0;
+
         update_post_meta($this->skuPostIdMap[$sku], "stock_" . $city, $value);
         $this->queriesExecuted++;
 
