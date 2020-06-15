@@ -13,7 +13,6 @@ class StockManager {
   var $wpdb;
   var $skuPostIdMap = [];
   var $postIdStockMap = [];
-  var $postmeta;
   var $queriesNotExecuted = 0, $skuMiss = 0, $queriesExecuted = 0;
 
   var $stocks = [];
@@ -23,32 +22,29 @@ class StockManager {
 
     global $wpdb;
     $this->wpdb = $wpdb;
-
     $this->getSkuPostIdMap();
     $this->getPostIdStockMap();
 
   }
 
   function resetStock() {
-    $sql1 = "UPDATE " . $this->wpdb->postmeta . " stock SET stock.meta_value = '0' WHERE stock.meta_key = '_stock';";
+    $meta = $this->wpdb->postmeta;
+    $sql1 = "UPDATE $meta stock SET stock.meta_value = '0' WHERE stock.meta_key = '_stock';";
     $this->wpdb->query($sql1);
   }
 
   function getSkuPostIdMap() {
-    $query = "SELECT meta_value, post_id FROM " . $this->wpdb->postmeta . " WHERE meta_key = '_sku'";
-    //Log::d($query);
+    $meta = $this->wpdb->postmeta;
+    $query = "SELECT m.meta_value, m.post_id FROM $meta m WHERE m.meta_key = '_sku';";
     $results = $this->wpdb->get_results($query, "ARRAY_A");
-
     foreach ($results as $result) {
       $this->skuPostIdMap[$result['meta_value']] = $result['post_id'];
     }
-
-    $this->postmeta = $this->wpdb->postmeta;
-    //Log::d(var_dump($this->postIdSkuMap));
   }
 
   function getPostIdStockMap() {
-    $query = "SELECT meta_value, post_id FROM " . $this->wpdb->postmeta . " WHERE meta_key = '_stock'";
+    $meta = $this->wpdb->postmeta;
+    $query = "SELECT m.meta_value, m.post_id FROM $meta m WHERE m.meta_key = '_stock';";
     $results = $this->wpdb->get_results($query, "ARRAY_A");
 
     foreach ($results as $result) {
@@ -56,19 +52,14 @@ class StockManager {
     }
   }
 
-  /*
-  select * FROM `spb_postmeta` t join (select post_id from `spb_postmeta` where meta_key = "_stock" and meta_value != "0") t1 on t.post_id = t1.post_id where meta_key = "_stock_status"
-
-  */
-
   function update_stock_status() {
-    $sql1 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
-      " WHERE meta_key = '_stock' AND meta_value = '0 ') id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
-    $sql2 = "UPDATE " . $this->wpdb->postmeta . " stock, (SELECT DISTINCT post_id FROM " . $this->wpdb->postmeta .
-      " WHERE meta_key = '_stock' AND meta_value != '0' ) id SET stock.meta_value = 'instock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
-    $sql3 = "UPDATE " . $this->wpdb->postmeta . " SET " . $this->wpdb->postmeta . ".meta_value = 'yes' WHERE " . $this->wpdb->postmeta . ".meta_key = '_manage_stock';";
+    $meta = $this->wpdb->postmeta;
+    $sql1 = "UPDATE $meta stock, (SELECT DISTINCT post_id FROM $meta WHERE meta_key = '_stock' AND meta_value = '0 ') id SET stock.meta_value = 'outofstock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
+    $sql2 = "UPDATE $meta stock, (SELECT DISTINCT post_id FROM $meta WHERE meta_key = '_stock' AND meta_value != '0' ) id SET stock.meta_value = 'instock' WHERE stock.post_id = id.post_id AND stock.meta_key = '_stock_status';";
 
-    $sql4 = "UPDATE " . $this->wpdb->postmeta . " SET " . $this->wpdb->postmeta . ".meta_value = 'outofstock' WHERE " . $this->wpdb->postmeta . ".meta_value = 'onbackorder';";
+    $sql3 = "UPDATE $meta m SET m.meta_value = 'yes' WHERE m.meta_key = '_manage_stock';";
+    $sql4 = "UPDATE $meta m SET m.meta_value = 'outofstock' WHERE m.meta_value = 'onbackorder';";
+
 
     $this->wpdb->query($sql1);
     $this->wpdb->query($sql2);
@@ -82,29 +73,10 @@ class StockManager {
     update_post_meta($post_id, "_ms_id", $id);
   }
 
-  function update_stock($sku, $stock) {
-    if (!empty($this->skuPostIdMap[$sku])) {
-
-      if ($this->postIdStockMap[$this->skuPostIdMap[$sku]] != $stock) {
-        $sql = "UPDATE " . $this->postmeta .
-          " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->skuPostIdMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
-        $this->wpdb->query($sql);
-        $this->queriesExecuted++;
-      }
-      else {
-        $this->queriesNotExecuted++;
-      }
-    }
-    else {
-      $this->skuMiss++;
-    }
-
-  }
-
   function updateStockFromCities($sku, $cityStockValues) {
     if (!empty($this->skuPostIdMap[$sku])) {
+      $meta = $this->wpdb->postmeta;
 
-      //$stock = $cityStockValues[Config::CITY] ?? 0;
       $stock = 0;
 
       foreach ($cityStockValues as $city => $value) {
@@ -113,8 +85,6 @@ class StockManager {
 
         update_post_meta($this->skuPostIdMap[$sku], "stock_" . $city, $value);
         $this->queriesExecuted++;
-
-//        $stock += $value;
 
         if ($city == 'spb') {
           $stock += $value;
@@ -131,8 +101,8 @@ class StockManager {
       wp_set_post_terms($this->skuPostIdMap[$sku], $terms, 'product_visibility', false);
 
       if ($this->postIdStockMap[$this->skuPostIdMap[$sku]] != $stock) {
-        $sql = "UPDATE " . $this->postmeta .
-          " SET $this->postmeta.meta_value = " . $stock . " WHERE $this->postmeta.post_id = " . $this->skuPostIdMap[$sku] . " AND $this->postmeta.meta_key = '_stock';";
+
+        $sql = "UPDATE $meta m SET m.meta_value = $stock WHERE m.post_id = $this->skuPostIdMap[$sku] AND m.meta_key = '_stock';";
         $this->wpdb->query($sql);
 
         $this->queriesExecuted++;
