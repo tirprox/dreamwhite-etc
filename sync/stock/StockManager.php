@@ -69,7 +69,7 @@ class StockManager {
     wp_cache_flush();
   }
 
-  function update_ms_id($post_id, $id) {
+  function update_1c_id($post_id, $id) {
     update_post_meta($post_id, "_ms_id", $id);
   }
 

@@ -12,7 +12,7 @@ foreach ($stocks as $sku => $city) {
 }
 
 foreach ($ids as $sku => $id) {
-    $stockManager->update_ms_id($stockManager->skuPostIdMap[$sku], $id);
+    $stockManager->update_1c_id($stockManager->skuPostIdMap[$sku], $id);
 }
 
 $stockManager->update_stock_status();
