@@ -4,11 +4,14 @@
   and new docker subdomains (aaa.dreamwhite.ru)
 */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+//include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+require_once('../wp-load.php');
 define('SHORTINIT', true);
 
 global $wpdb;
 $meta = $wpdb->postmeta;
+
+echo "Meta: $meta";
 
 $skuPostIdMap = []; // map sku:postID
 $postIdStockMap = []; // serves performance reasons - prevents updating the same stock value
@@ -81,6 +84,7 @@ $queries = [
 
 foreach ($queries as $q) {
   $wpdb->query($q);
+  $executed++;
 }
 
 wp_cache_flush();
