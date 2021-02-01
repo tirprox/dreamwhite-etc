@@ -1,19 +1,26 @@
 <?php
 
-$file_folder =  "/dirs";
-$base_path = __DIR__ .  $file_folder;
+const FILE_FOLDER =  "dirs";
+
+
+const BASE_PATH = __DIR__ . '/' .  FILE_FOLDER;
+
+const DIR_PERM_CMD = "find " . FILE_FOLDER . " -type d -exec chmod 755 {} \;";
+const FILE_PERM_CMD = "find " . FILE_FOLDER . " -type f  -exec chmod 644 {} \;";
+
 
 fix_permissions();
 set_extensions_to_lowercase();
 
-recursive_dirname_cleanup($base_path);
-report_empty_dirs($base_path);
+recursive_dirname_cleanup(BASE_PATH);
+report_empty_dirs(BASE_PATH);
 
 //fix_filerun_path();
 
 function fix_permissions() {
-  echo shell_exec( "find . -type d -exec chmod 755 {} \;");
-  echo shell_exec( "find . -type f  -exec chmod 644 {} \;");
+
+  echo shell_exec( DIR_PERM_CMD);
+  echo shell_exec( FILE_PERM_CMD);
 }
 
 function set_extensions_to_lowercase() {
@@ -110,14 +117,130 @@ function fix_filerun_path() {
 }
 
 
-
-
 function rename_files_in_path($path) {
-  $color = basename($path); // Get dir name from path
-  $article = basename(dirname($path, 1));
-  $category = basename(dirname($path, 2));
+  $fdir = basename(dirname($path, 3));
 
-  echo "$category | $article | $color \n";
+  if ($fdir === FILE_FOLDER) {
+    $color = basename($path); // Get dir name from path
+    $article = basename(dirname($path, 1));
+    $category = basename(dirname($path, 2));
+
+    $prefix = "$article-$color-";
+
+    // File sorting buckets:
+    $preordered = []; // 1.jpg
+    $existing = []; // Черный-1.jpg
+    $random = []; // asd123.jpg
+
+
+    $file_count = 0;
+    foreach (new DirectoryIterator($path) as $file) {
+      if ($file->isFile()) {
+        if ($file->isDot()) continue;
+
+        $file_count++;
+
+        $strip_ext = str_replace('.' . $file->getExtension(), '', $file->getFilename());
+
+        $f = [];
+        $f['name'] = $file->getFilename();
+        $f['strip_ext'] = $strip_ext;
+        $f['ext'] = $file->getExtension();
+        $f['inode'] = $file->getInode();
+
+        // 1. Sort files into buckets (auto priority)
+
+        if (ctype_digit($strip_ext)) {
+          // Preordered
+          $n = intval($strip_ext);
+
+//          echo "Preordered: $strip_ext, position: $n\n";
+          $f['preferred_position'] = $n;
+          $preordered[$f['name']] = $f;
+
+        }  else if (strpos($strip_ext, $prefix) !== false) {
+          // Existing
+          $n = intval(str_replace($prefix, '', $strip_ext));
+//          echo "Existing: $strip_ext, position: $n\n";
+          $f['preferred_position'] = $n;
+          $existing[$f['name']] = $f;
+
+
+        } else {
+          // Random
+//          echo "Random: $strip_ext\n";
+          $f['preferred_position'] = 0;
+          $random[$f['name']] = $f;
+
+        }
+      }
+    }
+
+    $sorted = [];
+
+    // if preordered file number is bigger then total amount of files, move it to random
+    foreach ($preordered as $f) {
+      if ($f['preferred_position'] > $file_count) {
+        $f['preferred_position'] = 0;
+        $random[$f['name']] = $f;
+        unset($preordered[$f['name']]);
+      } else {
+        $sorted[$f['preferred_position']] = $f;
+      }
+    }
+
+    $available = [];
+
+    for ($i = 1; $i <= $file_count; $i++) {
+      if (!array_key_exists($i, $sorted)) {
+        $available[] = $i;
+      }
+    }
+
+
+    $conflicting = [];
+
+    ksort($existing);
+
+    foreach ($existing as $f) {
+      // resolve position conflict
+      if (isset($sorted[$f['preferred_position']])) {
+        $conflicting[$f['preferred_position']] = $f;
+      } else {
+        $sorted[$f['preferred_position']] = $f;
+        unset($available[$f['preferred_position']]);
+      }
+
+    }
+
+
+
+    /*
+    $first_available_position = array_pop(array_reverse($available));
+    $f['preferred_position'] = $first_available_position;
+    unset($available[$i]);
+
+    */
+
+
+    echo "Sorted $color";
+
+
+
+
+
+    // 2. Assign numbers
+
+    // 3. Set random filenames
+
+    // 4. Rename files in specified order by addressing their inode number
+
+
+
+  }
+}
+
+function resolve_renaming_order($files, $desiredFilenames) {
 
 }
 
