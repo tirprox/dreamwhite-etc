@@ -123,7 +123,7 @@ function rename_files_in_path($path) {
   if ($fdir === FILE_FOLDER) {
     $color = basename($path); // Get dir name from path
     $article = basename(dirname($path, 1));
-    $category = basename(dirname($path, 2));
+//    $category = basename(dirname($path, 2));
 
     $prefix = "$article-$color-";
 
@@ -134,6 +134,8 @@ function rename_files_in_path($path) {
 
 
     $file_count = 0;
+
+    $position =1;
     foreach (new DirectoryIterator($path) as $file) {
       if ($file->isFile()) {
         if ($file->isDot()) continue;
@@ -145,8 +147,11 @@ function rename_files_in_path($path) {
         $f = [];
         $f['name'] = $file->getFilename();
         $f['strip_ext'] = $strip_ext;
-        $f['ext'] = $file->getExtension();
+        $f['ext'] = $file->getExtension() ?? '';
         $f['inode'] = $file->getInode();
+
+
+
 
         // 1. Sort files into buckets (auto priority)
 
@@ -176,7 +181,14 @@ function rename_files_in_path($path) {
       }
     }
 
+
+
+    // 2. Assign numbers
     $sorted = [];
+
+    for ($i = 1; $i <= $file_count; $i++ ) {
+      $sorted[$i] = null;
+    }
 
     // if preordered file number is bigger then total amount of files, move it to random
     foreach ($preordered as $f) {
@@ -189,13 +201,7 @@ function rename_files_in_path($path) {
       }
     }
 
-    $available = [];
 
-    for ($i = 1; $i <= $file_count; $i++) {
-      if (!array_key_exists($i, $sorted)) {
-        $available[] = $i;
-      }
-    }
 
 
     $conflicting = [];
@@ -204,142 +210,71 @@ function rename_files_in_path($path) {
 
     foreach ($existing as $f) {
       // resolve position conflict
-      if (isset($sorted[$f['preferred_position']])) {
+      $pp = $f['preferred_position'];
+
+      if (($pp <= $file_count) && ($sorted[$f['preferred_position']] !== null)) {
         $conflicting[$f['preferred_position']] = $f;
       } else {
         $sorted[$f['preferred_position']] = $f;
-        unset($available[$f['preferred_position']]);
       }
 
     }
 
+    $available = array_reverse(array_keys($sorted, null, true));
 
 
-    /*
-    $first_available_position = array_pop(array_reverse($available));
-    $f['preferred_position'] = $first_available_position;
-    unset($available[$i]);
-
-    */
-
-
-    echo "Sorted $color";
+    for ($i = 1; $i <= $file_count; $i++ ) {
+      if (array_key_exists($i, $conflicting )) {
+        $position = array_pop($available);
+        $sorted[$position] = $conflicting[$i];
+      }
+    }
 
 
+    foreach ($random as $file) {
+      $position = array_pop($available);
+      $sorted[$position] = $file;
+    }
 
 
+    $renaming_list = [];
+    foreach ($sorted as $position => $file) {
+      $new_name = $file['ext'] !== '' ? "$prefix$position." . $file['ext'] : "$prefix$position";
+      $sorted[$position]['new_name'] = $new_name;
 
-    // 2. Assign numbers
+      if ($new_name !== $file['name']) {
+        $renaming_list[$file['name']] = $new_name;
+      }
+    }
 
     // 3. Set random filenames
+    $r=[];
+
+    $rc = 1;
+    foreach ($renaming_list as $name => $new_name) {
+      rename("$path/$name", "$path/$rc");
+      $r[$rc] = $new_name;
+      $rc++;
+    }
 
     // 4. Rename files in specified order by addressing their inode number
-
-
-
-  }
-}
-
-function resolve_renaming_order($files, $desiredFilenames) {
-
-}
-
-function rename_files($files, $article, $color, $colorDirPath) {
-
-  if (!empty($files)) {
-    $i = 1;
-    $isBkp = false;
-
-    /* if file 1.jpg is in a folder */
-    if (in_array('1.jpg', $files) || in_array('1.JPG', $files)) {
-      $name = "$article-$color-1.jpg";
-
-      if (in_array($name, $files)) {
-
-
-        rename("$colorDirPath/$name", "$colorDirPath/bkp.jpg");
-        $isBkp = true;
-      }
-
-      rename("$colorDirPath/1.jpg", "$colorDirPath/$name");
-      rename("$colorDirPath/1.JPG", "$colorDirPath/$name");
-
-      $files = array_diff(scandir($colorDirPath), array('..', '.'));
-
-      if ($isBkp) {
-        // first randomizing names except for 1 and bkp
-        $j = 2;
-        foreach ($files as $file) {
-          $path = $colorDirPath . "/" . $file;
-
-          $newName = $j . ".jpg";
-          if ($file !== $name && $file !== 'bkp.jpg') {
-            rename($path, $colorDirPath . "/" . $newName);
-          }
-          $j++;
-        }
-        $name2 = $article . "-" . $color . "-" . "2.jpg";
-        rename($colorDirPath . "/" . "bkp.jpg", $colorDirPath . "/" . $name2);
-
-        $i = 3;
-        $files = array_diff(scandir($colorDirPath), array('..', '.'));
-
-        foreach ($files as $file) {
-          $path = $colorDirPath . "/" . $file;
-
-          $newName = $article . "-" . $color . "-" . $i . ".jpg";
-          if ($file !== $name && $file !== $name2) {
-            rename($path, $colorDirPath . "/" . $newName);
-            $i++;
-          }
-        }
-
-      }
-      else {
-        // first randomizing names except for 1 and bkp
-        $j = 2;
-        foreach ($files as $file) {
-          $path = $colorDirPath . "/" . $file;
-
-          $newName = $j . ".jpg";
-          if ($file !== $name) {
-            rename($path, $colorDirPath . "/" . $newName);
-          }
-          $j++;
-        }
-
-        $i = 2;
-        $files = array_diff(scandir($colorDirPath), array('..', '.'));
-
-        foreach ($files as $file) {
-          $path = $colorDirPath . "/" . $file;
-
-          $newName = $article . "-" . $color . "-" . $i . ".jpg";
-          if ($file !== $name) {
-            rename($path, $colorDirPath . "/" . $newName);
-            $i++;
-          }
-        }
-      }
-
+    foreach ($r as $name => $new_name) {
+      rename("$path/$name", "$path/$new_name");
     }
 
-    /* if no file named 1.jpg present in a folder */
-    else {
 
-      $files = array_values($files);
-      $fileCount = count($files);
-      for ($j = 0; $j < $fileCount; $j++) {
-        $path = $colorDirPath . "/" . $files[$j];
-        $newName = $article . "-" . $color . "-" . $i . ".jpg";
 
-        if (!in_array($newName, $files)) {
-          rename($path, $colorDirPath . "/" . $newName);
-          $files[$j] = $newName;
-        }
+    echo "Переименован: $article $color\n";
 
-        $i++;
-      }
-    }
+
+
+
+
+
+
+
+
+
+
   }
 }

@@ -1,4 +1,4 @@
-#1/usr/bin/env zsh
+#!/usr/bin/env zsh
 rm -rf ./dirs
 mkdir dirs && cd ./dirs/
 mkdir "Женские пальто"
